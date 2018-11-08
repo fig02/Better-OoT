@@ -5,9 +5,14 @@ This is a ROM patcher for _The Legend of Zelda: Ocarina of Time_ that applies va
 
 
 
+
+
 This is an extension of an idea initially created by Moltov. Moltovs original version can be found in the OoT discord https://discord.gg/7FYGh3d 
 
-This project is based on the 3.0 version of the Ocarina of Time randomizer by AmazingAmpharos which can be found here: https://github.com/AmazingAmpharos/OoT-Randomizer
+
+This project is based on the 3.0 version of the Ocarina of Time Randomizer by AmazingAmpharos which can be found here: https://github.com/AmazingAmpharos/OoT-Randomizer
+
+
 
 
 

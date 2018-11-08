@@ -1,0 +1,71 @@
+Changes from Randomizer (dev branch)
+
+- Item override disabled (no item randomization)
+- Song and medallion item override disabled (no randomization)
+- Randomizer title screen text removed
+- Pause menu cursor behavior reverted back to vanilla
+
+- Patcher UI updated to hide irrelevant settings and added new toggles
+- Fairy ocarina cs reverted back to rando 1.0 (no item above head)
+- Text in Shadow and GTG added back
+- Door in fire locked again
+- Going adult sets default c buttons, light medallion, and time of day
+- Bombchu Bowling order reverted back to vanilla. HP is always first
+- Chest behvior reverted back so that GIM works
+- Text added back to ruto after barinade
+- Ruto warp text no longer quick text (Jabu WW)
+- Fishing text boxes not instant
+- FW text boxes not instant
+- Initial navi text box not instant
+- Timer expired text no longer quick text (Timer freeze)
+- Dampe needs to be on a patch to dig but will give first try
+- Suns cutscene restored to allow time of day change
+- LACS child flashback (shortened) added back to allow for BA
+- Owl text: removed auto textbox fill to make it feel more natural
+- Saria's 3 stones text auto-fill removed to allow for timer wrong warp to nocturne
+- Kokiri sword equipped to childs B when returning from Adult
+- Owls added back 
+- Navi triggers added back
+- Fire arrows not in a chest anymore
+- Silver gauntlests cutscene shortened to avoid crash when wrong warping to it
+
+- Chu baby dodongo fix removed
+- Static upgrades removed
+- Magic bean cost removed
+- Bombchu shop not always open
+- Bazaar and Goron shop check for DC
+- Poachers Saw/Deku Theatre fix removed
+- Serenade check reverted to vanilla
+- Hookshot checks for hookshot slot not chest
+- Warp songs check for dungeon complete
+- King zora move even with saphire removed
+- Kokiri and GC check for dungeon complete removed
+- Pokey check for deku complete removed
+- "Make fishing less obnoxious" removed
+- Owl to always carry down death mountain removed
+- Bombchu price changes removed
+- Shop item shuffling removed
+- Deku scrub shuffling removed
+- 3rd wallet upgrade removed
+- Text shuffle removed
+- Like Likes can steal tunics again
+- Progressive upgrades removed
+- Fairy fountain requirements reverted to vanilla
+- Fairy fountain cutscenes added back (but still shortened)
+- Keysanity menu removed
+
+TO DO:
+CREATE TOGGLE for area intro cs
+CREATE TOGGLE for medallion cs
+check out kak get with new age switching testing method
+
+gerudo guard text
+caught cutscene
+archery text adult, child after
+bomchu bowling yes no b quick text
+heart piece text after bombchu bowling
+deku upgrade quick text
+deku upgrade speedup?
+ocarina minigame
+frogs quick text
+letter vs spooky mask

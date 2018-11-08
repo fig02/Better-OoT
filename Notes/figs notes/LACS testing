@@ -1,0 +1,76 @@
+LACS testing
+
+1DA2BA 2 byte - entrance
+set to 0053 for temple of time
+
+1DA288 4 byte - age 
+set to 0 for adult
+
+Order of events for LACS cs as it is:
+
+1. cs starts as normal, he runs into tot
+2. a load is triggered and loads into post child cs
+3. she gives the arrows
+4. a load is triggered
+5. cs over
+
+-----------------------------------------
+line 1
+rom.write_bytes(0x2531B40, [0x00, 0x28, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
+
+this triggers the load right after the cs starts
+
+------------------------------------------
+line 2
+rom.write_bytes(0x2532FBC, [0x00, 0x75])
+
+didnt see effect
+
+-------------------------
+line 3
+rom.write_bytes(0x2532FEA, [0x00, 0x75, 0x00, 0x80]) 
+
+link raises his hands when recieving arrow
+
+------------------------
+line 4
+rom.write_byte(0x2533115, 0x05)
+
+didnt see effect
+
+-----------------------
+line 5
+rom.write_bytes(0x2533141, [0x06, 0x00, 0x06, 0x00, 0x10])
+
+didnt see effect
+
+------------------------
+line 6
+rom.write_bytes(0x2533171, [0x0F, 0x00, 0x11, 0x00, 0x40])
+
+yellow warp effect when giving arrow
+
+------------------------
+line 7
+rom.write_bytes(0x25331A1, [0x07, 0x00, 0x41, 0x00, 0x65])
+
+didnt see effect
+
+------------------------
+line 8
+rom.write_bytes(0x2533642, [0x00, 0x50])
+
+didnt see effect
+
+
+
+0x2531B40 = 8037AD20
+
+after flashback starts on vanilla = 00048665
+
+after flashback starts in rando = 
+
+flashback override:
+
+01FC28C8
+000003E8 00000001 00280000 00000000

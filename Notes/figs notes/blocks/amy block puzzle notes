@@ -1,0 +1,33 @@
+amy block puzzle notes
+
+actor id 93
+93*20 = 1260
+
+overlay table entry = 	800E8530 + 1260 = 800E9790
+
+rom start CE0040
+rom end   CE1E70
+
+vram start 80942920
+
+ram start 801E6310
+
+
+speed - 10d8
+delay - 0xA84 from start of overlay
+
+
+
+6 frames of delay on blocks
+
+
+
+crates 4.0 12
+block  x   20
+
+
+x   4.0
+-   -
+20  12
+
+12x = 80

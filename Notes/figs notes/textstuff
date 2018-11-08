@@ -1,0 +1,34 @@
+Ruto text:
+"You...You're late!
+What took you so long?
+You're useless!
+
+I was just lonely, that's all...
+Just a little!!"
+
+ID: 0x4022
+
+-------
+
+Timer text:
+"Oh, no! Time's up!
+The thing you were going to 
+deliver has spoiled!
+Let's try again!"
+
+ID: 71B0
+
+
+<allow instant text><color 44>Oh, no! <color 41>Time's up!
+<color 44>The thing you were going to
+deliver has spoiled!
+Let's try again!<color 40><disallow instant text><event>
+
+
+
+The best place to go to learn
+some new skills is in the <color 42>Forest
+Training Center<color 40>.<color 42> <color 40>It's on the hill
+just above here.
+
+

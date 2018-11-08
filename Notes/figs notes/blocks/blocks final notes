@@ -1,0 +1,49 @@
+Generic Blocks (id 0xFF)
+
+	Speed
+
+	overlay+   0x1186
+	rom:       0xDD2B86
+	old value: 0x4000
+	new value: 0x4080
+
+	Delay
+
+	overlay+   0x1326
+	rom:       0xDD2D26
+	old value: 0x000A
+	new value: 0x0001
+
+Milk Crates (id 0x107)
+
+	Speed
+
+	overlay+   0x832
+	rom:       0xDD9682
+	old value: 0x4000
+	new value: 0x4080
+
+	Delay
+
+	overlay+   0x9CE
+	rom:       0xDD981E
+	old value: 0x000A
+	new value: 0x0001
+
+
+Amy blocks (id 0x93)
+
+	Speed
+
+	overlay+   0x1B90
+	rom:       0xCE1BD0
+	old value: 0x3CCCCCCD
+	new value: 0x40800000
+
+	Delay
+
+	overlay+   0xECE
+	rom:       0xCE0F0E
+	old value: 0x0005
+	new value: 0x0001
+

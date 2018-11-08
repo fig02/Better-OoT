@@ -1,0 +1,13 @@
+vanilla: position set to -40, 240, 90 on camera pan, final angle 31868
+BOoT:    position set to -40, 240, 90 on camera pan, final angle 32453
+
+# Speed Twinrova defeat scene
+    rom.write_bytes(0xD678CC, [0x24, 0x01, 0x03, 0xA2, 0xA6, 0x01, 0x01, 0x42])
+    rom.write_bytes(0xD67BA4, [0x10, 0x00])
+
+
+first write:
+0xD678CC ROM
+0x1F9CFC RAM
+
+nothin is there on vanilla?

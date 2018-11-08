@@ -1,0 +1,49 @@
+milk crate
+overlay table entry: 80EA610
+rom start of actor file: DD8E50
+rom end of actor file:   DD9C30
+ram start of actor file (hyrule castle warp from courtyard): 801ECF80
+ram end of actor file (hyrule castle warp from courtyard):   801EDD60
+vram start of actor instance init variables: 80A67024 (+0xC14 from start of actor file)
+
+
+beq instruction at 801ED05C (start of actor file + 0xDC)
+looks like its related to delay
+
+
+speed - overlay + 0x830
+801ed7b0 
+3c014000 changes to 3c014080
+
+2.0 - 3.2
+12 frames - 9 frames
+
+2.0 - 3.0
+12 frames - 10 frames
+
+
+4.0 - 2.0
+12 frames  - 9 frames
+
+
+2.0 - 1.0
+9 frames - 21 frames
+
+--------------
+
+delay - overlay + 0x9CC
+801ed94C
+240B000A changes to 240B0000
+
+
+0xA  = 10 frames of delay (not counting first frame of new pos)
+0x14 = 20 frames of delay (double)
+0x05 = 5 frames of delay
+0x01 = 1 frame of delay
+0x00 = 1 frame of delay
+
+1 is the minumum. number of frames matches value when not including first frame of new pos.
+
+
+
+

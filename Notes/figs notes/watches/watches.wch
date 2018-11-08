@@ -1,0 +1,19 @@
+SystemID N64
+1DA288	b	u	1	RDRAM	age
+1DA2BA	w	h	1	RDRAM	entrance
+11A638	b	h	1	RDRAM	B button
+11A5D4	d	h	1	RDRAM	age2
+11A63B	b	h	1	RDRAM	c right
+11A63E	b	h	1	RDRAM	c right slot 
+11A657	b	h	1	RDRAM	slot 19
+11A65D	b	u	1	RDRAM	nut amount
+11A677	b	b	1	RDRAM	upgrades
+11A675	b	h	1	RDRAM	stones
+11A676	b	h	1	RDRAM	songs
+11A604	b	u	1	RDRAM	rupees
+11A64C	b	h	1	RDRAM	chu slot (09)
+11A640	b	h	1	RDRAM	boots/tunic
+11A641	b	h	1	RDRAM	shield/sword
+11A670	d	b	1	RDRAM	
+11A685	b	h	1	RDRAM	small keys
+

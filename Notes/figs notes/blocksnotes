@@ -1,0 +1,29 @@
+blocks
+
+default speed 2 (0x4000 f32)
+new speed 4 (0x4080 f32)
+
+
+DD2B86 (2 byte) = speed
+DD2BCE (2 byte) = distance (prob dont wanna change)
+DD2D26 (2 byte) = delay
+
+green forest temple block in ram
+1E72C0 = start of block overlay
+1EF4D4 = speed
+1EF674 = delay
+
+default values:
+speed	 - 4000
+distance - 42A0
+delay	 - 000A 
+
+new values:
+speed - 4080 
+
+
+rom start dd1a00
+ram start 801e9150
+
+
+

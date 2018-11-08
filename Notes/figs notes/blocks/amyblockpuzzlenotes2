@@ -1,0 +1,212 @@
+ovl_Bg_Po_Event
+object 99
+id     93
+
+variable: xxyy
+x - puzzle piece
+y - switch flag
+
+the following are the x part of the variable:
+
+variable 00:
+when spawned, block 1 is placed at given x,z coords
+y is hardcoded
+3 other blocks spawn also
+positions are completley hardcoded as well, placed in the same spot regardless of initial block
+
+01:
+fake block used to trick you
+height is hard coded, x/z are not
+
+02:
+red poe painting
+
+03:
+blue poe painting
+
+04:
+amy painting
+
+the puzzle will not initiate if all parts are not present
+
+---------
+
+entry in overlay table: 800E9790
+in this savestate, overlay start of ram: 801EB860
+in this savestate, overlay end of ram: 801ED6A0
+overlay size: 1E40 bytes
+
+rightmost block (prop 0)
+size 0x270
+start in ram: 801F3ED0
+end in ram:   801F4140
+
+north/south push/pull direction pos: 801F3EFC
+
+for crates, a break point on the delay will break once toward the end of each pull
+
+c4c1c000- c4c44000
+block moves 28000 units every push/pull
+
+---------------
+
+insructions to investigate
+
+---
+
+overlay+0x884
+block of code starts 801EC0E4
+block of code ends   801EC140
+breaks toward the end of the pull
+
+overlay+0x8A6
+block of code starts 801EC16C
+block of code ends   801EC140
+breaks toward the end of the pull
+
+end of push related code?
+801EC21C
+
+---
+
+overlay+0xAC0
+starts 801EC320
+ends   801EC354
+runs 5 times every visual frame if youre not pushing a block, 3 times a frame if you are pushing a block
+
+overlay+0x????
+starts 801EC404
+ends   801EC410
+runs 5 times every visual frame if youre not pushing a block, 3 times a frame if you are pushing a block
+
+overlay+0x????
+starts 801EC450
+ends   801EC45C 
+runs 5 times every visual frame if youre not pushing a block, 3 times a frame if you are pushing a block
+
+overlay+0x????
+starts 801EC4C4
+ends    
+runs 5 times every visual frame if youre not pushing a block, 3 times a frame if you are pushing a block
+
+---
+
+!!!!!!!!!!
+overlay+0xC78
+starts 801EC4D8
+ends   801EC4E8
+this block of code breaks every frame of the delay (6 frames) then resumes push/pull and breaks on the next delay
+!!!!!!!!!!
+
+overlay+0xC7D
+starts 801EC4EC
+ends   801EC538
+breaks after every push, regardless of push or pull
+
+overlay+0x
+starts 801EC53C
+1 instruction 
+only breaks after every pull, not push
+
+overlay+0x
+starts 801EC540
+ends   801EC558
+only breaks after every push
+
+overlay+0x
+starts 801EC564
+ends   801EC570
+only breaks after every pull
+
+overlay+0x
+starts 801EC574
+ends   801EC578
+only a brach and its delay slot. breaks on push or pull
+
+!!!!!!!!!!!!
+overlay+0x
+starts 801EC594
+ends   801EC5B8
+breaks during the delay of a push or pull, minus 1 frame
+!!!!!!!!!!!!
+
+overlay+0x
+starts 801EC5C0
+ends   801EC5D0
+runs 5 times every visual frame if youre not pushing a block, 3 times a frame if you are pushing a block
+
+--------
+
+overlay+0x
+starts 801EC5D4
+ends   not sure
+breaks only on frames that ARENT delay (20f of block movement)
+
+-------------
+
+ovl_Bg_Po_Event_Func_8:	/* 0x80943694 */ push/pull speed
+
+load 0x4000 to AT
+save address in s0 to sp+20 (8011F058)
+move word from AT (speed) to float register F2
+bitwise OR A0 with r0, result in S0 (just moves the address)
+
+
+801EC4D8:
+
+	lb	t6, 0x015A(s0)
+	lw	a0, 0x0044($sp)
+	or	a1, s0, $zero		/*a1 = 00000000*/
+	bne	t6, $zero, $lbl_15939
+	lw	t9, 0x003C($sp)
+
+	load byte from s0+0x015a (start of block + 15a) to register t6 [0x05 -> t6]
+	load word from sp+44 (8011F030+44) to a0
+	bitwise OR s0,0, result in a1 (effectivley moves the address in s0 to a1)
+	branch to 801EC594 if t6 is not equal to 0
+	delay slot - load word from sp+3c to t9
+
+	---
+
+801EC594:
+	
+	lw	t0, 0x0670(t9)
+	addiu	at, $zero, 0xFFEF		/*at = FFFFFFEF*/
+	and	t8, t0, at
+	sw	t8, 0x0670(t9)
+	lb	v0, 0x015A(s0)
+	swc1	s0, 0x0140(s0)
+	beq	v0, $zero, $lbl_15927
+	addiu	t1, v0, 0xFFFF		/*t1 = FFFFFFFF*/
+	beq	$zero, $zero, $lbl_15927
+	sb	t1, 0x015A(s0)
+	sb	$zero, 0x015A(s0)
+$lbl_15927:	/* 0x80943680 */
+	lw	$ra, 0x0034($sp)
+$lbl_15928:	/* 0x80943684 */
+	lw	s0, 0x0030($sp)
+	addiu	$sp, $sp, 0x0040		/*$sp = 00000000*/
+	jr	$ra
+	nop
+
+
+
+########################################################################################
+
+
+
+-------------------------------------------------------------
+FOUND SPEED:
+
+801ED3F0
+overlay+1b90
+default value 3C CC CC CD
+new value     40 80 00 00
+
+DELAY
+overlay+ecc
+default value 24 0b 00 05
+new value     24 0b 00 00
+-------------------------------------------------------------
+
+

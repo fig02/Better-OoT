@@ -1,0 +1,6 @@
+803A5034 - 80388B60 = 1C4D4: offset of the JAL for warp out from the start of player overlay
+
+00BCDB70: vrom start of the player overlay
+
+00BCDB70 + 1C4D4 = BEA044
+(vrom start of player overlay + offset of the instruction we want ot modify)

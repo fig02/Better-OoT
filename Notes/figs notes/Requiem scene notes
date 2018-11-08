@@ -1,0 +1,193 @@
+Requiem scene notes
+
+Ostrealava02Last Tuesday at 10:01 PM
+@Fig You can also check the daytime setting in the alternate header of Colossus room and see if the time of day is being changed (not FF FF) or not if you didn't.
+
+---
+
+#	  Scene	                    MapSelect	  Setup	   Description
+092	  Spot 11 - Desert Colossus	12	          04	   Cutscene - Learning the Requiem of Spirit
+
+ID      filename        description                 vrom start  vrom end    titlecard start and end   ?     rn  #   *
+005C	spot11_scene	Spot 11 - Desert Colossus	02186000	0219F4E0	019F6000	019F7B00	  00	0A	00	00
+
+---
+
+Id	Required	Purpose
+0x18		Alternate Headers 
+0x15	✔	Sound Settings
+0x04	✔	Rooms
+0x0E		Transition Actors
+0x19		Camera Settings and World Map
+0x03	✔	Collision Header
+0x06	✔	Entrance List
+0x07	✔	"Special Objects"
+0x0D		Pathways
+0x00	✔	Link Spawns
+0x11	✔	Skybox Settings
+0x13		Exit List
+0x0F	✔	Lighting Settings
+0x17		Cutscenes
+
+
+0x18	Alternate headers	18000000 xxxxxxxx	x = segment offset of alternate header list. Follows the alternate header list format.
+
+segment offsets:
+Segment addresses take the form ssoooooo:
+
+s is the segment id, which is used as an index to the segment address table.
+o is an offset, relative to the start of the pointer referenced by the segment index.
+
+---
+
+@ 02186000 (requiem cs start) - 18 00 00 00 alternate header command
+								02 00 00 60 segment offset
+
+02		 "current scene"
+00 00 60 offset
+
+---
+
+02186000 + 60 = location of alternate header list
+
+alternate header list (egment address):
+00 00 00 00 	
+02 00 75 30 	
+00 00 00 00 	
+02 00 77 D0 	
+02 00 78 B0 	
+
+---
+
+02186000 + 77 D0 = colosus (requiem) header i think
+
+Colossus Scene Setup 4 (218D8B0) Header:
+
+15 08 00 00 00 00 0B 7F sound settings
+04 01 00 00 02 00 78 40 rooms
+...
+14 00 00 00 00 00 00 00 end of header
+
+|
+v
+
+04 room command
+01 00 00 number of rooms
+02 (00 78 40) segment offset of list of rooms
+
+02186000 + 00 78 40 = list of rooms
+0218D840
+
+02 1A 00 00 start of room 0
+02 1A C7 C0 end of room 0
+
+---
+
+Each room is two pointers, start and end, which game searches for in the file system. A maximum of 32 rooms can exist per scene without encountering potential issues.
+
+Format:
+ssssssss eeeeeeee (repeats for each room)
+Where:
+s = Room virtual address start.
+e = Room virtual address end.
+
+
+02186000 + 7920 = list of rooms
+0218D920
+
+02 1A 00 00 - address of start of room 1
+02 1A C7 C0 - address of end of room 1
+
+Room commands format:
+0x18		Alternate Headers
+0x16	✔	Sound Settings
+0x08	✔	Room Behavior
+0x12	✔	Skybox Settings
+0x10	✔	Time Settings
+0x0A	✔	Room Mesh
+0x0B		Object List
+0x01		Actor List
+
+Need header 4 of room 0
+
+18 00 00 00 alternate header command
+03 (00 00 50) segment offset for list 
+
+021A0000 + 50 = alternate header list for room 0
+021A0050
+
+Alternate header list:
+
+00 00 00 00 scene setup 1
+03 00 04 10 scene setup 2
+00 00 00 00 scene setup 3
+03 00 07 10 scene setup 4 
+03 00 07 F0 scene setup 5 - requiem?
+
+03 (00 07 10) segment offset relative to room for scene setup 4
+
+021A0710 - commands for colossus room 0 setup 4
+16 00 00 00 00 00 00 0A sound settings
+08 00 00 00 00 00 00 02 room behavior
+12 00 00 00 00 00 00 00 skybox settings
+10 00 00 00 0C 00 0A 00 time settings
+
+---
+
+0x10	Time settings	10000000 xxxxyy00	x = Sets time to a specific value. 0xFFFF = No change y = Time speed (signed), default 0xA.
+
+10 00 00 00 time command
+0C 00       set time to this (hh mm)
+0A 00       time speed
+
+------------------------------------------------------------
+
+Requiem time of day
+
+vanilla: 
+sets to 8000 upon entering
+8AB4 at first shiek text
+8C58 at song staff
+9DF6 at song learn
+A738 at load
+
+better oot:
+8000 at load
+8014 after song learn
+8122 at fade in
+812C at load
+
+
+requiem @ 803703B0 in ram
+requiem @ 0218AF10 in rom
+
+A738 - 8000 = 2738 units passed for vanilla
+812C - 8000 =  12C units passed for better oot
+
+
+A738 - 12C = A60C starting time for requiem on better oot
+
+According to gossip stone, 15h 34m
+
+SO........
+
+need to set the value of the time command for setup 4 of room 0 of colossus
+located at 
+
+0x021A027C (2 bytes, hhmm)
+to 0F 22
+
+0x021A072C = 0F 22
+
+
+
+
+
+
+
+
+
+
+
+
+

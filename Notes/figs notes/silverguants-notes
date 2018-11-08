@@ -1,0 +1,11 @@
+silver guants ram location - 80371A90
+
+00000017 - 23 commands
+0000050A
+
+rom location - 0218C5F0
++4 for cs length DOESNT WORK
+
+0218D510 - location of terminate cs command
++0xA for start+end time of command (4 bytes)
+

@@ -1,0 +1,18 @@
+BGS
+
+Biggoron actor id 1AE
+ROM start 00ED2040
+
+instruction that rando modified: overlay+2430
+
+they nopped out a check for a comparison to number of days passed
+
+going to instead change the comparison to look for 1 instead of 3
+1 instruction up
+
+overlay+242C (ED446C)
+SLTI	AT, V0, 0x0003
+28410003
+
+becomes
+28410001

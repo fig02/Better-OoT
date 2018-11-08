@@ -679,6 +679,14 @@ def patch_rom(world, rom):
     rom.write_bytes(0x292D810, [0x00, 0x02, 0x00, 0x3C])
     rom.write_bytes(0x292D924, [0xFF, 0xFF, 0x00, 0x14, 0x00, 0x96, 0xFF, 0xFF])
 
+    #Speed Pushing of All Blocks
+    rom.write_bytes(0xDD2B86, [0x40, 0x80]) #block speed
+    rom.write_bytes(0xDD2D26, [0x00, 0x01]) #block delay
+    rom.write_bytes(0xDD9682, [0x40, 0x80]) #milk crate speed
+    rom.write_bytes(0xDD981E, [0x00, 0x01]) #milk crate delay
+    rom.write_bytes(0xCE1BD0, [0x40, 0x80, 0x00, 0x00]) #amy puzzle speed
+    rom.write_bytes(0xCE0F0E, [0x00, 0x01]) #amy puzzle delay
+
     #! ADD TOGGLE
     """
     # Remove remaining owls
@@ -689,14 +697,10 @@ def patch_rom(world, rom):
     rom.write_byte(0x2059094, 0x80)
     """
 
-    #Speed block pushing
-    rom.write_bytes(0xDD2B86,[0x40, 0x80]) #double block speed
-    rom.write_bytes(0xDD2D26,[0x00, 0x00]) #remove delay between pushes
-
     # Darunia won't dance
     rom.write_bytes(0x22769E4, [0xFF, 0xFF, 0xFF, 0xFF])
 
-    # Zora moves quickly
+    # King Zora moves quickly
     rom.write_bytes(0xE56924, [0x00, 0x00, 0x00, 0x00])
 
     # Speed Jabu Jabu swallowing Link
@@ -711,10 +715,6 @@ def patch_rom(world, rom):
     # Speed up Epona race start
     rom.write_bytes(0x29BE984, [0x00, 0x00, 0x00, 0x02])
     rom.write_bytes(0x29BE9CA, [0x00, 0x01, 0x00, 0x02])
-    
-    # Speed start of Horseback Archery
-    #rom.write_bytes(0x21B2064, [0x00, 0x00, 0x00, 0x02])
-    #rom.write_bytes(0x21B20AA, [0x00, 0x01, 0x00, 0x02])
 
     # Speed up Epona escape
     rom.write_bytes(0x1FC8B36, [0x00, 0x2A])
@@ -848,11 +848,10 @@ def patch_rom(world, rom):
     rom.write_bytes(0xED6574, [0x00, 0x00, 0x00, 0x00])
     """
 
-    #! make it one day
-    # Remove the check on the number of days that passed for claim check.
-    rom.write_bytes(0xED4470, [0x00, 0x00, 0x00, 0x00])
-    rom.write_bytes(0xED4498, [0x00, 0x00, 0x00, 0x00])
-
+    # Make the check for BGS 1 day
+    rom.write_bytes(0xED446C, [0x28, 0x41, 0x00, 0x01]) #day check for claim check
+    rom.write_bytes(0xED4494, [0x28, 0x41, 0x00, 0x01]) #day check for dialogue
+    
     # Fixed reward order for Bombchu Bowling
     rom.write_bytes(0xE2E694, [0x80, 0xAA, 0xE2, 0x64]) #item 1 = hp
     rom.write_bytes(0xE2E698, [0x80, 0xAA, 0xE2, 0x88]) #item 2 = bombs
@@ -877,10 +876,11 @@ def patch_rom(world, rom):
     rom.write_bytes(0xDCBF32, [0x42, 0x30]) #set child fish size requirement
     rom.write_bytes(0xDCBF9E, [0x42, 0x30]) #set child fish size requirement
     """
+    # Speed dig text for Dampe
+    rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])
 
-    # Dampe always digs something up and first dig is always the Piece of Heart
-    #rom.write_bytes(0xCC3FA8, [0xA2, 0x01, 0x01, 0xF8]) - dig anywhere
-    rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00]) # - 1st try
+    # Dampe hp first try
+    rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00]) 
     
     """
     # Allow owl to always carry the kid down Death Mountain
@@ -903,8 +903,7 @@ def patch_rom(world, rom):
         rom.write_byte(address, 0xFE)
     """
 
-    # Speed dig text for Dampe
-    rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])
+    
     
     # Make item descriptions into a single box
     Short_item_descriptions = [0x92EC84, 0x92F9E3, 0x92F2B4, 0x92F37A, 0x92F513, 0x92F5C6, 0x92E93B, 0x92EA12]
@@ -1042,15 +1041,17 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0EE3, 0x02) # "Began King Dodongo Battle"
     write_bits_to_save(0x0EE3, 0x01) # "Began Gohma Battle"
 
+    write_bits_to_save(0x0EED, 0x80) # "Watched Ganon's Tower Collapse / Caught by Gerudo"
+
     #! ADD TOGGLE FOR INDIVIDUAL INTRO SCENES
-    #write_bits_to_save(0x0EE8, 0x01) # "Entered Deku Tree"
+    write_bits_to_save(0x0EE8, 0x01) # "Entered Deku Tree"
     write_bits_to_save(0x0EE9, 0x80) # "Entered Temple of Time"
     write_bits_to_save(0x0EE9, 0x40) # "Entered Goron City"
-    #write_bits_to_save(0x0EE9, 0x20) # "Entered Hyrule Castle"
-    #write_bits_to_save(0x0EE9, 0x10) # "Entered Zora's Domain"
-    #write_bits_to_save(0x0EE9, 0x08) # "Entered Kakariko Village"
-    #write_bits_to_save(0x0EE9, 0x02) # "Entered Death Mountain Trail"
-    #write_bits_to_save(0x0EE9, 0x01) # "Entered Hyrule Field"
+    write_bits_to_save(0x0EE9, 0x20) # "Entered Hyrule Castle"
+    write_bits_to_save(0x0EE9, 0x10) # "Entered Zora's Domain"
+    write_bits_to_save(0x0EE9, 0x08) # "Entered Kakariko Village"
+    write_bits_to_save(0x0EE9, 0x02) # "Entered Death Mountain Trail"
+    write_bits_to_save(0x0EE9, 0x01) # "Entered Hyrule Field"
     write_bits_to_save(0x0EEA, 0x04) # "Entered Ganon's Castle (Exterior)"
     write_bits_to_save(0x0EEA, 0x02) # "Entered Death Mountain Crater"
     write_bits_to_save(0x0EEA, 0x01) # "Entered Desert Colossus"
@@ -1065,8 +1066,8 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0F08, 0x08) # "Entered Hyrule Castle"
  
     
-    # Make the Kakariko Gate not open with the MS
-    
+    # Make the Kakariko Gate not open with the MS - not sure if i wanna keep it like this
+    rom.write_int32(0xDD3538, 0x34190000)
     if not world.open_kakariko:
         rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
     

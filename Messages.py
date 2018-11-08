@@ -445,7 +445,14 @@ class Message():
             0x4083,
             0x4084,
             0x4086,
-            0x4092
+            0x4092,
+
+            0x007A, #bugs text
+            0x0047, #fish text
+            0x0046, #fairy text
+
+            0x5041 #dampe text
+
         ]
 
     

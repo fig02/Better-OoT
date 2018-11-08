@@ -28,6 +28,9 @@ Changes from Randomizer (dev branch)
 - Navi triggers added back
 - Fire arrows not in a chest anymore
 - Silver gauntlests cutscene shortened to avoid crash when wrong warping to it
+- BGS checks for 1 day
+- Fast block pushing
+- Caught in jail flag set (no cs)
 
 - Chu baby dodongo fix removed
 - Static upgrades removed
@@ -56,11 +59,10 @@ Changes from Randomizer (dev branch)
 
 TO DO:
 CREATE TOGGLE for area intro cs
+CREATE TOGGLE for song cutscenes
 CREATE TOGGLE for medallion cs
-check out kak get with new age switching testing method
 
 gerudo guard text
-caught cutscene
 archery text adult, child after
 bomchu bowling yes no b quick text
 heart piece text after bombchu bowling
@@ -69,3 +71,7 @@ deku upgrade speedup?
 ocarina minigame
 frogs quick text
 letter vs spooky mask
+rova cs angle for initial position
+back in time equips issue that zfg had
+re-implement no cs at fairy fountains
+fire temple blocks

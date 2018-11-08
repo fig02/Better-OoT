@@ -1,0 +1,14 @@
+gui changes
+
+take community edition out of title
+fully remove any unused gui parts
+
+options to add:
+toggle owls
+toggle short song cutscenes
+toggle forest elevator
+toggle individual intro cutscenes
+
+when cleanup is done:
+remove "placing items in vanilla locations"
+take out "sucess: " from final message

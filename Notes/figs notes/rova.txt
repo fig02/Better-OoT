@@ -22,3 +22,26 @@ is a part of function:
  2nd line modifies overlay+68c4
 
  809D7A24 vram
+
+
+ -----
+
+.org 0xD68978
+    jal        twinrova_cs_fix
+    lh        t0,0x142(s2)
+
+
+twinrova_cs_fix:
+    ; displaced 
+    addiu    t1,r0,0x0001
+
+    addiu    sp, sp, -0x10
+    sw        t0, 0x04(sp)
+    sw        t1, 0x08(sp)
+    li        t0, 0x7C7C
+    lui        t1, 0x801E
+    sh        t0, 0xAAE6(t1)
+    lw        t1, 0x08(sp)
+    lw        t0, 0x04(sp)
+    jr        ra
+    addiu    sp, sp, 0x10

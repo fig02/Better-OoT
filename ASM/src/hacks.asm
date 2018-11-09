@@ -491,8 +491,8 @@
 ; Talk to Temple of Time Altar injection
 ; Replaces:
 ;   jal     0xD6218
-.org 0xE2B0B4
-    jal     set_dungeon_knowledge
+;.org 0xE2B0B4
+;    jal     set_dungeon_knowledge
 
 
 ;==================================================================================================
@@ -503,3 +503,15 @@
 ;	jal		0x80057030 ; copies Scarecrow Song from active space to save context
 .org 0xB55A64 ; In memory 800DFB04
     jal		save_scarecrow_song
+
+
+;==================================================================================================
+; Twinrova position fix
+;==================================================================================================
+;
+; Replaces:     lh  t0, 0x0142(s2) overlay+0x7698
+
+.org 0xD68978
+    jal     twinrova_cs_fix
+    lh      t0, 0x142(s2)
+

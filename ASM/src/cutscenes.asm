@@ -63,7 +63,6 @@ override_light_arrow_cutscene:
     b       store_pending_special_item
     nop
 
-
 ;
 ;override_fairy_ocarina_cutscene:
 ;    li      t0, FAIRY_OCARINA_ITEM
@@ -187,3 +186,21 @@ set_dungeon_knowledge:
 
     jr      ra
     nop
+
+;Injection for fixing the angle after the twinrova defeat scene so
+;so that the initial angle is the same as vanilla
+
+twinrova_cs_fix:
+    ; displaced 
+    addiu    t1,r0,0x0001
+
+    addiu    sp, sp, -0x10
+    sw        t0, 0x04(sp)
+    sw        t1, 0x08(sp)
+    li        t0, 0x7C7C
+    lui        t1, 0x801E
+    sh        t0, 0xAAE6(t1)
+    lw        t1, 0x08(sp)
+    lw        t0, 0x04(sp)
+    jr        ra
+    addiu    sp, sp, 0x10

@@ -1,0 +1,30 @@
+fire block
+
+id 0043
+
+table entry: 800E8D90
+0043	Bg_Hidan_Rock	00C76D50	00C77E40	808D9560	808DA650	00000000	808DA42C	00000000	0000	00	00
+
+rom  00C76D50
+vram 808D9560
+ram  801EF0B0
+
+instance 801E6520
+pos      801E654C
+
+speed
+overlay + 0xF58
+old value 0x3D4CCCCD
+new value 0x40800000
+
+delay
+$lbl_9530:	/* 0x808D9874 */ + 23 instructions (5c bytes)
+vram 808D98D0
+ram 801EF420
+
+overlay+0x372
+old value 0x0005
+new value 0x0001
+
+
+

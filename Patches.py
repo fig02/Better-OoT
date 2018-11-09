@@ -686,6 +686,9 @@ def patch_rom(world, rom):
     rom.write_bytes(0xDD981E, [0x00, 0x01]) #milk crate delay
     rom.write_bytes(0xCE1BD0, [0x40, 0x80, 0x00, 0x00]) #amy puzzle speed
     rom.write_bytes(0xCE0F0E, [0x00, 0x01]) #amy puzzle delay
+    rom.write_bytes(0xC77CA8, [0x40, 0x80, 0x00, 0x00]) #fire block speed
+    rom.write_bytes(0xC770C2, [0x00, 0x01]) #fire block delay
+
 
     #! ADD TOGGLE
     """

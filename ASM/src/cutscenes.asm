@@ -63,12 +63,12 @@ override_light_arrow_cutscene:
     b       store_pending_special_item
     nop
 
-;
-;override_fairy_ocarina_cutscene:
-;    li      t0, FAIRY_OCARINA_ITEM
-;    lb      t0, 0x00 (t0)
-;    b       store_pending_special_item
-;    nop
+
+override_fairy_ocarina_cutscene:
+    li      t0, FAIRY_OCARINA_ITEM
+    lb      t0, 0x00 (t0)
+    b       store_pending_special_item
+    nop
 
 ;a3 = item ID
 override_ocarina_songs:
@@ -94,16 +94,16 @@ override_epona_song:
     b       store_pending_special_item
     nop
 
-;override_suns_song:
-;    lui    at,0x8012       
-;    addiu  at,at,0xA5D0 ; v1 = 0x8012a5d0 # save context (sav)
-;    lb     t0,0x0EDE(at) ; learned song from sun's song
-;    ori    t0,t0,0x04  ;
-;    sb     t0,0x0EDE(at);
-;
-;    li      t0, 0x6A
-;    b       store_pending_special_item
-;    nop
+override_suns_song:
+    lui    at,0x8012       
+    addiu  at,at,0xA5D0 ; v1 = 0x8012a5d0 # save context (sav)
+    lb     t0,0x0EDE(at) ; learned song from sun's song
+    ori    t0,t0,0x04  ;
+    sb     t0,0x0EDE(at);
+
+    li      t0, 0x6A
+    b       store_pending_special_item
+    nop
 
 override_song_of_time:
     li      a1, 3

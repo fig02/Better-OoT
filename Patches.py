@@ -680,14 +680,14 @@ def patch_rom(world, rom):
     rom.write_bytes(0x292D924, [0xFF, 0xFF, 0x00, 0x14, 0x00, 0x96, 0xFF, 0xFF])
 
     #Speed Pushing of All Blocks
-    rom.write_bytes(0xDD2B86, [0x40, 0x80]) #block speed
-    rom.write_bytes(0xDD2D26, [0x00, 0x01]) #block delay
-    rom.write_bytes(0xDD9682, [0x40, 0x80]) #milk crate speed
-    rom.write_bytes(0xDD981E, [0x00, 0x01]) #milk crate delay
+    rom.write_bytes(0xDD2B86, [0x40, 0x80])             #block speed
+    rom.write_bytes(0xDD2D26, [0x00, 0x01])             #block delay
+    rom.write_bytes(0xDD9682, [0x40, 0x80])             #milk crate speed
+    rom.write_bytes(0xDD981E, [0x00, 0x01])             #milk crate delay
     rom.write_bytes(0xCE1BD0, [0x40, 0x80, 0x00, 0x00]) #amy puzzle speed
-    rom.write_bytes(0xCE0F0E, [0x00, 0x01]) #amy puzzle delay
+    rom.write_bytes(0xCE0F0E, [0x00, 0x01])             #amy puzzle delay
     rom.write_bytes(0xC77CA8, [0x40, 0x80, 0x00, 0x00]) #fire block speed
-    rom.write_bytes(0xC770C2, [0x00, 0x01]) #fire block delay
+    rom.write_bytes(0xC770C2, [0x00, 0x01])             #fire block delay
 
 
     #! ADD TOGGLE
@@ -976,6 +976,7 @@ def patch_rom(world, rom):
     write_bits_to_save(0xEDC, 0x08)
     write_bytes_to_save(0xA5, [0xFF ,0xFF])
     rom.write_bytes(0xE5401C, [0x14, 0x0B])
+    rom.write_bytes(0xE5401C, [0x14, 0x0B]) #open forest
 
     #set initial time of day
     #have this dynamically change according to early game intro and owl settings

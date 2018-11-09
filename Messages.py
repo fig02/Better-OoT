@@ -451,7 +451,20 @@ class Message():
             0x0047, #fish text
             0x0046, #fairy text
 
-            0x5041 #dampe text
+            0x5041, #dampe text
+
+            0x002E, #child/adult archery
+            0x71AF,
+
+            0x001A, #play again text
+            0x00FA, #bowlin piece of heart
+            0x00FB,
+            0x00FC,
+            0x00FD,
+
+            0x10DC, #deku stick/nut upgrades
+            0x10DD
+
 
         ]
 

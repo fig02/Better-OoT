@@ -1,0 +1,119 @@
+slingshot minigame
+
+when coming from the front of lost woods
+801EED90 + 0x25c = 801EEFEC (2byte) - keeps track of number of 100's 
+
+801EED90 - scrub
+
+actor id 01A3 (var ffff)
+
+entry in overlay table 800EB990
+01A3	En_Dnt_Nomal	00ECA880	00ECD680	80B4F150	80B51F50	00000000	80B51B30	00000000	0000	00	00
+
+rom start  ECA880
+vram start 80B4F150
+ram start  801EBF60
+
+=========================================================
+functions
+=========================================================
+
+ovl_En_Dnt_Nomal_Func_5:	/* 0x80B4F514 */
+801EC324 
+breaks every frame 
+doesnt stop
+ovl+0x3C4
+
+ovl_En_Dnt_Nomal_Func_6:	/* 0x80B4F7E4 */
+801EC5F4 
+breaks after 3 completed shots
+stops when camera pans and he starts getting up
+ovl+0x694
+
+ovl_En_Dnt_Nomal_Func_7:	/* 0x80B4F900 */
+801EC710
+breaks when he starts getting up
+stops after hes turned and is ready to move
+ovl+0x7b0
+
+ovl_En_Dnt_Nomal_Func_8:	/* 0x80B4F96C */
+801EC77C
+breaks when he starts moving
+only breaks for one frame, initializes moving??
+ovl+0x81c
+
+ovl_En_Dnt_Nomal_Func_9:	/* 0x80B4FA10 */
+801EC820
+breaks when he starts moving
+stops when hes reached the end of the tree branch
+ovl+0x8C0
+
+ovl_En_Dnt_Nomal_Func_10:	/* 0x80B4FAFC */
+801EC90C
+breaks when hes reached the end of the branch
+stops when hes full turned and ready to talk
+ovl+9AC
+
+ovl_En_Dnt_Nomal_Func_11:	/* 0x80B4FBB0 */
+801EC9C0
+breaks once when hes ready to talk, init
+just runs once
+ovl+
+
+ovl_En_Dnt_Nomal_Func_12:	/* 0x80B4FC5C */
+801ECA6C
+breaks when he begins to talk
+stops when hes done talking and begins giving item
+ovl+
+
+ovl_En_Dnt_Nomal_Func_13:	/* 0x80B4FD04 */
+801ECB14
+breaks when hes about to give the item
+only breaks once, init?
+ovl+
+
+ovl_En_Dnt_Nomal_Func_14:	/* 0x80B4FD9C */
+801ECBAC
+breaks when he spits out the seed bag
+stops when its fully out and it starts flying toward you
+ovl+
+
+ovl_En_Dnt_Nomal_Func_15:	/* 0x80B4FF04 */
+801ECD14
+breaks when the seed back is flying toward you and he starts going back
+stops when hes reached his home
+ovl+
+
+ovl_En_Dnt_Nomal_Func_16:	/* 0x80B500D4 */
+801ECEE4
+breaks when hes reached home and is ready to jump in
+stops when hes jumped in
+ovl+
+
+==============================================================================
+variables
+==============================================================================
+801EED90 instance start
+801EEDB4 x (forward and back)
+801EEDB8 y (up and down)
+801EEDBC z (left and right on the tree branch)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

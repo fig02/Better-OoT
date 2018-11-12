@@ -191,16 +191,16 @@
 ; Replaces:
 ;   jal     0x8002049C
 ;   addiu   a1, r0, 0x0038
-.org 0xC89744 ; In memory: 0x801E3884
-    jal     override_great_fairy_cutscene
-    addiu   a1, r0, 0x0038
+;.org 0xC89744 ; In memory: 0x801E3884
+;    jal     override_great_fairy_cutscene
+;    addiu   a1, r0, 0x0038
 ;
 ; Upgrade fairies check scene chest flags instead of magic/defense
 ; Mountain Summit Fairy
 ; Replaces:
 ;   lbu     t6, 0x3A (a1)
-.org 0xC89868 ; In memory: 0x801E39A8
-    lbu     t6, 0x1D28 (s0)
+;.org 0xC89868 ; In memory: 0x801E39A8
+;    lbu     t6, 0x1D28 (s0)
 ; Crater Fairy
 ; Replaces:
 ;   lbu     t9, 0x3C (a1)
@@ -221,8 +221,8 @@
 ; Item fairies never check for magic meter
 ; Replaces:
 ;   lbu     t2, 0xA60A (t2)
-.org 0xC8931C ; In memory: 0x801E345C
-    li      t2, 1
+;.org 0xC8931C ; In memory: 0x801E345C
+;    li      t2, 1
 ;
 ;==================================================================================================
 ; Menu hacks

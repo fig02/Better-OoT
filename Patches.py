@@ -453,6 +453,7 @@ def patch_rom(world, rom):
     rom.write_int32s(0x025313D0, [0x00000056, 0x00000001]) # Music Change, Count
     rom.write_int16s(None, [0x003B, 0x0021, 0x0022, 0x0000]) #action, start, end, ????
 
+    
     # Speed Magic Meter Great Fairy
     rom.write_bytes(0x2CF7136, [0x00, 0x70])
     rom.write_bytes(0x2CF7144, [0x00, 0x56])
@@ -467,6 +468,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0x2CF8344, [0x00, 0x56])
     rom.write_bytes(0x2CF834C, [0x00, 0xDD, 0x00, 0x57, 0x00, 0x59])
     rom.write_bytes(0x2CF83AA, [0x00, 0x56, 0x00, 0x57])
+    
 
     # Speed Double Magic Meter Great Fairy
     rom.write_bytes(0x2CF83E6, [0x00, 0x70])

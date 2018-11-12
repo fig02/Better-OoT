@@ -1,0 +1,100 @@
+fairy fountains
+
+great fairy id 0b
+zl trigger     012e
+
+great fairy overlay table entry 800E8690
+
+rom  C89210
+vram 808EBA50
+ram  801E3350 (801E6090 end)
+
+function rando hooks into: ovl_Bg_Dy_Yoseizo_Func_6:	/* 0x808EBF6C */
+
+===================================================================
+functions
+===================================================================
+
+ovl_Bg_Dy_Yoseizo_Init:	/* 0x808EBA50 */
+runs on actor init
+
+ovl_Bg_Dy_Yoseizo_Exec:	/* 0x808EBB98 */
+runs at the end of the cutscene right before you gain control
+
+ovl_Bg_Dy_Yoseizo_Func_2:	/* 0x808EBBA8 */
+runs after camera pans, right before fairy appears
+runs every frame until exec is called
+
+ovl_Bg_Dy_Yoseizo_Func_4:	/* 0x808EBEA4 */
+runs after camera pans, right before fairy appears
+runs every frame until exec is called
+
+ovl_Bg_Dy_Yoseizo_Func_6:	/* 0x808EBF6C */ 801E386C
+runs after camera pans, right before fairy appears
+runs once 
+
+ovl_Bg_Dy_Yoseizo_Func_8:	/* 0x808EC3AC */
+doesnt run
+
+ovl_Bg_Dy_Yoseizo_Func_9:	/* 0x808EC490 */
+doesnt run
+
+ovl_Bg_Dy_Yoseizo_Func_10:	/* 0x808EC5DC */
+doesnt run
+
+ovl_Bg_Dy_Yoseizo_Func_11:	/* 0x808EC678 */
+doesnt run
+
+ovl_Bg_Dy_Yoseizo_Func_13:	/* 0x808EC780 */
+doesnt run
+
+ovl_Bg_Dy_Yoseizo_Func_18:	/* 0x808EC84C */
+doesnt run
+
+ovl_Bg_Dy_Yoseizo_Func_19:	/* 0x808EC938 */
+doesnt run
+
+ovl_Bg_Dy_Yoseizo_Func_22:	/* 0x808ECC10 */
+doesnt run
+
+ovl_Bg_Dy_Yoseizo_Func_24:	/* 0x808ECCEC */ 801e45ec
+runs right before the fairy goes back down
+runs once
+
+ovl_Bg_Dy_Yoseizo_Func_25:	/* 0x808ECDF0 */
+runs right before the fairy goes back down
+runs every frame until shes sinks all the way down
+
+ovl_Bg_Dy_Yoseizo_Func_27:	/* 0x808ECEE0 */
+runs after the fairy goes back down
+stops when you gain control
+
+ovl_Bg_Dy_Yoseizo_Func_29:	/* 0x808ECF84 */
+runs when zl finishes
+stops when camera pans and fairy is about to pop up
+
+ovl_Bg_Dy_Yoseizo_Func_30:	/* 0x808ED0B8 */
+runs right before the fairy pops up
+stops after text and she beings to give you the item
+
+ovl_Bg_Dy_Yoseizo_Func_32:	/* 0x808ED3E4 */ 801e4ce4
+runs right when shes about to give the item
+stops before shes about to sink down
+
+ovl_Bg_Dy_Yoseizo_Draw:	/* 0x808EDA34 */
+draw function, runs every frame 
+
+ovl_Bg_Dy_Yoseizo_Func_35:	/* 0x808EDC60 */
+runs ~27 times every frame (lol)
+
+ovl_Bg_Dy_Yoseizo_Func_36:	/* 0x808EDCC8 */
+runs right before great fairy pops up
+stops after the last textbox
+
+ovl_Bg_Dy_Yoseizo_Func_3:	/* 0x808EDE50 */
+runs as shes popping up (runs twice every frame)
+stops when shes about half way down from sinking back
+
+ovl_Bg_Dy_Yoseizo_Func_38:	/* 0x808EE254 */
+runs when zl ends
+stops when the cs is over

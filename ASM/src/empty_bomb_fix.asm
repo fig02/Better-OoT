@@ -1,8 +1,8 @@
-;when a bomb instance is unloading, write the correct value to "Held Item" to denote the bomb is no longer in hand
+;when a bomb instance is unloading, write the correct value for "Held Item" to denote the bomb is no longer in hand
 empty_bomb_fix:
-	;displaced
-	lw	a0, 0x001C($sp)
-	
+   ;displaced
+   lw a0, 0x001C($sp)
+   
    addiu    sp, sp, -0x10
    sw       t0, 0x04(sp)
    sw       t1, 0x08(sp)

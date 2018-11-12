@@ -1,0 +1,65 @@
+camera stuff for deku upgrade
+
+801C8570 camera distance (zoom)
+801C8580 camera position (in and out, similar to zoom)
+801C8584 camera rotation (up and down)
+801C858C camera rotation (left and right)
+
+ovl ram start 801EBF60
+
+80B51624 vram
+ovl+24D4
+801EE434 ram
+lui	at, 0x4270		/*at = 42700000*/
+not it
+
+80B5166C
+ovl+251C
+
+lui	at, 0x4270		/*at = 42700000*/
+
+
+camera zoom gets written to multiple times per frame
+@
+80048DBC - writes camera zoom value for next frame
+80091A44 - maintains current camera zoom
+
+
+
+80048DAC - load value from sp+0x98 (8011F0D8) to F16
+80048DBC - store value from F16 to camera zoom address (801C8570)
+
+
+current breakpoints
+80048dac
+80048ce0
+
+-----------------
+important!!!!
+
+801C87EC - start of a camera used specifically for cutscenes
+potentially able to find what is writing here
+
+----------------------------------------------------------
+801EC550
+ovl+0x5F0
+part of resting function
+nopping this jump never initalizes the cs camera
+
+this was found with a write breakpoint on a variable of the cs camera that says which actor it is pointing to
+
+need to see from here where camera instructions are made
+
+------
+
+nopping out the jump at 8006B82C gives the hud in the cs
+
+nopping out the jump at 8006B854 starts the cs camera but doesnt follow the scrub actor
+
+nopping out the jump at 8006B868 has the same effect as the above
+
+---------
+8006B854 jal to 80067E48
+
+
+

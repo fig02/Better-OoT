@@ -21,4 +21,5 @@ SystemID N64
 11A64D	b	h	1	RDRAM	hookshot slot
 11A65A	b	h	1	RDRAM	Adult trade item
 1DAAE6	w	u	1	RDRAM	angle
+11A65E	b	u	1	RDRAM	bomb amount
 

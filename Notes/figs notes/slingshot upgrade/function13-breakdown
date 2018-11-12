@@ -1,0 +1,60 @@
+function 13 - init give upgrade
+
+ovl_En_Dnt_Nomal_Func_13:	/* 0x80B4FD04 */
+
+addiu	$sp, $sp, 0xFFD8		/*$sp = FFFFFFD8*/
+sw	$ra, 0x0024($sp)
+sw	a0, 0x0028($sp)
+sw	a1, 0x002C($sp)
+lui	a0, 0x0600		/*a0 = 06000000*/
+jal	ovl_En_Test_Func_41	//0x8008A194
+addiu	a0, a0, 0x0168		/*a0 = 06000168*/
+mtc1	v0, $f4			/* $f4 = 0.00 */
+lw	v1, 0x0028($sp)
+lui	at, 0xC120		/*at = C1200000*/
+cvt.s.w	$f4, $f0
+mtc1	at, $f18			/* $f18 = -10.00 */
+lui	a1, 0x0600		/*a1 = 06000000*/
+addiu	t9, $zero, 0x0002		/*t9 = 00000002*/
+addiu	a1, a1, 0x0168		/*a1 = 06000168*/
+lui	a2, 0x3F80		/*a2 = 3F800000*/
+trunc.w.s	$f6, $f0
+addiu	a3, $zero, 0x0000		/*a3 = 00000000*/
+addiu	a0, v1, 0x013C		/*a0 = 0000013C*/
+mfc1	t7, $f8
+nop
+sh	t7, 0x025E(v1)
+lh	t8, 0x025E(v1)
+sw	t9, 0x0014($sp)
+swc1	$sp, 0x0018($sp)
+mtc1	t8, $f10			/* $f10 = 0.00 */
+nop
+cvt.s.w	$f10, $f0
+jal	ovl_En_Test_Func_42	//0x8008D17C
+swc1	$sp, 0x0010($sp)
+lw	v1, 0x0028($sp)
+lui	t0, 0x80B5		/*t0 = 80B50000*/
+addiu	t0, t0, 0xFD9C		/*t0 = 80B4FD9C*/
+sw	t0, 0x0204(v1)
+lw	$ra, 0x0024($sp)
+addiu	$sp, $sp, 0x0028		/*$sp = 00000000*/
+jr	$ra
+nop
+
+=======================================================
+801ECB14
+
+5 - add -0x28 to SP, store result in sp : 8011F050 + FFFFFFD8 = 8011F028
+adding a negative value, basically sbutraction
+
+6  - store value in RA to sp+24 : 801EE46C -> 8011F04C
+
+7  - store value in A0 to sp+28 : 801EED90 -> 8011F050
+
+8  - store value in A1 to sp+2c : 801C84A0 -> 8011F054
+
+9  - load 0x0600 to A0 (06000000)
+
+10 - jump and link to 8008A194
+11 - delay slot - Add 0x0168 to A0, store result in A0 : 06000000 + 0x0168 =  06000168
+

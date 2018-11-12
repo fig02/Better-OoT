@@ -1,0 +1,206 @@
+slingshot minigame
+
+when coming from the front of lost woods
+801EED90 + 0x25c = 801EEFEC (2byte) - keeps track of number of 100's 
+
+801EED90 - scrub
+
+actor id 01A3 (var ffff)
+
+entry in overlay table 800EB990
+01A3	En_Dnt_Nomal	00ECA880	00ECD680	80B4F150	80B51F50	00000000	80B51B30	00000000	0000	00	00
+
+rom start  ECA880
+vram start 80B4F150
+ram start  801EBF60
+
+============================================================================
+functions
+============================================================================
+
+ovl_En_Dnt_Nomal_Init:	/* 0x80B4F150 */
+runs once on initialization
+
+ovl_En_Dnt_Nomal_Exec:	/* 0x80B4F278 */
+runs once on deconstruction
+
+ovl_En_Dnt_Nomal_Func_1:	/* 0x80B4F2C4 */
+runs once during(?) initialization
+
+ovl_En_Dnt_Nomal_Func_2:	/* 0x80B4F414 */
+runs once during(?) initialization
+
+ovl_En_Dnt_Nomal_Func_3:	/* 0x80B4F458 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_4:	/* 0x80B4F46C */
+runs once on initialization and again before he goes back home
+
+ovl_En_Dnt_Nomal_Func_5:	/* 0x80B4F514 */
+801EC324
+runs every frame that another function isnt running
+is the "resting" state
+ovl+0x3C4
+
+ovl_En_Dnt_Nomal_Func_6:	/* 0x80B4F7E4 */
+801EC5F4
+runs after 3 completed shots
+stops when camera pans and he starts getting up
+ovl+0x694
+
+ovl_En_Dnt_Nomal_Func_7:	/* 0x80B4F900 */
+801EC710
+runs when he starts getting up
+stops after hes turned and is ready to move
+ovl+0x7b0
+
+ovl_En_Dnt_Nomal_Func_8:	/* 0x80B4F96C */
+801EC77C
+runs when he starts moving
+only breaks for one frame, initializes moving??
+ovl+0x81c
+
+ovl_En_Dnt_Nomal_Func_9:	/* 0x80B4FA10 */
+801EC820
+runs when he starts moving
+stops when hes reached the end of the tree branch
+ovl+0x8C0
+
+ovl_En_Dnt_Nomal_Func_10:	/* 0x80B4FAFC */
+801EC90C
+runs when hes reached the end of the branch
+stops when hes fully turned and ready to talk
+ovl+9AC
+
+ovl_En_Dnt_Nomal_Func_11:	/* 0x80B4FBB0 */
+801EC9C0
+runs once when hes ready to talk, init
+just runs once
+ovl+
+
+ovl_En_Dnt_Nomal_Func_12:	/* 0x80B4FC5C */
+801ECA6C
+runs when he begins to talk
+stops when hes done talking and begins giving item
+ovl+
+
+ovl_En_Dnt_Nomal_Func_13:	/* 0x80B4FD04 */
+801ECB14
+runs when hes about to give the item
+only breaks once, init?
+ovl+
+
+ovl_En_Dnt_Nomal_Func_14:	/* 0x80B4FD9C */
+801ECBAC
+runs when he spits out the seed bag
+stops when its fully out and it starts flying toward you
+ovl+
+
+ovl_En_Dnt_Nomal_Func_15:	/* 0x80B4FF04 */
+801ECD14
+runs when the seed back is flying toward you and he starts going back
+stops when hes reached his home
+ovl+
+
+ovl_En_Dnt_Nomal_Func_16:	/* 0x80B500D4 */
+801ECEE4
+runs when hes reached home and is ready to jump in
+stops when hes jumped in
+ovl+
+
+ovl_En_Dnt_Nomal_Func_17:	/* 0x80B50140 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_18:	/* 0x80B501F8 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_19:	/* 0x80B50224 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_20:	/* 0x80B50330 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_21:	/* 0x80B50564 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_22:	/* 0x80B50658 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_23:	/* 0x80B50730 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_24:	/* 0x80B507D8 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_25:	/* 0x80B509E0 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_26:	/* 0x80B50AF0 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_27:	/* 0x80B50C54 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_28:	/* 0x80B50D30 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_29:	/* 0x80B50EF4 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_30:	/* 0x80B50F28 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_31:	/* 0x80B50FF4 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_32:	/* 0x80B512B8 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_33:	/* 0x80B5135C */
+cant hit function
+
+ovl_En_Dnt_Nomal_Draw:	/* 0x80B51460 */
+draw function, runs evey frame it is loaded
+
+ovl_En_Dnt_Nomal_Func_34:	/* 0x80B51724 */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_35:	/* 0x80B517D4 */
+runs 9 times every frame no matter what
+
+ovl_En_Dnt_Nomal_Func_36:	/* 0x80B5185C */
+cant hit function
+
+ovl_En_Dnt_Nomal_Func_37:	/* 0x80B51A4C */
+runs once every frame no matter what
+
+============================================================================
+variables
+============================================================================
+801EED90 instance start
+801EEDB4 x (forward and back)
+801EEDB8 y (up and down)
+801EEDBC z (left and right on the tree branch)
+
+draw function 801EE270
+
+===========================================================
+801EEF94 - keeps track of currently running function
+===========================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

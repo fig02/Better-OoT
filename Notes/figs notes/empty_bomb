@@ -1,0 +1,89 @@
+empty bomb
+
+801DAB710 (4 byte)
+nothing in hand after bomb 0100FE00
+bomb in hand               01120200
+
+801DAB714 (1 byte)
+nothing in hand after bomb 00
+bomb in hand               12
+
+
+empty bomb happens cause it never returns to 00FE0000
+need to hook into bomb deconstructor(?) and write that value
+
+en_bom
+id 0010
+
+overlay table entry 800E8730:
+0010	En_Bom	00C0E2D0	00C0F1A0	80870A00	808718D0	00000000	80871710	00000000	0002	00	00
+
+rom  C0E2D0
+vram 80870A00
+ram  8023620C
+
+bomb instance 801FC460
+
+==========================================
+bomb funcitions
+==========================================
+
+ovl_En_Bom_Init:	/* 0x80870A0C */
+ovl+0
+8023620C
+runs once upon intitialization
+
+ovl_En_Bom_Exec:	/* 0x80870B24 */
+ovl+0x118
+80236324
+runs toward the end of the bomb explosion
+
+===========================================
+
+ovl_En_Bom_Exec:	/* 0x80870B24 */
+
+	addiu	$sp, $sp, 0xFFE8		/*$sp = FFFFFFE8*/
+	sw	$ra, 0x0014($sp)
+	sw	a0, 0x0018($sp)
+	sw	a1, 0x001C($sp)
+	-------------------------JAL to custom asm here: vram 80870B34 | ovl+134
+													 rom  C0E404
+	lw	a1, 0x0018($sp)  
+	lw	a0, 0x001C($sp)
+	jal	ovl_En_Poh_Func_4	//0x8004A550
+	addiu	a1, a1, 0x0188		/*a1 = 00000188*/
+	lw	a1, 0x0018($sp)
+	lw	a0, 0x001C($sp)
+	jal	ovl_En_Test_Func_14	//0x8004ABCC
+	addiu	a1, a1, 0x013C		/*a1 = 0000013C*/
+	lw	$ra, 0x0014($sp)
+	addiu	$sp, $sp, 0x0018		/*$sp = 00000000*/
+	jr	$ra
+	nop
+
+
+	.org 0xC0E404
+		JAL empty_bomb_fix
+		lw	a1, 0x0018($sp)
+
+
+
+	empty_bomb_fix:
+		;displaced
+		lw	a0, 0x001C($sp)
+		addiu    sp, sp, -0x10    ;move sp back 16 bytes
+		sw       t0, 0x04(sp)     ;save values at t0 and t1 to retrieve later
+    	sw       t1, 0x08(sp)
+    	li		 t0, 0x0100FE00   ;load word for value after bomb is gone
+    	lui		 t1, 0x801E		  ;one byte more cause the following offset is signed
+    	sw		 t0, 0xAB70(t1)   ;save word to 801DAB70
+    	li       t0, 0x00 		  ;load byte for value after bomb is gone
+    	sb	 	 t0, 0xAB74(t1)   ;store byte to 801DAB74
+    	lw		 t1, 0x08(sp)	  ;load old values back to t0 and t1
+    	lw		 t0, 0x04(sp)
+    	jr		 ra 			  ;jump back
+    	addiu    sp, sp, 0x10     ;increase stack pointer back to where it was
+
+
+
+

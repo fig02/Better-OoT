@@ -22,4 +22,8 @@ SystemID N64
 11A65A	b	h	1	RDRAM	Adult trade item
 1DAAE6	w	u	1	RDRAM	angle
 11A65E	b	u	1	RDRAM	bomb amount
+0	S	_	1		
+1DAB70	d	h	1	RDRAM	item in hand (word)
+1DAB74	b	h	1	RDRAM	item in hand (byte)
+1DAB4C	d	h	1	RDRAM	
 

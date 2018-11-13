@@ -1,13 +1,20 @@
 empty bomb
 
-801DAB710 (4 byte)
+801DAB70 (4 byte)
 nothing in hand after bomb 0100FE00
 bomb in hand               01120200
 
-801DAB714 (1 byte)
+801DAB74 (1 byte)
 nothing in hand after bomb 00
 bomb in hand               12
 
+801DAB4C - pointer to the address of the actor instance in hand 
+the above address will 0 out before the hook is reached
+
+801CA0EC - same value as the pointer above but does not 0 if item leaves hand or too early before deconstruction. use this instead
+
+
+------------------------------------------------------
 
 empty bomb happens cause it never returns to 00FE0000
 need to hook into bomb deconstructor(?) and write that value
@@ -44,6 +51,7 @@ ovl_En_Bom_Exec:	/* 0x80870B24 */
 
 	addiu	$sp, $sp, 0xFFE8		/*$sp = FFFFFFE8*/
 	sw	$ra, 0x0014($sp)
+	-------------------------JAL to custom asm here: 
 	sw	a0, 0x0018($sp)
 	sw	a1, 0x001C($sp)
 	-------------------------JAL to custom asm here: vram 80870B34 | ovl+134
@@ -86,4 +94,35 @@ ovl_En_Bom_Exec:	/* 0x80870B24 */
 
 
 
+need to check for:
 
+if the item in hand is a bomb (02)
+	if the instance in links hand is equal to the instance being unloaded (a0)
+
+
+--------------------
+
+ovl_En_Bom_Exec:	/* 0x80870B24 */
+
+	addiu	$sp, $sp, 0xFFE8		/*$sp = FFFFFFE8*/
+	sw	$ra, 0x0014($sp) 
+	sw	a0, 0x0018($sp)
+	sw	a1, 0x001C($sp)
+	lw	a1, 0x0018($sp)  
+	lw	a0, 0x001C($sp)
+	jal	ovl_En_Poh_Func_4	//0x8004A550
+	addiu	a1, a1, 0x0188		/*a1 = 00000188*/
+	lw	a1, 0x0018($sp)
+	lw	a0, 0x001C($sp)
+	jal	ovl_En_Test_Func_14	//0x8004ABCC
+	addiu	a1, a1, 0x013C		/*a1 = 0000013C*/
+	lw	$ra, 0x0014($sp)
+	addiu	$sp, $sp, 0x0018		/*$sp = 00000000*/
+	jr	$ra
+	nop
+
+empty_bomb_fix:
+   ;displaced
+   lw a0, 0x001C($sp)
+
+   

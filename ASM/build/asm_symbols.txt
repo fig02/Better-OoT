@@ -998,11 +998,12 @@
 8040372C save_scarecrow_song
 80403770 @@copy_song
 80403778 empty_bomb_fix
-804037B0 write_initial_save
-804037BC @@save_data_loop
-804037EC @@overwrite_type
-804037F4 @@return
-804037FC .byt:0854
+804037B4 @@return
+804037BC write_initial_save
+804037C8 @@save_data_loop
+804037F8 @@overwrite_type
+80403800 @@return
+80403808 .byt:0848
 80405000 disp_buf_init,00000018
 80405018 sprite_bytes_per_tile,00000028
 80405040 sprite_bytes,00000030

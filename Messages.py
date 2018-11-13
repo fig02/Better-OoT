@@ -407,65 +407,28 @@ class Message():
         slows_text = [0x08, 0x09, 0x14]
 
         not_quick_text_ids = [
+
             0x71B0, #trade timer
-
             0x4022, #ruto warp text
-
-            0x2064, #kokiri/field owl
-            0x2065, 
-            0x2066, 
-
+            0x2064, 0x2065, 0x2066, #kokiri/field owl  
             0x206C, #kak/field owl
-
-            0x2068, #hyrule castle owl
-            0x2069, 
-
-            0x10C0, #lost woods owl before saria
-            0x10C1, 
-            0x10C2, 
-            0x10C3, 
-
-            0x10C4, #lost woods owl after saria
-            0x10C5, 
-            0x10C6, 
-            0x10C7, 
-
-            0x00E2, #Saria beginning yes/no box
-            0x0165, #Saria 3 stones text
-            0x00E3, #Saria ending yes/no box
-
+            0x2068, 0x2069,  #hyrule castle owl
+            0x10C0, 0x10C1, 0x10C2, 0x10C3, #lost woods owl before saria
+            0x10C4, 0x10C5, 0x10C6, 0x10C7, #lost woods owl after saria
+            0x00E2, 0x0165, 0x00E3, #sarias song
             0x003B, #fw textbox
-
             0x0141, #first navi text
-
-            0x407B, #fishing text
-            0x407C,
-            0x407F,
-            0x4080,
-            0x4083,
-            0x4084,
-            0x4086,
-            0x4092,
-
+            0x407B, 0x407C, 0x407F, 0x4080, 0x4083, 0x4084, 0x4086, 0x4092, #fishing text
             0x007A, #bugs text
             0x0047, #fish text
             0x0046, #fairy text
-
-            0x5041, #dampe text
-
-            0x002E, #child/adult archery
-            0x71AF,
-
+            0x5041, #dampe race text
+            0x002E, 0x71AF, #child/adult archery
             0x001A, #play again text
-            0x00FA, #bowlin piece of heart
-            0x00FB,
-            0x00FC,
-            0x00FD,
-
-            0x10DC, #deku stick/nut upgrades
-            0x10DD
-
-
+            0x00FA, 0x00FB, 0x00FC, 0x00FD, #bowling piece of heart
+            0x10DC, 0x10DD, #deku stick/nut upgrades
+            0x40AB, 0x40A9 #frogs
+            
         ]
 
     

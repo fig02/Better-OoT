@@ -26,6 +26,7 @@ Changes from Randomizer 3.0
 - Kokiri sword equipped to childs B when returning from Adult
 - Owls added back 
 - Navi triggers added back
+- Vanilla time travel mechanics restored
 - Fire arrows not in a chest anymore
 - Silver gauntlests cutscene shortened to avoid crash when wrong warping to it
 - BGS checks for 1 day
@@ -69,8 +70,6 @@ CREATE TOGGLE for medallion cs
 deku upgrade speedup?
 
 ocarina minigame
-letter vs spooky mask
-back in time equips issue that zfg had
 re-implement no cs at fairy fountains
 speedup mirrors in spirit, delay between pushes for the thing in forest basement, maybe truth spinner too?
 

@@ -1,18 +1,6 @@
-; Prevent Kokiri Sword from being added to inventory on game load
-; Replaces:
-;   sh      t9, 0x009C (v0)
-;.org 0xBAED6C ; In memory: 0x803B2B6C
-;    nop
-
 ;==================================================================================================
 ; Time Travel
 ;==================================================================================================
-
-; Before time travel
-; Replaces:
-;   lw      t6, 0x04 (s0)
-.org 0xCB6860 ; Bg_Toki_Swd in func_8091902C
-    jal     before_time_travel
 
 ; After time travel
 ; Replaces:

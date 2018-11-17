@@ -1,0 +1,37 @@
+ovl in savestate
+80201290
+
+80A32440 vram
+---
+80201564 lwc1 f4 s0+24
+no good
+
+802023D8 breaks at push,
+could be the function i need
+
+80203096 mirror roatation
+possible a write break can show 
+how the amount to increase is
+determined
+
+the write to rotation is at
+802024e8. figure out how its 
+incremented
+
+80202FF6 - some constant 
+used during position 
+calculation
+
+80203140 - other part of pos
+calculation
+
+
+
+
+
+
+
+
+
+
+

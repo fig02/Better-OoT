@@ -1,0 +1,74 @@
+talon
+id 84
+
+table entry 800E95B0
+0084	En_Ta	00CBEFA0	00CC2960	80921830	809251F0	00000000	80924BB0	00000000	0000	00	00
+
+ram
+801E9280
+
+801ECEBC currently running function
+
+=================================================================
+801C84A0+0x01D6C = 801CA20C //cutscene state (not useful here)
+
+801C84A0+4AC     = 801C894C //event flag 
+
+801C84A0+0x103DC = 801D887C //msg state 1
+801C84A0+0x104BC = 801E8D38 //msg state 2
+801C84A0+0x104BF = 801D895F //msg state 3
+=================================================================
+
+
+break free of cs
+
+xxxxxxxhook@801EA258
+
+--trying new hook to see if it avoids hud issues
+hook@801EA300
+ovl+1080
+----------------
+
+.org 0xCBFF78
+    jal    talon_break_free
+    addiu  a1, s0, 0x0024
+
+talon_break_free:
+
+    ;displaced code
+    lui    a2, 0x4248
+
+    li    t2, 0xFFFFFFFF
+    lui    t0, 0x801D
+    lh     t4, 0x894C(t0) ;load current value @z64_game.event_flag
+    beq    t4, t2, @@msg  ;if in non-cs state, jump to next check
+    nop
+    sh     r0, 0x894C(t0) ;store 0 to z64_game.event_flag
+
+@@msg:
+    lui    t0, 0x801E
+    lb     t2, 0x887C(t0)
+    beqz   t2, @@return   ;return if msg_state_1 is 0
+    nop
+    li     t1, 0x36
+    sb     t1, 0x887C(t0) ;store 0x36 to msg_state_1
+    li     t1, 0x02
+    sb     t1, 0x895F(t0) ;store 0x02 to msg_state_3
+    lui    t0, 0x801F
+    sb     r0, 0x8D38(t0) ;store 0x00 to msg_state_2
+
+@@return:
+    jr     ra
+    nop
+
+==============
+
+z64_hud_state_addr                      0x800EF1A8
+
+function that removes hud 801EA1C8
+
+801EA228 - talon running
+801EA2A0 - timer write for this function
+
+a228 a1c8 a140 function order when hud goes away
+

@@ -1,0 +1,25 @@
+truth spinner
+
+id f7
+
+table entry 800EA410
+
+rom DB9D70
+vram 80A30240
+ram 801E9740
+
+801EA5B0 variable that holds correct facing angle for correct skull
+----
+write angle for correct skull @ ovl+114
+
+hook @ ovl+10C
+
+.org 0xDB9E7C
+	jal    truth_spinner_fix
+	lui    at, 0x801F
+
+truth_spinner_fix:
+	lui    t5, 0x5555     ;facing angle for first try
+	sra    t5, t5, 0x10   ;shift right 2 bytes
+	jr     ra
+	nop

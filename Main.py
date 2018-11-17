@@ -99,6 +99,8 @@ def main(settings, window=dummy_window()):
         logger.info('Generating Item Pool.')
         generate_itempool(world)
 
+    #! ALL ITEM PLACEMENT, HINTS, AND SPOILER HAPPENS HERE. FIND WHAT FILES DEPEND DIRECTLY ON THESE FUNCTION CALLS AND ERASE THEM
+    """
     window.update_status('Placing items in Vanilla locations')
     logger.info('Fill the world.')
     distribute_items_restrictive(window, worlds)
@@ -114,6 +116,7 @@ def main(settings, window=dummy_window()):
         CollectionState.update_required_items(worlds)
         buildGossipHints(worlds[settings.player_num - 1])
         window.update_progress(55)
+    """
 
     logger.info('Patching ROM.')
 

@@ -691,6 +691,12 @@ def patch_rom(world, rom):
     rom.write_bytes(0xC77CA8, [0x40, 0x80, 0x00, 0x00]) #fire block speed
     rom.write_bytes(0xC770C2, [0x00, 0x01])             #fire block delay
 
+    #Speed Deku Seed Scrub
+    rom.write_bytes(0xECA900, [0x24, 0x03, 0xC0, 0x00]) #scrub angle
+    rom.write_bytes(0xECAE90, [0x27, 0x18, 0xFD, 0x04]) #skip straight to giving item
+    rom.write_bytes(0xECB618, [0x25, 0x6B, 0x00, 0xD4]) #skip straight to digging back in
+    rom.write_bytes(0xECAE70, [0x00, 0x00, 0x00, 0x00]) #never initialize cs camera
+    rom.write_bytes(0xE5972C, [0x24, 0x08, 0x00, 0x01]) #timer set to 1 frame for giving item
 
     #! ADD TOGGLE
     """
@@ -987,7 +993,11 @@ def patch_rom(world, rom):
     #write_bytes_to_save(0x0C, [0x8C,0x94]) #no hyrule field with owls
     #write_bytes_to_save(0x0C, [0x8F,0x8C]) #no hyrule field or castle
 
-    write_bits_to_save(0x003F, 0x02) # Some Biggoron's Sword flag?
+    #write_bits_to_save(0x003F, 0x02) # Start ocarina minigame on last round
+
+    #Give hp after first ocarina minigame round
+    rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02]) 
+    rom.write_byte(0xDF2647, 0x3E)
 
     #! CONTINUE WORKING HERE
     #Speed warp out cutscene for warp songs
@@ -1581,7 +1591,7 @@ def patch_rom(world, rom):
         # Set hints for boss reward shuffle
         rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
         rom.write_bytes(0xE2ADB6, [0x70, 0x57])
-        buildBossRewardHints(world, messages)
+        #buildBossRewardHints(world, messages)
 
     """
     # update happy mask shop to use new SOLD OUT text id

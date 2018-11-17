@@ -1,0 +1,29 @@
+spinnable mirrors
+
+id 00FC
+
+table entry 800EA4B0
+00FC	Bg_Jya_Cobra	00DBBF60	00DBDC80	80A32440	80A34160	00000000	80A33CE8	00000000	0000	00	00
+
+instance in savestate
+80202FE0
+
+ovl in savestate
+80201290
+
+delay
+80201110
+ovl+1010
+default value 000f
+new value 0001
+
+function 4 @ 80A326D4vram breaks when starting push
+
+start 80202FE0
+x 
+y
+z
+angle 
+colx
+coly
+colz

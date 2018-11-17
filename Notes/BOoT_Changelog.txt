@@ -36,6 +36,8 @@ Changes from Randomizer 3.0
 - Fire temple blocks
 - Empty bomb patched
 - Frog text not instant
+- Ocarina minigame gives hp after first round
+- Slingshot upgrade cs speedup
 
 - Chu baby dodongo fix removed
 - Static upgrades removed
@@ -67,10 +69,9 @@ CREATE TOGGLE for area intro cs
 CREATE TOGGLE for song cutscenes
 CREATE TOGGLE for medallion cs
 
-deku upgrade speedup?
 
-ocarina minigame
 re-implement no cs at fairy fountains
 speedup mirrors in spirit, delay between pushes for the thing in forest basement, maybe truth spinner too?
+
 
 

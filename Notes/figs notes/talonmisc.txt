@@ -1,0 +1,8 @@
+801EA228 runs when he starts running
+801EC218 calls the above 
+
+801ECEBC currently running function
+
+801EA2C8 - runs for a couple
+frames before 801EA228
+maybe a better hook point?

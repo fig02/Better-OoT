@@ -1,0 +1,88 @@
+Seed bag item
+
+id: 0168
+
+ovl entry 800EB230
+
+0168	En_Ex_Item	00E59270	00E5A3E0	80AD9430	80ADA5A0	00000000	80ADA260	00000000	0000	00	00
+
+rom  E59270
+vram 80AD9430
+ram  801F0250
+
+instance 801E7B90
+
+==========================================================
+functions
+==========================================================
+
+ovl_En_Ex_Item_Exec:	/* 0x80AD9430 */
+deconstructor. runs right when you close the text box
+
+ovl_En_Ex_Item_Init:	/* 0x80AD9440 */
+initialize function, runs when spawned (when he spits out the seed bag)
+runs once
+
+ovl_En_Ex_Item_Func_1:	/* 0x80AD959C */
+runs right after initialization
+runs once
+
+ovl_En_Ex_Item_Func_2:	/* 0x80AD9918 */
+not reached. prob not relevant for seedbag
+
+ovl_En_Ex_Item_Func_3:	/* 0x80AD9B04 */
+not reached. prob not relevant for seedbag
+
+ovl_En_Ex_Item_Func_4:	/* 0x80AD9B2C */
+not reached. prob not relevant for seedbag
+
+ovl_En_Ex_Item_Func_5:	/* 0x80AD9B64 */
+not reached. prob not relevant for seedbag
+
+ovl_En_Ex_Item_Func_6:	/* 0x80AD9BCC */
+not reached. prob not relevant for seedbag
+
+ovl_En_Ex_Item_Func_7:	/* 0x80AD9BE4 */
+runs when the scrub spits out the seed bag. right after(?) init
+runs every frame the seedbag flies towrd link
+801F0A04
+
+ovl_En_Ex_Item_Func_8:	/* 0x80AD9E38 */
+runs right before link gets the item. get item function?
+runs for 2 frames
+801F0C58
+
+ovl_En_Ex_Item_Func_9:	/* 0x80AD9EC4 */
+runs while link holds item above head. get item function?
+runs until textbox is closed
+801F0CE4
+
+ovl_En_Ex_Item_Draw:	/* 0x80AD9F24 */
+draw function, runs every frame
+
+ovl_En_Ex_Item_Other:	/* 0x80AD9F78 */
+runs every frame the seedbag flies toward link
+
+ovl_En_Ex_Item_Func_10:	/* 0x80ADA028 */
+runs when the scrub spits the seed bag out
+runs every frame it flies toward link, but in an irregular pattern
+
+ovl_En_Ex_Item_Func_11:	/* 0x80ADA08C */
+doesnt run
+
+ovl_En_Ex_Item_Func_14:	/* 0x80ADA0C0 */
+doesnt run
+
+ovl_En_Ex_Item_Func_13:	/* 0x80ADA108 */
+doesnt run
+
+ovl_En_Ex_Item_Func_12:	/* 0x80ADA1F4 */
+
+=============================================================================
+
+801F070C
+ovl+4BC
+sets the timer for how long to wait before starting the get item to function
+setting this to 1 will skip the flying seed bag part
+
+still wondering if i need to disable cutscene camera

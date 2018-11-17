@@ -50,6 +50,7 @@ DebugOutput:
 .include "scarecrow.asm"
 .include "empty_bomb_fix.asm"
 .include "initial_save.asm"
+.include "truth_spinner_fix.asm"
 .endarea
 
 .headersize (0x80405000 - 0x034B3000)

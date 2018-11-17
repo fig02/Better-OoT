@@ -1,5 +1,7 @@
 instructions to change
 
+rom start ECA880
+
 ===========================================================
 801EEF94 - keeps track of currently running function
 ===========================================================
@@ -9,8 +11,10 @@ instance+0xB6
 801EEE46
 
 gets set here
-801EBFEC (in init function)
-ovl+8c
+801EBFE0 (in init function)
+ovl+80
+ECA900 = 0x2403c000
+
 should become:
 ADDIU	V1, R0, 0xC000
 
@@ -23,6 +27,7 @@ change what function is ran when target shot 3 times
 
 801EC570
 ovl+610
+ECAE90 = 0x2718fd04
 
 ADDIU T8, T8, 0xC5F4
 becomes
@@ -32,6 +37,7 @@ ADDIU T8, T8, 0xCB14
 
 going from giving item to end function
 801ECCF8
+ECB618 = 0x256b00D4
 
 ADDIU T3, T3, 0xCD14
 becomes
@@ -39,15 +45,16 @@ ADDIU T3, T3, 0xCEE4
 
 ovl+d98
 
-----
-REMOVING THIS JUST MAKES HIM BOUNCE FOREVER
+---
 
-instruction to go to c27c (not sure if need to remove)
-801ECF1C
+camera
 
-ADDIU T7, T7, 0xC27C
-becomes 
-ADDIU T7, T7, 0xC324
+801EC550
+ovl+0x5F0
+ECAE70 = 00000000
+
+part of resting function
+nopping this jump never initalizes the cs camera
 
 ----------------------------------------------
 order of events
@@ -84,3 +91,14 @@ this says that the instructions for the camera to zoom in on the scrub home is i
 
 ------------
 
+----
+REMOVING THIS JUST MAKES HIM BOUNCE FOREVER
+
+instruction to go to c27c (not sure if need to remove)
+801ECF1C
+
+ADDIU T7, T7, 0xC27C
+becomes 
+ADDIU T7, T7, 0xC324
+
+---

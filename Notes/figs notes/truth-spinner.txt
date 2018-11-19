@@ -9,6 +9,9 @@ vram 80A30240
 ram 801E9740
 
 801EA5B0 variable that holds correct facing angle for correct skull
+
+801EA800 spinning thing instance
+
 ----
 write angle for correct skull @ ovl+114
 

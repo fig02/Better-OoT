@@ -9,6 +9,8 @@ rom  C89210
 vram 808EBA50
 ram  801E3350 (801E6090 end)
 
+instance 801E60D0
+
 function rando hooks into: ovl_Bg_Dy_Yoseizo_Func_6:	/* 0x808EBF6C */
 
 ===================================================================
@@ -98,3 +100,78 @@ stops when shes about half way down from sinking back
 ovl_Bg_Dy_Yoseizo_Func_38:	/* 0x808EE254 */
 runs when zl ends
 stops when the cs is over
+
+==========================================================================
+stopping the backwalkinterrupt
+=========================================================================
+
+ovl_Bg_Dy_Yoseizo_Func_27:	/* 0x808ECEE0 */
+runs after the fairy goes back down
+stops when you gain control
+
+the above function is what runs while you still have control.
+find its timer and stop it early
+
+timer starts at 0x1D
+
+few possible locations in memory:
+
+801C86CF
+801E63A9
+801E9899
+801E98DD
+
+801E63A9 setting this to 0 when function starts prevents camera issue
+
+do it during the ending function @ 801E47E0 (ovl+1490)
+
+hook@function+0x0C
+
+
+.org 0xC8A6AC ;ovl+1490
+	jal    gf_cam_fix
+	or     a3, a1, r0
+
+gf_cam_fix:
+	
+	lw     t6, 0x0018(sp) ;displaced
+	sb     r0, 0x02D9(s0) ;write 0 to function timer @instance+2D9
+	jr     ra
+	nop
+
+	
+
+magic good
+fw    not good
+double magic good
+
+
+new approach:
+branch in the ending animation function to the end and rotate the fairy out of view
+
+function starts 801E46F0 (ovl+13A0)
+replace code @function+0x14:
+
+b 0x801e47c4       ;branch to end
+sw r0, 0x0028(s0)  ;keep y position still
+
+replace code @function+0xD4
+sb t4, 0x00B4(s0)  ;write 70 to rotation to get fairy out of view
+
+function start c8a5b0
+
+===========================
+
+0xC8A5C4 = 10000031 ;branch - in patches.py
+
+rom.write_bytes(0xC8A5C4, [0x10, 0x00, 0x00, 0x31])
+
+.org 0xC8A5C4
+	sw r0, 0x0028(s0)
+
+.org 0xC8A684
+	sb t4, 0x00B4(s0)
+
+
+
+

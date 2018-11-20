@@ -20,6 +20,9 @@ $RECYCLE.BIN/
 # ROMs
 *.z64
 
+#scripts
+*.bat
+
 # =========================
 # Operating System Files
 # =========================

@@ -19,11 +19,10 @@ new value 0001
 
 function 4 @ 80A326D4vram breaks when starting push
 
-start 80202FE0
-x 
-y
-z
-angle 
-colx
-coly
-colz
+speed-related instruction
+
+function @ovl+fd8
+instruction @function+0x38
+
+DBCF70
+2B01000F becomes 2B010000

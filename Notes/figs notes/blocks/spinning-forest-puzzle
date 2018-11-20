@@ -1,0 +1,70 @@
+spinning forest puzzle
+
+id 88
+
+800E9630
+
+0088	Bg_Mori_Kaitenkabe	00CC5BB0	00CC6210	80928440	80928AA0	00000000	809289E0	00000000	0000	00	00
+
+rom      00CC5BB0
+vram     80928440
+ram      801F1860
+instance 801F1EF0
+
+================
+functions
+================
+
+ovl_Bg_Mori_Kaitenkabe_Func_0:	/* 0x80928440 */
+runs once when pushed
+
+ovl_Bg_Mori_Kaitenkabe_Init:	/* 0x809284B4 */
+not reached
+
+ovl_Bg_Mori_Kaitenkabe_Exec:	/* 0x80928568 */
+not reached
+
+ovl_Bg_Mori_Kaitenkabe_Func_1:	/* 0x8092859C */
+not reached
+
+ovl_Bg_Mori_Kaitenkabe_Func_2:	/* 0x809285F4 */
+runs once toward the end of a push
+
+ovl_Bg_Mori_Kaitenkabe_Func_3:	/* 0x8092860C */
+runs when puzzle is idle
+
+ovl_Bg_Mori_Kaitenkabe_Func_4:	/* 0x8092876C */
+runs once right before a push
+
+ovl_Bg_Mori_Kaitenkabe_Func_5:	/* 0x8092878C */
+runs every frame of a push
+
+ovl_Bg_Mori_Kaitenkabe_Draw:	/* 0x809288F8 */
+runs ever frame, draw function
+
+ovl_Bg_Mori_Kaitenkabe_Func_6:	/* 0x8092891C */
+runs every frame (main?)
+
+========================
+801F2040
+instance+0x0B
+timer that counts before pushing
+starts at 0 then pushes when it has reached 0x1D
+
+function 1:
+stores 0 to timer variable
+loads from the variable (is 0 on first run)
+adds 1 to timer(in t6) and stores in t7
+check if timer is below 1D, if so set AT to true
+if AT is not 0, run function (probably push reltaed function)
+
+to change required delay time just change slti instruction
+
+function @ ovl+1cc
+instruction at function + 0x40
+
+instruction @0xCC5DBC rom
+
+29E1001D becomes 29E10001
+
+

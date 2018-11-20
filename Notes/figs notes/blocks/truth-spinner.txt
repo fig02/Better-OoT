@@ -26,3 +26,23 @@ truth_spinner_fix:
 	sra    t5, t5, 0x10   ;shift right 2 bytes
 	jr     ra
 	nop
+-----
+
+ovl+4C0
+instruction for speed
+old value 0006 new value 0019
+801E9C00
+
+DBA230
+28410006 becomes 28410019
+
+-----
+
+function 8 - 16 instructions
+80A30874
+ovl+634
+
+DBA3A4
+24180005 becomes 24180000
+
+

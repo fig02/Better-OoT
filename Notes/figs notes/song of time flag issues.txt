@@ -1,0 +1,24 @@
+song of time flag issues
+
+8011A5D0 save context
+
++0x0ED4 event chk inf
+
++0x04 row 4
+
+
+when entering cs
+event_chk_inf[0x80]set 
+event_chk_inf[0x82]set
+
+when getting ocarina
+event_chk_inf[0x43]set
+switch[0x03] set
+temp_switch[0x18]set
+
+when entering cs
+temp_switch[0x18]unset
+
+after cs
+event_chk_inf[0xa9] set
+switch[0x03] set

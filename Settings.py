@@ -6,7 +6,6 @@ import random
 import hashlib
 
 from Patches import get_tunic_color_options, get_navi_color_options
-from version import __version__
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
@@ -118,7 +117,7 @@ class Settings():
 
     def get_numeric_seed(self):
         # salt seed with the settings, and hash to get a numeric seed
-        full_string = self.settings_string + __version__ + self.seed
+        full_string = self.settings_string + self.seed
         return int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16)
 
     def sanatize_seed(self):
@@ -185,10 +184,7 @@ setting_infos = [
                 ''',
         'action': 'store_true'
     }),
-    
-    Setting_Info('checked_version', str, 0, False, {
-            'default': '',
-            'help': 'Supress version warnings if checked_version is less than __version__.'}),
+
     Setting_Info('rom', str, 0, False, {
             'default': 'ZOOTDEC.z64',
             'help': 'Path to an OoT 1.0 rom to use as a base.'}),

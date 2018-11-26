@@ -2,7 +2,6 @@ import copy
 from enum import Enum, unique
 import logging
 from collections import OrderedDict, Counter, defaultdict
-from version import __version__ as OoTRVersion
 import random
 
 
@@ -876,7 +875,6 @@ class Spoiler(object):
             self.locations = {'other locations': OrderedDict([(str(location), "%s [Player %d]" % (str(location.item), location.item.world.id + 1) if location.item is not None else 'Nothing') for location in spoiler_locations])}
         else:
             self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}            
-        self.version = OoTRVersion
         self.settings = self.world.settings
 
     def to_file(self, filename):

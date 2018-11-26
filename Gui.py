@@ -13,10 +13,9 @@ from urllib.request import urlopen
 
 from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog
 from Main import main
-from Utils import is_bundled, local_path, default_output_path, open_file, check_version
+from Utils import is_bundled, local_path, default_output_path, open_file
 from Patches import get_tunic_color_options, get_navi_color_options
 from Settings import Settings, setting_infos
-from version import __version__ as ESVersion
 import webbrowser
 
 def settings_to_guivars(settings, guivars):
@@ -489,17 +488,6 @@ def guiMain(settings=None):
 
     show_settings()
 
-    def gui_check_version():
-        task = BackgroundTask(mainWindow, check_version, guivars['checked_version'].get())
-        while task.running:
-            mainWindow.update()
-
-        if task.status:
-            dialog = Dialog(mainWindow, title="Version Error", question=task.status, oktext='Don\'t show again', canceltext='OK')
-            if dialog.result:
-                guivars['checked_version'].set(ESVersion)
-
-    mainWindow.after(1000, gui_check_version)
     mainWindow.mainloop()
 
     # save settings on close

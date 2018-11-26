@@ -13,7 +13,6 @@ from BaseClasses import World, CollectionState, Item
 from Rom import LocalRom
 from Patches import patch_rom
 from Utils import default_output_path
-from version import __version__
 
 class dummy_window():
     def __init__(self):

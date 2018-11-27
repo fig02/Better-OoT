@@ -83,7 +83,7 @@ def guiMain(settings=None):
     frames = {}
 
     mainWindow = Tk()
-    mainWindow.wm_title("Better OoT (Community Edition)")
+    mainWindow.wm_title("Better OoT v3.0")
     mainWindow.resizable(False, False)
 
     set_icon(mainWindow)
@@ -124,7 +124,7 @@ def guiMain(settings=None):
     frames['tricks']  = LabelFrame(frames['logic_tab'], text='Specific expected tricks', labelanchor=NW)
 
     #Other Tab
-    frames['convenience'] = LabelFrame(frames['other_tab'], text='Flags', labelanchor=NW)
+    frames['convenience'] = LabelFrame(frames['other_tab'], text='Remove Area Intro Cutscenes', labelanchor=NW)
     frames['other']       = LabelFrame(frames['other_tab'], text='Settings',      labelanchor=NW)
 
     #Aesthetics tab
@@ -285,8 +285,62 @@ def guiMain(settings=None):
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
                 widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
+                
+
+                #Hardcode in checkboxes I want shown (messy af but who cares)
+                #to put on left flags tab, change type in settings info to "convenience"
+                #to put on right settings tab, change type in settings info to "other"
+                #the order they will appear is how they are ordered in settings_info
                 if info.name == 'fast_chests':
                     widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'no_owls':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'forest_elevator':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'dungeon_speedup':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_intro':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'song_speedup':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'knuckle_cs':
+                    widgets[info.name].pack(expand=False, anchor=W)
+
+                #area intro cutscenes
+                if info.name == 'skip_deku':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_gc':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_castle':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_domain':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_kak':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_dmt':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_field':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_colossus':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_fountain':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_gy':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_jabu':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_gf':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_gv':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_lh':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_dc':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_dmc':
+                    widgets[info.name].pack(expand=False, anchor=W)
+
+
             if info.gui_params['widget'] == 'SpecialCheckbutton':
                 # determine the initial value of the checkbox
                 default_value = 1 if info.gui_params['default'] == "checked" else 0
@@ -377,7 +431,6 @@ def guiMain(settings=None):
 
             if 'tooltip' in info.gui_params:
                 ToolTips.register(widgets[info.name], info.gui_params['tooltip'])
-
 
     # pack the hierarchy
 

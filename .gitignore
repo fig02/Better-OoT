@@ -8,6 +8,12 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+#pycache 
+__pycache__/
+
+#archive
+ARCHIVE.bin
+
 # Windows Installer files
 *.cab
 *.msi
@@ -19,6 +25,9 @@ $RECYCLE.BIN/
 
 # ROMs
 *.z64
+
+#WADS
+*.wad
 
 #scripts
 *.bat
@@ -52,5 +61,4 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-#pycache 
-__pycache__/
+

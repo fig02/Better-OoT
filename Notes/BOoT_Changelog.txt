@@ -38,6 +38,13 @@ Changes from Randomizer 3.0
 - Frog text not instant
 - Ocarina minigame gives hp after first round
 - Slingshot upgrade cs speedup
+- Intro CS toggleable
+- Medallion CS toggleable
+- Song CS toggleable
+- Rando 1.0 backwalk issue for fairy fountains fixed
+- Truth spinner pulling faster
+- Forest basement puzzle delay shortened
+- Mirror delay shortened 
 
 - Chu baby dodongo fix removed
 - Static upgrades removed
@@ -65,13 +72,11 @@ Changes from Randomizer 3.0
 - Keysanity menu removed
 
 TO DO:
-CREATE TOGGLE for area intro cs
-CREATE TOGGLE for song cutscenes
-CREATE TOGGLE for medallion cs
 
-
-re-implement no cs at fairy fountains
-speedup mirrors in spirit, delay between pushes for the thing in forest basement, maybe truth spinner too?
+fix intro text
+fix rova textbox
+epona spawns in field by deafult
+figure out how to remove the kak contrustion guy
 
 
 

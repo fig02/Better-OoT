@@ -24,7 +24,7 @@ def settings_to_guivars(settings, guivars):
         if name not in guivars:
             continue
         guivar = guivars[name]
-        value = settings.__dict__[name]
+        value = settings.__dict__[name]	
         # checkbox
         if info.type == bool:
             guivar.set( int(value) )
@@ -83,7 +83,7 @@ def guiMain(settings=None):
     frames = {}
 
     mainWindow = Tk()
-    mainWindow.wm_title("Better OoT (Community Edition)")
+    mainWindow.wm_title("Better OoT v3.0")
     mainWindow.resizable(False, False)
 
     set_icon(mainWindow)
@@ -124,7 +124,7 @@ def guiMain(settings=None):
     frames['tricks']  = LabelFrame(frames['logic_tab'], text='Specific expected tricks', labelanchor=NW)
 
     #Other Tab
-    frames['convenience'] = LabelFrame(frames['other_tab'], text='Flags', labelanchor=NW)
+    frames['convenience'] = LabelFrame(frames['other_tab'], text='Remove Area Intro Cutscenes', labelanchor=NW)
     frames['other']       = LabelFrame(frames['other_tab'], text='Settings',      labelanchor=NW)
 
     #Aesthetics tab
@@ -138,7 +138,7 @@ def guiMain(settings=None):
     # shared
     settingsFrame = Frame(mainWindow)
     settings_string_var = StringVar()
-    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=25)
+    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=10)
 
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
@@ -206,7 +206,7 @@ def guiMain(settings=None):
         except Exception as e:
             messagebox.showerror(title="Error", message="Invalid settings string")
 
-    label = Label(settingsFrame, text="                Settings String")
+    label = Label(settingsFrame, text="Settings String")
     importSettingsButton = Button(settingsFrame, text='Import Settings String', command=import_settings)
     label.pack(side=LEFT, anchor=W, padx=5)
     settingsEntry.pack(side=LEFT, anchor=W)
@@ -285,8 +285,62 @@ def guiMain(settings=None):
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
                 widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
+                
+
+                #Hardcode in checkboxes I want shown (messy af but who cares)
+                #to put on left flags tab, change type in settings info to "convenience"
+                #to put on right settings tab, change type in settings info to "other"
+                #the order they will appear is how they are ordered in settings_info
                 if info.name == 'fast_chests':
                     widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'no_owls':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'forest_elevator':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'dungeon_speedup':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_intro':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'song_speedup':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'knuckle_cs':
+                    widgets[info.name].pack(expand=False, anchor=W)
+
+                #area intro cutscenes
+                if info.name == 'skip_deku':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_gc':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_castle':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_domain':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_kak':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_dmt':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_field':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_colossus':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_fountain':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_gy':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_jabu':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_gf':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_gv':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_lh':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_dc':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'skip_dmc':
+                    widgets[info.name].pack(expand=False, anchor=W)
+
+
             if info.gui_params['widget'] == 'SpecialCheckbutton':
                 # determine the initial value of the checkbox
                 default_value = 1 if info.gui_params['default'] == "checked" else 0
@@ -378,7 +432,6 @@ def guiMain(settings=None):
             if 'tooltip' in info.gui_params:
                 ToolTips.register(widgets[info.name], info.gui_params['tooltip'])
 
-
     # pack the hierarchy
 
     frames['logic'].pack( fill=BOTH, expand=True, anchor=N, side=RIGHT, pady=(5,1) )
@@ -442,7 +495,18 @@ def guiMain(settings=None):
 
     # create the option menu
 
-    settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,0))
+    def generateRom():
+        settings = guivars_to_settings(guivars)
+        if settings.count is not None:
+            BackgroundTaskProgress(mainWindow, "Patching ROM", multiple_run, settings)
+        else:
+            BackgroundTaskProgress(mainWindow, "Patching ROM", main, settings)
+
+    
+    generateButton = Button(settingsFrame, text='Generate Patched Rom', command=generateRom)
+    generateButton.pack(side=LEFT, padx=(5, 0))
+	
+    settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,10))
 
     def multiple_run(settings, window):
         orig_seed = settings.seed
@@ -451,24 +515,8 @@ def guiMain(settings=None):
             window.update_title("Patching ROM")
             main(settings, window)
 
-    def generateRom():
-        settings = guivars_to_settings(guivars)
-        if settings.count is not None:
-            BackgroundTaskProgress(mainWindow, "Patching ROM", multiple_run, settings)
-        else:
-            BackgroundTaskProgress(mainWindow, "Patching ROM", main, settings)
 
-    generateSeedFrame = Frame(mainWindow)
-    generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)
-
-    seedLabel = Label(generateSeedFrame, text='Seed (useless)')
-    guivars['seed'] = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
-    seedLabel.pack(side=LEFT, padx=(55, 5))
-    seedEntry.pack(side=LEFT)
-    generateButton.pack(side=LEFT, padx=(5, 0))
-
-    generateSeedFrame.pack(side=BOTTOM, anchor=W, padx=5, pady=10)
+    
 
     guivars['checked_version'] = StringVar()
 

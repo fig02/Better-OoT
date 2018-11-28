@@ -20,10 +20,6 @@ d276,e0
 d277,0
 d279,4b
 d27a,30
-a9e838,8
-a9e839,10
-a9e83a,d
-a9e83b,55
 ac9abc,c
 ac9abd,10
 ac9abe,b

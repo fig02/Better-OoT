@@ -74,8 +74,8 @@ Changes from Randomizer 3.0
 TO DO:
 fix intro text
 fix rova textbox
-epona spawns in field by deafult
 figure out how to remove the kak contrustion guy
+jabu elevator starting position
 
 
 

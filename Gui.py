@@ -24,7 +24,7 @@ def settings_to_guivars(settings, guivars):
         if name not in guivars:
             continue
         guivar = guivars[name]
-        value = settings.__dict__[name]
+        value = settings.__dict__[name]	
         # checkbox
         if info.type == bool:
             guivar.set( int(value) )
@@ -138,7 +138,7 @@ def guiMain(settings=None):
     # shared
     settingsFrame = Frame(mainWindow)
     settings_string_var = StringVar()
-    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=25)
+    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=10)
 
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
@@ -206,7 +206,7 @@ def guiMain(settings=None):
         except Exception as e:
             messagebox.showerror(title="Error", message="Invalid settings string")
 
-    label = Label(settingsFrame, text="                Settings String")
+    label = Label(settingsFrame, text="Settings String")
     importSettingsButton = Button(settingsFrame, text='Import Settings String', command=import_settings)
     label.pack(side=LEFT, anchor=W, padx=5)
     settingsEntry.pack(side=LEFT, anchor=W)
@@ -495,7 +495,18 @@ def guiMain(settings=None):
 
     # create the option menu
 
-    settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,0))
+    def generateRom():
+        settings = guivars_to_settings(guivars)
+        if settings.count is not None:
+            BackgroundTaskProgress(mainWindow, "Patching ROM", multiple_run, settings)
+        else:
+            BackgroundTaskProgress(mainWindow, "Patching ROM", main, settings)
+
+    
+    generateButton = Button(settingsFrame, text='Generate Patched Rom', command=generateRom)
+    generateButton.pack(side=LEFT, padx=(5, 0))
+	
+    settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,10))
 
     def multiple_run(settings, window):
         orig_seed = settings.seed
@@ -504,24 +515,8 @@ def guiMain(settings=None):
             window.update_title("Patching ROM")
             main(settings, window)
 
-    def generateRom():
-        settings = guivars_to_settings(guivars)
-        if settings.count is not None:
-            BackgroundTaskProgress(mainWindow, "Patching ROM", multiple_run, settings)
-        else:
-            BackgroundTaskProgress(mainWindow, "Patching ROM", main, settings)
 
-    generateSeedFrame = Frame(mainWindow)
-    generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)
-
-    seedLabel = Label(generateSeedFrame, text='Seed (useless)')
-    guivars['seed'] = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
-    seedLabel.pack(side=LEFT, padx=(55, 5))
-    seedEntry.pack(side=LEFT)
-    generateButton.pack(side=LEFT, padx=(5, 0))
-
-    generateSeedFrame.pack(side=BOTTOM, anchor=W, padx=5, pady=10)
+    
 
     guivars['checked_version'] = StringVar()
 

@@ -32,6 +32,9 @@ ARCHIVE.bin
 #scripts
 *.bat
 
+#settings
+settings.sav
+
 # =========================
 # Operating System Files
 # =========================

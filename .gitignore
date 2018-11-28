@@ -11,6 +11,9 @@ $RECYCLE.BIN/
 #pycache 
 __pycache__/
 
+#settings
+settings.sav
+
 #archive
 ARCHIVE.bin
 

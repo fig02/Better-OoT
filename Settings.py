@@ -12,7 +12,6 @@ class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
     def _get_help_string(self, action):
         return textwrap.dedent(action.help)
 
-
 # 32 characters
 letters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 index_to_letter = { i: letters[i] for i in range(32) }

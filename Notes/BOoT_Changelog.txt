@@ -72,7 +72,6 @@ Changes from Randomizer 3.0
 - Keysanity menu removed
 
 TO DO:
-
 fix intro text
 fix rova textbox
 epona spawns in field by deafult

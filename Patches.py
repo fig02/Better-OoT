@@ -1061,3 +1061,4 @@ def disable_music(rom):
     blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
     for bgm in bgm_sequence_ids:
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
+

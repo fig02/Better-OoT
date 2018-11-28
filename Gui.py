@@ -543,6 +543,5 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         json.dump(settings.__dict__, outfile)
 
-
 if __name__ == '__main__':
     guiMain()

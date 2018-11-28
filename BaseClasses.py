@@ -20,7 +20,6 @@ class World(object):
         self._location_cache = {}
         self.required_locations = []
         self.shop_prices = {}
-
         # dump settings directly into world's namespace
         # this gives the world an attribute for every setting listed in Settings.py
         self.settings = settings

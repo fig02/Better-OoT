@@ -50,6 +50,7 @@ DebugOutput:
 .include "scarecrow.asm"
 .include "empty_bomb_fix.asm"
 .include "initial_save.asm"
+.include "bgs_fix.asm"
 .include "truth_spinner_fix.asm"
 .endarea
 

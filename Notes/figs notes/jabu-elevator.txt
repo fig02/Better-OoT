@@ -1,0 +1,14 @@
+jabu elevator
+
+id 0xC8
+variable 01 for elevator
+
+instance 801E41B0 in savestate
+y position @ instance+28
+
+C43F4DE7 initial position
+C4800000 good pos for lower
+
+00C8	Bg_Bdan_Objects	00D4BBD0	00D4CEA0	809BBA50	809BCD20	00000000	809BCAF0	00000000	0000	00	00
+
+ovl in ram 801E2EB0

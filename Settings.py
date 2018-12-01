@@ -657,7 +657,7 @@ setting_infos = [
             'text': 'Skip Forest Elevator Cutscene',
             'group': 'other',
             'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'default': 'checked',
             'tooltip':'''\
                       Toggle if the Poe Sisters cutscene is 
                       present in Forest Temple.
@@ -675,7 +675,7 @@ setting_infos = [
             'text': 'Skip Nabooru Defeat Cutscene',
             'group': 'other',
             'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'default': 'checked',
             'tooltip':'''\
                       Toggle if the cutscene plays after 
                       defeating Nabooru Knuckle
@@ -693,7 +693,7 @@ setting_infos = [
             'text': 'Fast Blue Warp Cutscenes',
             'group': 'other',
             'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'default': 'checked',
             'tooltip':'''\
                       Shorten blue warp cutscenes
                       '''
@@ -727,7 +727,7 @@ setting_infos = [
             'text': 'Fast Chest Cutscenes',
             'group': 'other',
             'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'default': 'checked',
             'tooltip':'''\
                       All chest animations are fast
                       '''

@@ -1,4 +1,4 @@
-BGS
+BGS NUMBER OF DAYS
 
 Biggoron actor id 1AE
 ROM start 00ED2040
@@ -16,3 +16,76 @@ SLTI	AT, V0, 0x0003
 
 becomes
 28410001
+
+-----------------------------------------------
+
+BGS CLAIM CHECK 1.0 BUG
+
+start of overlay table 1.2: 800E8B70
+
+goron actor 1AE
+goron table entry 800EC130
+rom start 00ED2650
+rom end   00ED8670
+ram start 801E9E20
+instance 801EFE70
+
+function pointer: instance+180 (t:801EFFF0)
+
+1.2 function order:
+801EDC60 - idle
+801EE210 - after clicking yes when trading sword
+801EE284 - giving perscription
+801EDC60 - back to idle
+801EE38C - putting in eyedrops
+801EE210 - after clicking last textbox
+801EE284 - recieving claim check
+
+---
+
+start of overlay table on 1.0: 800E8530
+goron actor 1AE
+goron table entry 800EBAF0
+rom start ED2040
+ram start 801E9560
+instance  801EF5B0
+
+function pointer: instance+180 (t:801EF730)
+
+1.0 function order:
+801ED3A4 - idle
+801ED954 - after clicking yes when trading sword
+801ED9C4 - giving perscription
+801EDACC - putting in eyedrops
+801ED954 - after clicking last textbox
+801ED9C4 - recieving claim check (doest actually give the item)
+HE DOES NOT RETURN TO IDLE
+
+-----
+
+1.0: Description="Give Item" ShortName="" Source="/z_actor.c" RAMN0="80022BD4" 
+
+1.2: 80023214
+
+the above function gets called for 2 frames on 1.2 but only 1 time on 1.0
+
+1.2:
+first function call: @801EA504 from function starting at 801EA4D4
+
+second function call: @801EE26C from function starting at 
+801EE210
+
+instance+0x118 is a pointer to the actor being interacted with (link)
+on 1.2 this gets 0'd out in the function that runs after "yes" is pressed for recieving perscription. this does not get 0'd out on 1.0
+
+---------
+
+fix:
+
+target function: 
+801ED954 - after clicking yes when trading sword
+ovl+0x43F4
+
+rom address of target instruction: 0xED6454
+
+

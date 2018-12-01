@@ -1,0 +1,13 @@
+1.0
+801DA288 age
+801DA2BA entrance
+8011A638 B button
+8011A65A Adult trade item
+8011A639 c left
+
+1.2
+801DAB48 age
+801DAB7A entrance
+8011ACE8 b button
+8011AD0A adult trade
+8011ACE9 c left

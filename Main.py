@@ -70,6 +70,8 @@ def main(settings, window=dummy_window()):
     else:
         logger.info('OS not supported for compression')
 
+    #uncomment below for decompressed output (for debugging)
+    #rom.write_to_file(default_output_path('%s.z64' % outfilebase))
     run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
     os.remove(rom_path)
     window.update_progress(95)

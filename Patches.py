@@ -545,6 +545,9 @@ def patch_rom(world, rom):
     # Make the check for BGS 1 full day
     rom.write_bytes(0xED446C, [0x28, 0x41, 0x00, 0x01]) #day check for claim check
     rom.write_bytes(0xED4494, [0x28, 0x41, 0x00, 0x01]) #day check for dialogue
+
+    # Biggoron Fix (rest of the fix is in asm)
+    rom.write_bytes(0xED7DE0, [0x00, 0x00, 0x00, 0x00]) #0 out relocation table for modified instruction
     
     # Fixed reward order for Bombchu Bowling
     rom.write_bytes(0xE2E694, [0x80, 0xAA, 0xE2, 0x64]) #item 1 = hp
@@ -607,8 +610,8 @@ def patch_rom(world, rom):
     # Initial Save Data
 
     #testing
-    #write_bits_to_save(0xEDC, 0x08) #ocarina?
-    #write_bytes_to_save(0xA5, [0xFF ,0xFF]) stones
+    write_bits_to_save(0xEDC, 0x08) #ocarina?
+    write_bytes_to_save(0xA5, [0xFF ,0xFF]) #stones
     #rom.write_bytes(0xE5401C, [0x14, 0x0B]) #open forest
 
     #set initial time of day

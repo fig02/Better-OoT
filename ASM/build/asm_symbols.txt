@@ -957,8 +957,9 @@
 80403644 @@save_data_loop
 80403674 @@overwrite_type
 8040367C @@return
-80403684 truth_spinner_fix
-80403698 .byt:09B8
+80403684 bgs_fix
+80403694 truth_spinner_fix
+804036A8 .byt:09A8
 80405000 disp_buf_init,00000018
 80405018 sprite_bytes_per_tile,00000028
 80405040 sprite_bytes,00000030

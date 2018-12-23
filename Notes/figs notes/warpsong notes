@@ -15,8 +15,11 @@ link+0x115
 
 ^this never becomes 1 because the warp actor isnt loaded
 
+table entry 800E96B0
+rom start CCDF30
 actor 8c overlay start 8020163C
 actor 8c instance      80205360
+
 
 pointers in the instance
 8020163C - start
@@ -44,7 +47,7 @@ if this function isnt called when actor 8c is unloaded, then need to figure out 
 
 link state flags 801DB09C
 
-nopping 803A6198 (function call to spawn actor 8c) will kill the cs but link is invisbile and frozen
+nopping 803A6198 (player_actor+1D638)(function call to spawn actor 8c) will kill the cs but link is invisbile and frozen
 writing 803A1020 to 801DAB64 will make him visible but frozen
 writing 803975EC to 801DB094 will make him idle but not controlable
 
@@ -53,3 +56,4 @@ writing 803975EC to 801DB094 will make him idle but not controlable
 801DB0CC
 801DAE5C
 801DAEFC
+

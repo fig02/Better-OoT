@@ -248,3 +248,15 @@ talon_break_free:
     lw       t0, 0x04(sp)
     jr     ra
     addiu    sp, sp, 0x20
+
+
+warp_song:
+    addiu    sp, sp, -0x08
+    sw       t0, 0x04(sp)
+    li       t0, 0x803A1020
+    sw       t0, 0x134(s2)
+    li       t0, 0x803975EC
+    sw       t0, 0x664(s2)
+    lw       t0, 0x04(sp)
+    jr       ra
+    addiu    sp, sp, 0x08

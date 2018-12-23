@@ -4,3 +4,52 @@
 
 00BCDB70 + 1C4D4 = BEA044
 (vrom start of player overlay + offset of the instruction we want ot modify)
+
+803A6194 - functinon call to spawn warp actor. nopping this works but link is invisible
+
+JAL	0x80024280 - related to making link visible
+
+variable in links actor 
+link+0x115 
+801DAB45
+
+^this never becomes 1 because the warp actor isnt loaded
+
+actor 8c overlay start 8020163C
+actor 8c instance      80205360
+
+pointers in the instance
+8020163C - start
+80201A20 - 
+8020214C - 
+80202170 - 
+
+link+0x840
+801DB270
+timer for when to start drawing link during warp in
+something checks if this value is 0 at some point to start his draw 
+
+28 getswritten to the timer at 803A616C
+
+link+134 draw function pointer
+function 803A8AD0 writes 803A1020 to link+134 when he appears
+nopping the jump to the above function (803A60F8) results in a similar invisible link, but you have control
+
+---
+
+this function (803A60A8) uses the timer at link+0x840 to start drawing link
+setting the timer to 0 at the start of a normal warp makes him appear asap
+
+if this function isnt called when actor 8c is unloaded, then need to figure out how to make it do that
+
+link state flags 801DB09C
+
+nopping 803A6198 (function call to spawn actor 8c) will kill the cs but link is invisbile and frozen
+writing 803A1020 to 801DAB64 will make him visible but frozen
+writing 803975EC to 801DB094 will make him idle but not controlable
+
+
+
+801DB0CC
+801DAE5C
+801DAEFC

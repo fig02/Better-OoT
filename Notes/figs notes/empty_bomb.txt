@@ -125,4 +125,70 @@ empty_bomb_fix:
    ;displaced
    lw a0, 0x001C($sp)
 
-   
+=============================================================================
+
+the above solution doesnt work in all cases
+going to instead try to see what 1.1/1.2 does
+
+1.0 item in hand addresses:
+
+801DAB70 (4 byte)
+nothing in hand after bomb 0100FE00
+bomb in hand               01120200
+
+801DAB74 (1 byte)
+nothing in hand after bomb 00
+bomb in hand               12
+
+beginning of links actor 1.0 801DAA30
+beginning of links actor 1.0 801DB2F0
+
+--
+4byte link+0x140
+1byte link+144
+--
+
+1.2:
+801DB430 (4 byte)
+nothing in hand after bomb 0100FE00
+bomb in hand               01120200
+
+801DB434 (1 byte)
+nothing in hand after bomb 00
+bomb in hand               12
+
+---
+
+function runs when item in hand is changed
+1.0 8038A3A4
+1.2 8038AB48
+
+instructions added to 1.2
+function+0x1C LW T8, 0x066C(A3)
+function+0x20 LUI AT, 0xFEFF
+function+0x28 ORI AT, AT, FFF7
+function+0x34 AND T9, T8, AT
+function+0x38 SW T9, 0x066C(A3)
+function+0x40 SLL T0, A2, 2
+
+
+instructions removed from 1.0
+function+0x28 SLL T8, A2, 2
+
+====================================================
+
+find start of links actor 1.2
+
+1.0 start of player_actor 80388B60
+1.0 item in hand function 8038A3A4
+
+offsest 0x1844
+
+1.2 item in hand function 8038AB48
+function - offset = 80389304
+
+this isnt correct but it was close
+
+===================================================
+
+continuin in new file

@@ -545,9 +545,6 @@ def patch_rom(world, rom):
     # Make the check for BGS 1 full day
     rom.write_bytes(0xED446C, [0x28, 0x41, 0x00, 0x01]) #day check for claim check
     rom.write_bytes(0xED4494, [0x28, 0x41, 0x00, 0x01]) #day check for dialogue
-
-    # Biggoron Fix (rest of the fix is in asm)
-    rom.write_bytes(0xED7DE0, [0x00, 0x00, 0x00, 0x00]) #0 out relocation table for modified instruction
     
     # Fixed reward order for Bombchu Bowling
     rom.write_bytes(0xE2E694, [0x80, 0xAA, 0xE2, 0x64]) #item 1 = hp
@@ -617,14 +614,20 @@ def patch_rom(world, rom):
     #set initial time of day
     #have this dynamically change according to early game intro and owl settings
     #c8 = 1 second during day time
+    """
+    if world.skip_intro:
+        if world.no_owls:
+            
+    """
 
-    write_bytes_to_save(0x0C, [0x80,0x00]) #hyrule field with owls
+    write_bytes_to_save(0x0C, [0x80,0x00]) #hyrule field with owls 
     #write_bytes_to_save(0x0C, [0x8C,0x94]) #no hyrule field with owls
     #write_bytes_to_save(0x0C, [0x8F,0x8C]) #no hyrule field or castle
 
     #! CONTINUE WORKING HERE
     #Speed warp out cutscene for warp songs
-    #rom.write_bytes(0xBEA044, [0x00, 0x00, 0x10, 0x20])
+    #800E96B0
+    rom.write_bytes(0xBEA044, [0x00, 0x00, 0x10, 0x20])
     #! give warp songs for testing and ocarina
     #write_bytes_to_save(0xA4, [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
     #write_byte_to_save(0x0074, 0x08)
@@ -736,6 +739,11 @@ def patch_rom(world, rom):
     rom.write_int32(0xDD3538, 0x34190000)
     if not world.open_kakariko:
         rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
+
+    # Move carpenter starting position
+    rom.write_bytes(0x1FF93A4, [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C, 0xFF, 0x92, 0x00, 0x00, 0x01, 0x78, 0xFF, 0x2E, 0x00, 0x00, 0x00, 0x03, 0xFD, 0x2B, 0x00, 0xC8, 0xFF, 0xF9, 0xFD, 0x03, 0x00, 0xC8, 0xFF, 0xA9, 0xFD, 0x5D, 0x00, 0xC8, 0xFE, 0x5F]) # re order the carpenter's path
+    rom.write_byte(0x1FF93D0, 0x06) # set the path points to 6
+    rom.write_bytes(0x20160B6, [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C]) # set the carpenter's start position
     
     # Make all chest opening animations fast
     if world.fast_chests:
@@ -836,6 +844,9 @@ def patch_rom(world, rom):
 
     # reduce item message lengths
     update_item_messages(messages, world)
+
+    #rova_text = "\x06\x37\x08Oh, OK, Koume.\x09\x0C\x14\x04\x06\x30\x08Kotake\x09 and \x08Koume's\x09\x06\x1C\x08Double\x09 Dynamite \x08Attack!\x09\x0E\x28" 
+    #update_message_by_id(messages, 0x605A, rova_text)
 
     repack_messages(rom, messages)
     write_shop_items(rom, shop_item_file.start + 0x1DEC, shop_items)

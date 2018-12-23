@@ -1,0 +1,113 @@
+1.0 ovl_player_actor 0x80388B60
+1.2 ovl_player_actor 0x80389310
+
+1.0 item in hand function 8038A3A4
+1.2 item in hand function 8038AB48
+
+1.2 stack trace on break when moving (empty bomb scenario)
+
+0x8038AB48 called by instruction 0x80389538 which is in function 0x803894D0
+0x803894D0 runs whenever the item in ahdn value is updated
+
+0x80394D0 called by 0x8038B858 which is in function 0x8038B800
+0x8038B800 runs when sword is pulled but not put away
+              when a bomb explodes (frame 1 when standing, bomb oi when moving)
+              when shield is taken out but not put away
+              not for first person items
+              swinging the hammer but not taking it out
+
+0x8038B800 called by 0x8038C8F8 which is in function 0x8038C8D0
+0x8038C8D0 runs every frame when a bomb instance is in links hand
+
+function flow 1.2
+0x8038C8D0 -> 0x8038B800 -> 0x803894D0 -> 0x8038AB48 -> value is updated
+
+function flow offsets
+player+0x35C0 -> player+0x24F0 -> player+0x1C0 -> player+0x1838
+
+function flow 1.0 (will probably be off because of varying function lengths)
+0x8038C120 -> 0x8038B050 -> 0x80388D20 -> 0x8038A398
+corrected:
+0x8038C110 -> 0x8038B040 -> 0x80388D20 -> 0x8038A3A4
+
+0x8038C110
+in 1.2 this function only runs when a bomb instance is in hand.
+in 1.0, this function contonues to run even after a bomb is placed and doesnt
+stop looping until a new item is in hand. So there is already an issue even 
+before empty bomb occurs.
+
+0x8038B040
+in 1.2 this function runs during specific "item in hand" changes. in 1.0,
+this does not run at all when a bomb explodes like it should. it does run
+however when pulling+placing a bomb with the empty bomb glitch active
+
+0x80388D20 & 0x8038A3A4
+this functions both behave as expected without empty bomb glitch
+circumstances. they do not run when empty bomb is achieved. this is expected.
+
+SO
+
+the first function in the list above (0x8038C110)for some reason loops infinitley when a bomb is pulled. this is likley the cause of the issue
+
+some steps to figure this out is to
+1 step through the function and see why it keeps looping
+2 compare this function to 1.2 and see what is different that could be the cause
+
+================================================================================
+
+update: the issue is likley not in the bomb function, but whatever is 
+determining when to run it. 
+function behaves strangley. it stays in the loop unless you place the bomb then
+get hit by it while standing still
+
+need to figure out the conditions that keep this running
+
+in the function that calls this, it references link instance+81C to determine
+which function to run next. these appear to be animation related addresses
+locking them results in link being stuck in different animations
+
+---
+
+in function 8038B800, instruction 0x8038B84C writes to the current running
+animation pointer. this pointer is used to determine what animation(?) to run next
+see if 1.0 is missing this instruction or something around it
+
+---
+
+the call for 0x8038B800 is within a bnez instruction in 8038C8D0
+bnez instruction @ 8038C8D0+0x20
+
+on 1.0:
+8038C110+0x20
+
+same until function+0x18
+at this point 1.2 loads s0+0x39C to t6 !!!!! s0+0x39C is the bomb in hand!!!
+then it OR's a1 and r0 and stores it in a0
+then skip over the target function if t6 doesnt equal 0
+saves a word to the sp to keep
+jumps to target function
+or's s0 and r0 and stores to a1
+-then it resumes the OR instruction that 1.0 has
+
+-------------
+
+;Empty Bomb Fix
+;Replaces:
+;	sw ra, 0x001C(sp) ; mem:8038C124
+
+.org 0xBD1134
+	jal      empty_bomb_fix
+	sw       ra, 0x001C(sp) ;displaced
+	
+
+empty_bomb_fix:
+	lw       t6, 0x039C(s0) ;load bomb in hand pointer
+	or       a0, s1, r0
+	bnez     t6, @@return
+	nop
+	jal      0x8038B040
+	or       a1, s0, r0
+
+@@return:
+	jr    ra
+	nop

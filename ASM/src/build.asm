@@ -49,6 +49,7 @@ DebugOutput:
 .include "song_fix.asm"
 .include "scarecrow.asm"
 .include "empty_bomb_fix.asm"
+.include "empty_bomb_fix2.asm"
 .include "initial_save.asm"
 .include "bgs_fix.asm"
 .include "truth_spinner_fix.asm"

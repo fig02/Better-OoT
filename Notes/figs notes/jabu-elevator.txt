@@ -12,3 +12,10 @@ C4800000 good pos for lower
 00C8	Bg_Bdan_Objects	00D4BBD0	00D4CEA0	809BBA50	809BCD20	00000000	809BCAF0	00000000	0000	00	00
 
 ovl in ram 801E2EB0
+
+---
+
+actor only runs on one function
+801E3A68
+
+timer is a short located at instance+0x15A (t:801E430A)

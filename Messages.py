@@ -427,8 +427,16 @@ class Message():
             0x001A, #play again text
             0x00FA, 0x00FB, 0x00FC, 0x00FD, #bowling piece of heart
             0x10DC, 0x10DD, #deku stick/nut upgrades
-            0x40AB, 0x40A9 #frogs
-            
+            0x40AB, 0x40A9,  #frogs
+            0x109D, 0x109E, 0x109F #intro
+        ]
+
+        auto_close_ids = [
+
+            0x605A, #twinrova text
+            0x109D, 0x109E, #intro
+            0x4022  #ruto part 2
+
         ]
 
     
@@ -455,8 +463,8 @@ class Message():
             elif speed_up_text and code.code in slows_text:
                 pass
             elif speed_up_text and code.code in box_breaks:
-                if self.id == 0x4022:
-                    offset = code.write(rom, offset) #ruto text pt 2
+                if self.id in auto_close_ids:
+                    offset = code.write(rom, offset) #vanilla text code
                 else:
                     offset = Text_Code(0x04, 0).write(rom, offset) # un-delayed break
                     offset = Text_Code(0x08, 0).write(rom, offset) # allow instant

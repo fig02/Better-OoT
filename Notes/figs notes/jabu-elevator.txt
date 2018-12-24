@@ -18,4 +18,6 @@ ovl in ram 801E2EB0
 actor only runs on one function
 801E3A68
 
-timer is a short located at instance+0x15A (t:801E430A)
+timer is a short located at instance+0x15A (t:801E430A)801EC3D0
+801E2EB0 instance
+801E300A timer

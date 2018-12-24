@@ -618,20 +618,25 @@ def patch_rom(world, rom):
     #testing
     write_bits_to_save(0xEDC, 0x08) #ocarina?
     write_bytes_to_save(0xA5, [0xFF ,0xFF]) #stones
-    #rom.write_bytes(0xE5401C, [0x14, 0x0B]) #open forest
+    rom.write_bytes(0xE5401C, [0x14, 0x0B]) #open forest
 
-    #set initial time of day
-    #have this dynamically change according to early game intro and owl settings
-    #c8 = 1 second during day time
-    """
+    #set initial time of day dynamically according to intro cs and owl settings
+    tod = 0x6AAB
+
     if world.skip_intro:
-        if world.no_owls:
-            
-    """
+        tod += 0x1555
+    if world.skip_field:
+        tod += 0xC94
+    if world.skip_castle:
+        tod += 0x492
+    if world.no_owls:
+        tod += 0x866
 
-    write_bytes_to_save(0x0C, [0x80,0x00]) #hyrule field with owls 
-    #write_bytes_to_save(0x0C, [0x8C,0x94]) #no hyrule field with owls
-    #write_bytes_to_save(0x0C, [0x8F,0x8C]) #no hyrule field or castle
+    byte1 = (tod & 0xFF00) >> 8
+    byte2 = (tod & 0xFF)
+    timeofday = [byte1, byte2]
+
+    write_bytes_to_save(0x0C, timeofday) #write sum to time of day
 
     #! give warp songs for testing and ocarina
     write_bytes_to_save(0xA4, [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])

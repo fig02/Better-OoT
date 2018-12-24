@@ -510,6 +510,15 @@ def patch_rom(world, rom):
     # Ruto never disappears from Jabu Jabu's Belly
     rom.write_byte(0xD01EA3, 0x00)
 
+    #Shift octorock in jabu forward
+    rom.write_bytes(0x275906E, [0xFF, 0xB3, 0xFB, 0x20, 0xF9, 0x56])
+
+    #Move fire/forest temple switches down 1 unit to make it easier to press
+    rom.write_bytes(0x24860A8, [0xFC, 0xF4]) #forest basement 1
+    rom.write_bytes(0x24860C8, [0xFC, 0xF4]) #forest basement 2
+    rom.write_bytes(0x24860E8, [0xFC, 0xF4]) #forest basement 3
+    rom.write_bytes(0x236C148, [0x11, 0x93]) #fire hammer room
+
     # Speed up Epona race start
     rom.write_bytes(0x29BE984, [0x00, 0x00, 0x00, 0x02])
     rom.write_bytes(0x29BE9CA, [0x00, 0x01, 0x00, 0x02])
@@ -624,10 +633,6 @@ def patch_rom(world, rom):
     #write_bytes_to_save(0x0C, [0x8C,0x94]) #no hyrule field with owls
     #write_bytes_to_save(0x0C, [0x8F,0x8C]) #no hyrule field or castle
 
-    #! CONTINUE WORKING HERE
-    #Speed warp out cutscene for warp songs
-    #800E96B0
-    rom.write_bytes(0xBEA044, [0x00, 0x00, 0x10, 0x20])
     #! give warp songs for testing and ocarina
     write_bytes_to_save(0xA4, [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
     #write_byte_to_save(0x0074, 0x08)
@@ -671,7 +676,7 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0F21, 0x02) # "Ruto in JJ (M2) Meet Ruto"
 
     write_bits_to_save(0x0EE2, 0x01) # "Began Ganondorf Battle"
-    write_bits_to_save(0x0EE3, 0x80) # "Began Bongo Bongo Battle"
+    #write_bits_to_save(0x0EE3, 0x80) # "Began Bongo Bongo Battle"
     write_bits_to_save(0x0EE3, 0x40) # "Began Barinade Battle"
     write_bits_to_save(0x0EE3, 0x20) # "Began Twinrova Battle"
     write_bits_to_save(0x0EE3, 0x10) # "Began Morpha Battle"

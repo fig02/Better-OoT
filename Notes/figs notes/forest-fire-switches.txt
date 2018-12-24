@@ -1,0 +1,23 @@
+forest and fire switches
+
+forest room 17 actor list 2486054
+
+012A 031D FCF5 F9E2
+012A 0077 FCF5 FC87
+012A FEA6 FCF5 F812
+
+floor is -779, gonna try -781
+
+-790 just to confirm that its moving ()
+
+FCF3
+
+switch 1 y 24860A8
+switch 2 y 24860C8
+switch 3 y 24860E0
+
+---
+fire 
+room 13 0236C000
+vanilla pos 1194
+switch y 0236C148 1193

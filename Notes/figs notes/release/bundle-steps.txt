@@ -1,0 +1,11 @@
+create spec file
+pyinstaller.exe --onefile --icon E:\Better-OoT\data\er.ico BetterOoT.py
+
+edit data sectionto include dependencies
+datas=[('data/', 'data'), ('Compress/', 'Compress'), ('Decompress/', 'Decompress')]
+
+run pyinstaller with spec file
+pyinstaller.exe BetterOoT.spec
+
+this will create an app in a single file with all dependencies inside
+

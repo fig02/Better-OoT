@@ -60,13 +60,13 @@ def main(settings, window=dummy_window()):
     compressor_path = ""
     if platform.system() == 'Windows':
         if 8 * struct.calcsize("P") == 64:
-            compressor_path = "Compress\\Compress.exe"
+            compressor_path = "bin\\Compress\\Compress.exe"
         else:
-            compressor_path = "Compress\\Compress32.exe"
+            compressor_path = "bin\\Compress\\Compress32.exe"
     elif platform.system() == 'Linux':
-        compressor_path = "Compress/Compress"
+        compressor_path = "bin/Compress/Compress"
     elif platform.system() == 'Darwin':
-        compressor_path = "Compress/Compress.out"
+        compressor_path = "bin/Compress/Compress.out"
     else:
         logger.info('OS not supported for compression')
 

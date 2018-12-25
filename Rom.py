@@ -61,13 +61,13 @@ class LocalRom(object):
 
             if platform.system() == 'Windows':
                 if 8 * struct.calcsize("P") == 64:
-                    subcall = ["Decompress\\Decompress.exe", file, decomp_file]
+                    subcall = ["bin\\Decompress\\Decompress.exe", file, decomp_file]
                 else:
-                    subcall = ["Decompress\\Decompress32.exe", file, decomp_file]
+                    subcall = ["bin\\Decompress\\Decompress32.exe", file, decomp_file]
             elif platform.system() == 'Linux':
-                subcall = ["Decompress/Decompress", file, decomp_file]
+                subcall = ["bin/Decompress/Decompress", file, decomp_file]
             elif platform.system() == 'Darwin':
-                subcall = ["Decompress/Decompress.out", file, decomp_file]
+                subcall = ["bin/Decompress/Decompress.out", file, decomp_file]
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
 

@@ -3,10 +3,10 @@
 block_cipher = None
 
 
-a = Analysis(['gui.py'],
+a = Analysis(['BetterOoT.py'],
              pathex=['E:\\Better-OoT'],
              binaries=[],
-             datas=[],
+             datas=[('data/', 'data')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='gui',
+          name='BetterOoT',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

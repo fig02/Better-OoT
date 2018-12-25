@@ -200,7 +200,6 @@ def guiMain(settings=None):
         try:
             settings = guivars_to_settings(guivars)
             text = settings_string_var.get().upper()
-            settings.seed = guivars['seed'].get()
             settings.update_with_settings_string(text)
             settings_to_guivars(settings, guivars)
         except Exception as e:

@@ -751,6 +751,40 @@ def patch_rom(world, rom):
         rom.write_int32(0xBDA2E8, 0x240AFFFF) # addiu   t2, r0, -1
                                # replaces # lb      t2, 0x0002 (t1)
 
+    if world.quest == 'master':
+        for i in world.dungeon_mq:
+            world.dungeon_mq[i] = True
+
+    # patch mq scenes
+    mq_scenes = []
+    if world.dungeon_mq['DT']:
+        mq_scenes.append(0)
+    if world.dungeon_mq['DC']:
+        mq_scenes.append(1)
+    if world.dungeon_mq['JB']:
+        mq_scenes.append(2)
+    if world.dungeon_mq['FoT']:
+        mq_scenes.append(3)
+    if world.dungeon_mq['FiT']:
+        mq_scenes.append(4)
+    if world.dungeon_mq['WT']:
+        mq_scenes.append(5)
+    if world.dungeon_mq['SpT']:
+        mq_scenes.append(6)
+    if world.dungeon_mq['ShT']:
+        mq_scenes.append(7)
+    if world.dungeon_mq['BW']:
+        mq_scenes.append(8)
+    if world.dungeon_mq['IC']:
+        mq_scenes.append(9)
+    # Scene 10 has no layout changes, so it doesn't need to be patched
+    if world.dungeon_mq['GTG']:
+        mq_scenes.append(11)
+    if world.dungeon_mq['GC']:
+        mq_scenes.append(13)
+
+    patch_files(rom, mq_scenes)
+
     ### Load Shop File
     # Move shop actor file to free space
     shop_item_file = File({

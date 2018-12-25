@@ -744,7 +744,7 @@ setting_infos = [
             'text': 'Remove Owls',
             'group': 'other',
             'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'default': 'checked',
             'tooltip':'''\
                       Remove owl triggers on in the overworld.
                       '''
@@ -777,6 +777,33 @@ setting_infos = [
                       'Normal': Vanilla behavior
                       'One Hit KO': Link dies in one hit.
                       '''
+        }),
+
+    Setting_Info('quest', str, 2, True, 
+        {
+            'default': 'vanilla',
+            'const': 'vanilla',
+            'nargs': '?',
+            'choices': ['vanilla', 'master'],
+            'help': '''\
+                    Vanilla:       Dungeons will be the original Ocarina of Time dungeons.
+                    Master:        Dungeons will be in the form of the Master Quest.
+                    
+                    '''
+        },
+        {
+            'text': 'Dungeon Quest',
+            'group': 'other',
+            'widget': 'Combobox',
+            'default': 'Vanilla',
+            'options': {
+                'Vanilla': 'vanilla',
+                'Master Quest': 'master',
+            },
+            'tooltip':'''\
+                      'Vanilla': Dungeons will be vanilla.
+                      'Master Quest': Dungeons will be Master Quest.
+                      ''',
         }),
 
     Setting_Info('default_targeting', str, 1, False, 

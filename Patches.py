@@ -615,11 +615,6 @@ def patch_rom(world, rom):
 
     # Initial Save Data
 
-    #testing
-    write_bits_to_save(0xEDC, 0x08) #ocarina?
-    write_bytes_to_save(0xA5, [0xFF ,0xFF]) #stones
-    rom.write_bytes(0xE5401C, [0x14, 0x0B]) #open forest
-
     #set initial time of day dynamically according to intro cs and owl settings
     tod = 0x6AAB
 
@@ -637,10 +632,6 @@ def patch_rom(world, rom):
     timeofday = [byte1, byte2]
 
     write_bytes_to_save(0x0C, timeofday) #write sum to time of day
-
-    #! give warp songs for testing and ocarina
-    write_bytes_to_save(0xA4, [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
-    #write_byte_to_save(0x0074, 0x08)
 
     if world.forest_elevator:
         write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)

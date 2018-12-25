@@ -339,6 +339,8 @@ def guiMain(settings=None):
                     widgets[info.name].pack(expand=False, anchor=W)
                 if info.name == 'skip_dmc':
                     widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'quest':
+                    widgets[info.name].pack(expand=False, anchor=W)
 
 
             if info.gui_params['widget'] == 'SpecialCheckbutton':

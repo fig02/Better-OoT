@@ -14,6 +14,10 @@ __pycache__/
 #settings
 settings.sav
 
+#dist
+build/
+dist/
+
 #archive
 ARCHIVE.bin
 

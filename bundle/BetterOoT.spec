@@ -3,10 +3,10 @@
 block_cipher = None
 
 
-a = Analysis(['BetterOoT.py'],
+a = Analysis(['../BetterOoT.py'],
              pathex=['E:\\Better-OoT'],
              binaries=[],
-             datas=[('data/', 'data')],
+             datas=[('../data/', 'data')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -19,14 +19,19 @@ pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
           [],
-          name='BetterOoT',
+          exclude_binaries=True,
+          name='Better OoT',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
-          upx=True,
-          runtime_tmpdir=None,
-          console=True , icon='E:\\Better-OoT\\data\\er.ico')
+          upx=False,
+          console=True, 
+          icon='E:\\Better-OoT\\data\\er.ico')
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               name='Better OoT')

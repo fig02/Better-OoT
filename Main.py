@@ -47,9 +47,10 @@ def main(settings, window=dummy_window()):
     window.update_status('Patching ROM')
     rom = LocalRom(settings)
     patch_rom(worlds[settings.player_num - 1], rom)
-    window.update_progress(65)
+    window.update_progress(50)
 
     rom_path = os.path.join(output_dir, '%s.z64' % outfilebase)
+    wad_path = os.path.join(output_dir, '%s.wad' % outfilebase)
 
     window.update_status('Saving Uncompressed ROM')
     rom.write_to_file(rom_path)
@@ -72,32 +73,48 @@ def main(settings, window=dummy_window()):
 
     #uncomment below for decompressed output (for debugging)
     #rom.write_to_file(default_output_path('%s.z64' % outfilebase))
-    run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+    run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)], None)
     os.remove(rom_path)
+    window.update_progress(85)
+
+    #wad generation
+    window.update_status('Generating WAD')
+    logger.info('Generating WAD.')
+
+    if settings.create_wad == 'True':
+        run_process(window, logger,["bin\\gzinject.exe", "-a","genkey"], b'45e') #generate common key
+        run_process(window, logger,["bin\\gzinject.exe", "-a","inject", "--rom", os.path.join(output_dir, '%s-comp.z64' % outfilebase), "--wad", settings.wad, "-o",os.path.join(output_dir, '%s.wad' % outfilebase), "-i", "NRKE", "--disable-cstick-d-remapping", "--disable-dpad-u-remapping", "--cleanup"], None)
+        os.remove(os.path.join(output_dir, '%s-comp.z64' % outfilebase))
+
     window.update_progress(95)
 
     window.update_progress(100)
-    window.update_status('Success: ROM patched successfully')
-    logger.info('Done. Enjoy.')
+    if settings.create_wad == 'True':
+        window.update_status('WAD patched successfully')
+    else:
+        window.update_status('ROM patched successfully')
+    logger.info('ROM patched successfully')
     logger.debug('Total Time: %s', time.clock() - start)
 
     return worlds[settings.player_num - 1]
 
-def run_process(window, logger, args):
-    process = subprocess.Popen(args, bufsize=1, stdout=subprocess.PIPE)
+def run_process(window, logger, args, stdin):
+    process = subprocess.Popen(args, bufsize=1, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     filecount = None
-    while True:
-        line = process.stdout.readline()
-        if line != b'':
-            find_index = line.find(b'files remaining')
-            if find_index > -1:
-                files = int(line[:find_index].strip())
-                if filecount == None:
-                    filecount = files
-                window.update_progress(65 + ((1 - (files / filecount)) * 30))
-            logger.info(line.decode('utf-8').strip('\n'))
-        else:
-            break
-
+    if stdin is not None:
+        process.communicate(input=stdin)
+    else:
+        while True:
+            line = process.stdout.readline()
+            if line != b'':
+                find_index = line.find(b'files remaining')
+                if find_index > -1:
+                    files = int(line[:find_index].strip())
+                    if filecount == None:
+                        filecount = files
+                    window.update_progress(50 + ((1 - (files / filecount)) * 30))
+                logger.info(line.decode('utf-8').strip('\n'))
+            else:
+                break
 
 

@@ -211,7 +211,7 @@ def guiMain(settings=None):
     settingsEntry.pack(side=LEFT, anchor=W)
     importSettingsButton.pack(side=LEFT, anchor=W, padx=5)
 
-
+    #Import ROM
 
     fileDialogFrame = Frame(frames['rom_tab'])
 
@@ -234,6 +234,29 @@ def guiMain(settings=None):
 
     fileDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
 
+    #Import WAD
+    fileDialogFrame = Frame(frames['rom_tab'])
+
+    wadDialogFrame = Frame(fileDialogFrame)
+    baseWadLabel = Label(wadDialogFrame, text='Base WAD')
+    guivars['wad'] = StringVar(value='')
+    wadEntry = Entry(wadDialogFrame, textvariable=guivars['wad'], width=40)
+
+    def wadSelect():
+        wad = filedialog.askopenfilename(filetypes=[("WAD Files", (".wad")), ("All Files", "*")])
+        if wad != '':
+            guivars['wad'].set(wad)
+    wadSelectButton = Button(wadDialogFrame, text='Select WAD', command=wadSelect, width=10)
+
+    baseWadLabel.pack(side=LEFT, padx=(38,0))
+    wadEntry.pack(side=LEFT, padx=3)
+    wadSelectButton.pack(side=LEFT)
+
+    wadDialogFrame.pack()
+
+    fileDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
+
+    #Output dir
     def open_output():
         open_file(output_path(''))
     
@@ -251,6 +274,8 @@ def guiMain(settings=None):
     outputDirEntry.pack(side=LEFT, padx=3)
     outputDirButton.pack(side=LEFT)
     outputDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
+
+
 
     if os.path.exists(local_path('README.html')):
         def open_readme():
@@ -393,7 +418,8 @@ def guiMain(settings=None):
                     radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=190, indicatoron=False, command=show_settings)
                     radio_button.pack(expand=True, side=side, anchor=anchor)
                 # pack the frame
-                #widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                if info.name == 'create_wad':
+                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=10, pady=5)
                 
             elif info.gui_params['widget'] == 'Scale':
                 # create the variable to store the user's decision

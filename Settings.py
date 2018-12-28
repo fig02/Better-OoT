@@ -183,13 +183,44 @@ setting_infos = [
                 ''',
         'action': 'store_true'
     }),
-
+        Setting_Info('create_wad', str, 2, False, 
+        {
+            'default': 'False',
+            'const': 'False',
+            'nargs': '?',
+            'choices': ['True', 'False'],
+            'help': '''\
+                    Choose the ouput file type.
+                    True: Creates a WAD for use on VC
+                    False: Creates a ROM for use on N64 or Emu
+                    ''',
+        },
+        {
+            'text': 'Output File Type',
+            'group': 'rom_tab',
+            'widget': 'Radiobutton',
+            'default': '          ROM          ',
+            'horizontal': True,
+            'options': {
+                '          ROM          ': 'False',
+                '          WAD          ': 'True',
+            },
+            'tooltip':'''\
+                      Choose the output file type.
+                      ROM: For use on N64 or Emulator
+                      WAD: For use on Wii Virtual Console
+                      '''
+        }),
     Setting_Info('rom', str, 0, False, {
             'default': 'ZOOTDEC.z64',
             'help': 'Path to an OoT 1.0 rom to use as a base.'}),
+    Setting_Info('wad', str, 0, False, {
+            'default': '',
+            'help': 'Path to a 1.2 WAD to use as a base for VC inject.'}),
     Setting_Info('output_dir', str, 0, False, {
             'default': '',
             'help': 'Path to output directory for rom generation.'}),
+
     Setting_Info('seed', str, 0, False, {
             'help': 'Define seed number to generate.'}),
     Setting_Info('count', int, 0, False, {
@@ -746,7 +777,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Remove owl triggers on in the overworld.
+                      Remove owl triggers in the overworld.
                       '''
         }),
 

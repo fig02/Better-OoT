@@ -781,6 +781,23 @@ setting_infos = [
                       '''
         }),
 
+    Setting_Info('quickboots', bool, 1, True, 
+        {
+            'help': '''\
+                    Toggle Owls in the overworld.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Quick Boots',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Toggle boots with the d-pad
+                      '''
+        }),
+
         Setting_Info('difficulty', str, 2, True, 
         {
             'default': 'normal',

@@ -20,8 +20,13 @@ sprite_t medals_sprite = {
     G_IM_FMT_IA, G_IM_SIZ_8b, 1
 };
 
+sprite_t items_sprite = {
+    NULL, 32, 32, 90,
+    G_IM_FMT_RGBA, G_IM_SIZ_32b, 4
+};
+
 sprite_t quest_items_sprite = {
-    NULL, 24, 24, 18,
+    NULL, 24, 24, 20,
     G_IM_FMT_RGBA, G_IM_SIZ_32b, 4
 };
 
@@ -29,6 +34,11 @@ sprite_t font_sprite = {
     NULL, 8, 14, 95,
     G_IM_FMT_IA, G_IM_SIZ_8b, 1
 };
+
+sprite_t dpad_sprite = {
+    NULL, 32, 32, 1,
+    G_IM_FMT_IA, G_IM_SIZ_16b, 2
+};  
 
 int sprite_bytes_per_tile(sprite_t *sprite) {
     return sprite->tile_w * sprite->tile_h * sprite->bytes_per_texel;
@@ -40,10 +50,14 @@ int sprite_bytes(sprite_t *sprite) {
 
 void sprite_load(z64_disp_buf_t *db, sprite_t *sprite,
         int start_tile, int tile_count) {
-    gDPLoadTextureBlock(db->p++,
+    int width = sprite->tile_w;
+    int height = sprite->tile_h * tile_count;
+    gDPLoadTextureTile(db->p++,
             sprite->buf + (start_tile * sprite_bytes_per_tile(sprite)),
             sprite->im_fmt, sprite->im_siz,
-            sprite->tile_w, tile_count * sprite->tile_h,
+            width, height,
+            0, 0,
+            width - 1, height - 1,
             0,
             G_TX_WRAP, G_TX_WRAP,
             G_TX_NOMASK, G_TX_NOMASK,
@@ -91,22 +105,31 @@ void draw_setup(z64_disp_buf_t *db) {
 }
 
 extern char FONT_TEXTURE;
+extern char DPAD_TEXTURE;
 #define font_texture_raw ((uint8_t *)&FONT_TEXTURE)
+#define dpad_texture_raw ((uint8_t *)&DPAD_TEXTURE)
 
 void gfx_init() {
     file_t title_static = {
-        NULL, 0x01A02000, 0x395C0
+        NULL, z64_file_select_static_vaddr, z64_file_select_static_vsize
     };
     file_init(&title_static);
 
     file_t icon_item_24_static = {
-        NULL, 0x00846000, 0xB400
+        NULL, z64_icon_item_24_static_vaddr, z64_icon_item_24_static_vsize
     };
     file_init(&icon_item_24_static);
 
+    file_t icon_item_static = {
+        NULL, z64_icon_item_static_vaddr, z64_icon_item_static_vsize
+    };
+    file_init(&icon_item_static);
+
     stones_sprite.buf = title_static.buf + 0x2A300;
     medals_sprite.buf = title_static.buf + 0x2980;
+    items_sprite.buf = icon_item_static.buf;
     quest_items_sprite.buf = icon_item_24_static.buf;
+    dpad_sprite.buf = dpad_texture_raw;
 
     int font_bytes = sprite_bytes(&font_sprite);
     font_sprite.buf = heap_alloc(font_bytes);

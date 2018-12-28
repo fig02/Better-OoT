@@ -365,6 +365,8 @@ def guiMain(settings=None):
                     widgets[info.name].pack(expand=False, anchor=W)
                 if info.name == 'quest':
                     widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'quickboots':
+                    widgets[info.name].pack(expand=False, anchor=W)
 
 
             if info.gui_params['widget'] == 'SpecialCheckbutton':
@@ -514,23 +516,17 @@ def guiMain(settings=None):
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
     playerNumFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
-    #multiworldFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
-
-
-    # didn't refactor the rest, sorry
-
 
     # create the option menu
-
     def generateRom():
         settings = guivars_to_settings(guivars)
         if settings.count is not None:
-            BackgroundTaskProgress(mainWindow, "Patching ROM", multiple_run, settings)
+            BackgroundTaskProgress(mainWindow, "Patching File", multiple_run, settings)
         else:
-            BackgroundTaskProgress(mainWindow, "Patching ROM", main, settings)
+            BackgroundTaskProgress(mainWindow, "Patching File", main, settings)
 
     
-    generateButton = Button(settingsFrame, text='Generate Patched Rom', command=generateRom)
+    generateButton = Button(settingsFrame, text='Generate Patched File', command=generateRom)
     generateButton.pack(side=LEFT, padx=(5, 0))
 	
     settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,10))

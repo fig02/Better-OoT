@@ -12,7 +12,7 @@ $RECYCLE.BIN/
 __pycache__/
 
 #commonkey
-common-key.bin
+common-key
 
 #settings
 settings.sav

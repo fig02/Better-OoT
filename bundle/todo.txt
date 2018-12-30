@@ -5,6 +5,4 @@ look in better oot.py for possible answers
 
 gzinject
 
-rom success message
-
 readme

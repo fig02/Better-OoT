@@ -23,20 +23,12 @@
 ; Every frame hooks
 ;==================================================================================================
 
-; Runs before the game state updates
+; Runs before the game state update function
 ; Replaces:
-;   lw      t9, 0x0004 (s0)
-;   or      a0, s0, r0
-.org 0xB16B50 ; In memory: 0x800A0BF0
-    jal     before_game_state_update
-    nop
-
-; Runs after the game state updates
-; Replaces:
-;   lui     t6, 0x8012
-;   lbu     t6, 0x1212 (t6)
-.org 0xB16B60 ; In memory: 0x800A0C00
-    jal     after_game_state_update
+;   lw      t6, 0x0018 (sp)
+;   lui     at, 0x8010
+.org 0xB12A34 ; In memory: 0x8009CAD4
+    jal     before_game_state_update_hook
     nop
 
 ;==================================================================================================
@@ -222,16 +214,6 @@
 	jal		jabu_jabu
 
 ;==================================================================================================
-; Empty bomb fix 2
-;==================================================================================================
-;
-; Replaces: sw ra, 0x001C(sp) ; mem:8038C124
-;
-;.org 0xBD1134
-;    jal      empty_bomb_fix2
-;    sw       ra, 0x001C(sp) ;displaced
-
-;==================================================================================================
 ; Warp song speedup
 ;==================================================================================================
 ;
@@ -240,3 +222,13 @@
 .org 0xBEA044
    jal      warp_speedup
    nop
+
+;==================================================================================================
+; Quick Boots Display
+;==================================================================================================
+;
+; Replaces lw    s4, 0x0000(s6)
+;          lw    s1, 0x02B0(s4)
+.org 0xAEB68C ; In Memory: 0x8007572C
+    jal     qb_draw
+    nop

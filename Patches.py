@@ -88,6 +88,11 @@ def patch_rom(world, rom):
             address, value = [int(x, 16) for x in line.split(',')]
             rom.write_byte(address, value)
 
+    #Boots on D-Pad
+    if world.quickboots:
+        symbol = rom.sym('QUICKBOOTS_ENABLE')
+        rom.write_byte(symbol, 0x01)
+
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
     rom.write_byte(0x253C0E2, 0x03) # Moves sheik from pedestal

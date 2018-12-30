@@ -9,8 +9,8 @@ init:
     jal     0x80000DF0
     nop
 
-    ;jal     c_init
-    ;nop
+    jal     c_init
+    nop
 
     ; Displaced code
     lui     v0, 0x8012

@@ -11,6 +11,9 @@ $RECYCLE.BIN/
 #pycache 
 __pycache__/
 
+#commonkey
+common-key
+
 #settings
 settings.sav
 

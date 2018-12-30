@@ -13,9 +13,9 @@ This project is based off of the 3.0 version of the Ocarina of Time Randomizer. 
 
 Download the appropriate version for your system from the [releases page](https://github.com/fig02/Better-OoT/releases)
 
-Windows 10: Download "BOoT-win10-32exe.zip" and extract the contents of the zip folder to your location of choice. Double click BetterOoT.exe (the app with the ocarina icon) to run.
+Windows 10: Download "BOoT-Windows10.zip" and extract the contents of the zip folder to your location of choice. Double click BetterOoT.exe (the app with the ocarina icon) to run.
 
-Windows 8/7/Vista/XP: Download "BOoT-win-other-32exe.zip" and extract the contents of the zip folder to your location of choice. Double click BetterOoT.exe (the app with the ocarina icon) to run.
+Windows 8/7/Vista/XP: Download "BOoT-Windows-Other.zip" and extract the contents of the zip folder to your location of choice. Double click BetterOoT.exe (the app with the ocarina icon) to run.
 (If youre on windows 10 you can run this version too. It just has more files, so it is a bit more cluttered than the win10 release)
 
 Mac/Linux: Bundled versions are not supported for these operating systems. You will need to download and install [python 3.7](https://www.python.org/downloads/) and run from source. Download BOoT-Source.zip and run the Gui.py python script.

@@ -1,8 +1,0 @@
-bundling better oot script gives win50 error
-bunding gui is fine
-
-look in better oot.py for possible answers
-
-gzinject
-
-readme

@@ -3,14 +3,14 @@
 block_cipher = None
 
 
-a = Analysis(['../BetterOoT.py'],
+a = Analysis(['../Gui.py'],
              pathex=['E:\\Better-OoT'],
              binaries=[],
-             datas=[('../data/', 'data')],
+             datas=[('../data/', 'data'), ('../bin/', 'bin')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
-             excludes=[],
+             excludes=['lzma', 'bz2'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
@@ -21,11 +21,11 @@ exe = EXE(pyz,
           a.scripts,
           [],
           exclude_binaries=True,
-          name='Better OoT',
+          name='BetterOoT',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
-          upx=False,
+          upx=True,
           console=True, 
           icon='E:\\Better-OoT\\data\\er.ico')
 coll = COLLECT(exe,
@@ -34,4 +34,4 @@ coll = COLLECT(exe,
                a.datas,
                strip=False,
                upx=True,
-               name='Better OoT')
+               name='BetterOoT')

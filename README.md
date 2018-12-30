@@ -1,4 +1,4 @@
-##Better OoT
+# Better OoT
 
 
 This is a ROM patcher for _The Legend of Zelda: Ocarina of Time_ that applies various quality-of-life changes to the game. These changes are implemented with various speedrun categories in mind.
@@ -9,7 +9,7 @@ This is an extension of an idea initially created by Moltov. This project aims t
 
 This project is based on the 3.0 version of the Ocarina of Time Randomizer. Many new features were added, and many details were tweaked to preserve details of speedrun routes
 
-##Download and Install
+## Download and Install
 
 Download the appropriate version for your system from the [releases page](https://github.com/fig02/Better-OoT/releases)
 
@@ -20,11 +20,11 @@ Windows 8/7/Vista/XP - Download "BOoT-win-other-32exe.zip" and extract the conte
 
 Mac/Linux - Bundled versions are not supported for these operating systems. You will need to download and install [python 3.7](https://www.python.org/downloads/) and run from source. Download BOoT-Source.zip and run the Gui.py python script
 
-##Usage
+## Usage
 
 After opening Better OoT you will be greeted by a ROM patcher. This patcher has 3 tabs which you can use to tweak the settings to your liking
 
-#ROM Tab
+### ROM Tab
 This tab is where you specify file information for the patcher
 
 Base ROM - Path to a Vanilla 1.0 OoT rom. This is the rom the patcher will use a base. You must supply your own ROM, one is not included with this program.
@@ -35,7 +35,7 @@ Output Directory - Path for the output of the program. By default this is set to
 
 Output File Type - You can choose from creating a ROM or a WAD. Select ROM if you are playing on N64/Emulator. Select WAD if you are playing on Wii Virtual Console. If you select WAD you must supply a base WAD in the field above.
 
-#Options Tab
+### Options Tab
 This tab is where you specify settings that will effect gameplay
 
 Remove Area Intro Cutscenes - Listed are checkboxes for most area introduction cutscenes in the game. These are customizeable because they can have an effect on speedrun routes depending on the category. For example: Glitchless would want to keep the Gerudo Fortress cutscene because of the guard cycles, while other categories would want to get rid of it. Uncheck a box to add the intro cutscene for that area back.
@@ -63,4 +63,4 @@ Dungeon Quest - Choose between Vanilla and Master Quest Dungeons
 Default Targetting Option - Hold Targetting is mandatory (Kappa)
 
 
-#Cosmetics Tab
+### Cosmetics Tab

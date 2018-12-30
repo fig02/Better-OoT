@@ -98,7 +98,7 @@ Below is summary of the changes made from the Vanilla version of the game:
 - Block pushing is sped up
 - Kakariko carpenter moved so he is not in the way of the cucco route
 - Starting time of day is dynamic depending on intro cutscene settings
-(NOTE: if ESS owl skip is done, do not remove the castle intro cutscene. It will be impossible to make it in time.)
+(NOTE: If ESS owl skip is done, do not remove the castle intro cutscene. It will be impossible to make it to market in time.)
 
 ## Thanks
 

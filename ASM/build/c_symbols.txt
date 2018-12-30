@@ -27,16 +27,16 @@ SYMBOL TABLE:
 00000020 l     O .sbss	00000002 pad
 0000001e l     O .sbss	00000002 pad_pressed
 0000001c l     O .sbss	00000001 display_active
-000010f4 g     F .text	0000002c text_init
+00001104 g     F .text	0000002c text_init
 00000030 g     O .data	00000010 items_sprite
 00000000 g     O .data	00000010 dpad_sprite
-00000710 g     F .text	0000001c before_game_state_update
-000011c8 g     F .text	00000148 text_flush
+0000071c g     F .text	0000001c before_game_state_update
+000011d8 g     F .text	00000148 text_flush
 00000040 g     O .data	00000010 medals_sprite
 00000004 g     O .sdata	00000004 dungeon_count
 00000020 g     O .data	00000010 quest_items_sprite
-0000066c g     F .text	00000034 heap_alloc
-0000072c g     F .text	000009c8 draw_dungeon_info
+00000678 g     F .text	00000034 heap_alloc
+00000738 g     F .text	000009cc draw_dungeon_info
 00000000         *UND*	00000000 FONT_TEXTURE
 00000000         *UND*	00000000 DPAD_TEXTURE
 00000210 g     F .text	000000f0 sprite_draw
@@ -48,24 +48,24 @@ SYMBOL TABLE:
 00000040 g     F .text	00000030 sprite_bytes
 00000000         *UND*	00000000 QUICKBOOTS_ENABLE
 0000000c g     O .sbss	00000004 cfg_dungeon_info_mq_need_map
-000004dc g     F .text	0000017c gfx_init
-0000161c g     F .text	000002a8 draw_quickboots
+000004dc g     F .text	00000188 gfx_init
+00001614 g     F .text	000002a8 draw_quickboots
 00000000 g     F .text	00000018 disp_buf_init
 00000010 g     O .bss	0000000e cfg_dungeon_is_mq
 00000084 g     O .data	0000009c dungeons
 00000070 g     O .data	00000012 medal_colors
-00001120 g     F .text	000000a8 text_print
-000006e4 g     F .text	0000002c c_init
+00001130 g     F .text	000000a8 text_print
+000006f0 g     F .text	0000002c c_init
 00000000 g     O .sbss	00000004 heap_next
 00000060 g     O .data	0000000e cfg_dungeon_rewards
-000018c4 g     F .text	00000020 quickboots_init
-00000658 g     F .text	00000014 heap_init
+000018bc g     F .text	00000020 quickboots_init
+00000664 g     F .text	00000014 heap_init
 00000008 g     O .sbss	00000004 cfg_dungeon_info_reward_need_compass
 00000010 g     O .sbss	00000004 cfg_dungeon_info_mq_enable
-00001310 g     F .text	0000030c handle_quickboots
+00001320 g     F .text	000002f4 handle_quickboots
 00000000         *UND*	00000000 C_HEAP
 00000018 g     F .text	00000028 sprite_bytes_per_tile
-000006a0 g     F .text	00000044 file_init
+000006ac g     F .text	00000044 file_init
 00000004 g     O .sbss	00000004 cfg_dungeon_info_reward_need_altar
 00000000 g     O .sdata	00000004 cfg_dungeon_info_enable
 

@@ -40,41 +40,41 @@ This tab is where you specify settings that will affect gameplay
 
 **Remove Area Intro Cutscenes**: Listed are checkboxes for most area introduction cutscenes in the game. These are customizable because they can influence speedrun routes depending on the category. For example: Glitchless would want to keep the Gerudo Fortress cutscene because of the guard cycles, while other categories would want to get rid of it. Uncheck a box to add the intro cutscene for that area back.
 
-**Skip Intro Cutscene** - With this checked, the cutscene played at the beginning of a new file will be skipped. You will immediately spawn in links house
+**Skip Intro Cutscene**: With this checked, the cutscene played at the beginning of a new file will be skipped. You will immediately spawn in links house
 
-**Skip Forest Elevator Cutscene** - Toggle if the cutscene in Forest Temple plays where the Poe Sisters bring the elevator down. It is desirable to add this back mainly for the 100% category
+**Skip Forest Elevator Cutscene**: Toggle if the cutscene in Forest Temple plays where the Poe Sisters bring the elevator down. It is desirable to add this back mainly for the 100% category
 
-**Skip Nabooru Defeat Cutscene** - Toggle if the Nabooru Knuckle cs plays when defeating her. This is toggleable because you can skip it with glitches
+**Skip Nabooru Defeat Cutscene**: Toggle if the Nabooru Knuckle cs plays when defeating her. This is toggleable because you can skip it with glitches
 
-**Fast Blue Warp Cutscenes** - Speed up all cutscenes that play when entering a dungeon blue warp. Note that Wrong Warps still work when this option is enabled.
+**Fast Blue Warp Cutscenes**: Speed up all cutscenes that play when entering a dungeon blue warp. Note that Wrong Warps still work when this option is enabled.
 
-**Fast Song Cutscenes** - When learning songs you will immediately be prompted to play the song. This is toggleable because you can skip most of these cutscenes with glitches
+**Fast Song Cutscenes**: When learning songs you will immediately be prompted to play the song. This is toggleable because you can skip most of these cutscenes with glitches
 
-**Fast Chest Cutscenes** - Link will kick open all chests regardless of size
+**Fast Chest Cutscenes**: Link will kick open all chests regardless of size
 
-**Remove Owls** - Owl triggers will be removed. Note that this effects time of day
+**Remove Owls**: Owl triggers will be removed. Note that this effects time of day
 
-**Quick Boots** - With this enabled Hover Boots and Iron Boots will be toggleable on the dpad without needing to pause the game. This is more of a fun extra feature that was made for rando and was requested to be included here too.
+**Quick Boots**: With this enabled Hover Boots and Iron Boots will be toggleable on the dpad without needing to pause the game. This is more of a fun extra feature that was made for rando and was requested to be included here too.
 
-**Damage** - Choose between normal damage and one hit ko mode
+**Damage**: Choose between normal damage and one hit ko mode
 
-**Dungeon Quest** - Choose between Vanilla and Master Quest Dungeons
+**Dungeon Quest**: Choose between Vanilla and Master Quest Dungeons
 
-**Default Targeting Option** - Hold Targeting is mandatory (Kappa)
+**Default Targeting Option**: Hold Targeting is mandatory (Kappa)
 
 
 ### Cosmetics Tab
 This tab is where you can customize visual settings for the game. These options will not affect gameplay in any way
 
-**Background Music** - Set the background music to normal, random, or none.
+**Background Music**: Set the background music to normal, random, or none.
 
-**Tunic Color** - Set the color of the 3 tunics in the game. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completely random will generate a random color.
+**Tunic Color**: Set the color of the 3 tunics in the game. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completely random will generate a random color.
 
-**Tunic Color** - Set the color of Navi's many states. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completely random will generate a random color.
+**Tunic Color**: Set the color of Navi's many states. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completely random will generate a random color.
 
-**Low HP SFX** - Set the sound that will be played when Link is in critical health
+**Low HP SFX**: Set the sound that will be played when Link is in critical health
 
-**Navi SFX** - Set the sounds that Navi will make when alerting you
+**Navi SFX**: Set the sounds that Navi will make when alerting you
 
 ## Changelog
 
@@ -106,16 +106,16 @@ Many people were directly or indirectly involved with this project.
 
 Thank you to:
 
-**Krimtonz** - For helping me implement many of the features, guiding me whenever I was stuck, and for allowing me to vent to him whenever I had an issue with something not working. This project would not have happened without him.
+**Krimtonz**: For helping me implement many of the features, guiding me whenever I was stuck, and for allowing me to vent to him whenever I had an issue with something not working. This project would not have happened without him.
 
-**Moltov** - For creating the original Better OoT and inspiring this project. This idea was his and I expanded on it to allow more flexibility.
+**Moltov**: For creating the original Better OoT and inspiring this project. This idea was his and I expanded on it to allow more flexibility.
 
-**Glank/N3rdswithgame** - For teaching me MIPS Assembly and answering any questions I had about it.
+**Glank/N3rdswithgame**: For teaching me MIPS Assembly and answering any questions I had about it.
 
-**TestRunner/AmazingAmpharos/mzx/Grant/many others** - For the work done on the OoT Randomizer. The 3.0 version of Rando was used as a base for Better OoT. Much of the work done on that project persists through this one.
+**TestRunner/AmazingAmpharos/mzx/Grant/many others**: For the work done on the OoT Randomizer. The 3.0 version of Rando was used as a base for Better OoT. Much of the work done on that project persists through this one.
 
-**zfg/scurty/dannyb/rta** - For beta testing the project through its many stages of development and providing feedback.
+**zfg/scurty/dannyb/rta**: For beta testing the project through its many stages of development and providing feedback.
 
-**The OoT Speedrunning Community** - For expressing interest in this project and giving me a reason to work on it :)
+**The OoT Speedrunning Community**: For expressing interest in this project and giving me a reason to work on it :)
 
 Thank you all! Enjoy.

@@ -64,3 +64,33 @@ This tab is where you specify settings that will effect gameplay
 
 
 ### Cosmetics Tab
+This tab is where you can customize visual settings for the game. These options will not affect gameplay in any way
+
+**Background Music** - Set the background music to normal, random, or none.
+
+**Tunic Color** - Set the color of the 3 tunics in the game. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completley random will generate a random color.
+
+**Tunic Color** - Set the color of Navi's many states. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completley random will generate a random color.
+
+**Low HP SFX** - Set the sound that will be played when Link is in critical health
+
+**Navi SFX** - Set the sounds that Navi will make when alerting you
+
+## Thanks
+Many people were directly or indirectly involved with this project.
+
+Thank you to:
+
+Krimtonz - For helping me implement many of the features, guiding me whenever I was stuck, and for allowing me to vent to him whenever I had an issue with something not working. This project would not have happened without him.
+
+Moltov - For creating the original Better OoT and inspiring this project. This idea was his and I expanded on it to allow more flexibility.
+
+Glank/N3rdswithgame - For teaching me MIPS Assembly and answering any questions I had about it.
+
+TestRunner/AmazingAmpharos/mzx/Grant/many other people - For the work done on the OoT Randomizer. The 3.0 version of Rando was used as a base for Better OoT. Much of the work done on that project persists through this one.
+
+zfg/scurty/dannyb/rta - For beta testing the project through its many stages of development and providing feedback.
+
+The OoT Speedrunning community - For expressing interest in this project and giving me a reason to create it :)
+
+Thank you all! Enjoy.

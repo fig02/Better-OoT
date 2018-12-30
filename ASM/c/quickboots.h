@@ -10,8 +10,9 @@
     0x10000000 | \
     0x20000000)
 
+extern _Bool QUICKBOOTS_ENABLE;
 #define DISPLAY_QUICKBOOTS ((z64_file.link_age==0) && \
-                           (z64_file.iron_boots || z64_file.hover_boots))
+                           (z64_file.iron_boots || z64_file.hover_boots && (QUICKBOOTS_ENABLE)))
 
 #define CAN_USE_QUICKBOOTS (((z64_link.state_flags_1 & BLOCK_QUICK_BOOTS) == 0) && \
                            ((uint32_t)z64_ctxt.state_dtor==z64_state_ovl_tab[3].vram_dtor) && \

@@ -46,9 +46,10 @@ SYMBOL TABLE:
 00000300 g     F .text	000001dc draw_setup
 00000010 g     O .data	00000010 font_sprite
 00000040 g     F .text	00000030 sprite_bytes
+00000000         *UND*	00000000 QUICKBOOTS_ENABLE
 0000000c g     O .sbss	00000004 cfg_dungeon_info_mq_need_map
 000004dc g     F .text	0000017c gfx_init
-000015c4 g     F .text	00000294 draw_quickboots
+0000161c g     F .text	000002a8 draw_quickboots
 00000000 g     F .text	00000018 disp_buf_init
 00000010 g     O .bss	0000000e cfg_dungeon_is_mq
 00000084 g     O .data	0000009c dungeons
@@ -57,11 +58,11 @@ SYMBOL TABLE:
 000006e4 g     F .text	0000002c c_init
 00000000 g     O .sbss	00000004 heap_next
 00000060 g     O .data	0000000e cfg_dungeon_rewards
-00001858 g     F .text	00000020 quickboots_init
+000018c4 g     F .text	00000020 quickboots_init
 00000658 g     F .text	00000014 heap_init
 00000008 g     O .sbss	00000004 cfg_dungeon_info_reward_need_compass
 00000010 g     O .sbss	00000004 cfg_dungeon_info_mq_enable
-00001310 g     F .text	000002b4 handle_quickboots
+00001310 g     F .text	0000030c handle_quickboots
 00000000         *UND*	00000000 C_HEAP
 00000018 g     F .text	00000028 sprite_bytes_per_tile
 000006a0 g     F .text	00000044 file_init

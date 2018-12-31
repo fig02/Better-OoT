@@ -135,7 +135,7 @@ Thank you to:
 
 **TestRunner/AmazingAmpharos/mzx/Grant/many others**: For the work done on the OoT Randomizer. The 3.0 version of Rando was used as a base for Better OoT. Much of the work done on that project persists through this one.
 
-**zfg/scurty/dannyb/rta**: For beta testing the project through its many stages of development and providing feedback.
+**zfg/Scurty/Dannyb/RTA**: For testing the project through its many stages of development and providing feedback.
 
 **The OoT Speedrunning Community**: For expressing interest in this project and giving me a reason to work on it :)
 

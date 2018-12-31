@@ -515,9 +515,6 @@ def patch_rom(world, rom):
     # Ruto never disappears from Jabu Jabu's Belly
     rom.write_byte(0xD01EA3, 0x00)
 
-    #Shift octorock in jabu forward
-    rom.write_bytes(0x275906E, [0xFF, 0xB3, 0xFB, 0x20, 0xF9, 0x56])
-
     #Move fire/forest temple switches down 1 unit to make it easier to press
     rom.write_bytes(0x24860A8, [0xFC, 0xF4]) #forest basement 1
     rom.write_bytes(0x24860C8, [0xFC, 0xF4]) #forest basement 2

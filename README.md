@@ -12,7 +12,7 @@ This project is based off of the 3.0 version of the Ocarina of Time Randomizer. 
 
 ## Download and Install
 
-Download the appropriate version for your system from the [releases page](https://github.com/fig02/Better-OoT/releases)
+Download the appropriate version for your system from the [releases page](https://github.com/fig02/Better-OoT/releases).
 
 Windows 10: Download "BOoT-Windows10.zip" and extract the contents of the zip folder to your location of choice. Double click BetterOoT.exe (the app with the ocarina icon) to run.
 
@@ -91,7 +91,7 @@ There are some details with the hack that need to be emphasized.
 
 **Fast Song Cutscenes**: With this option enabled, the staff for learning songs will appear right away. This can cause a harmless bug where you can walk with the ocarina making noises. This can also make tricks like Deathless Bolero behave strangely. In cases like this you may want to disable this option.
 
-**Short Chest Cutscenes**: This option is only an issue for the initial position Boatskip setup. However targetting before opening the chests lets you do the setup as normal.
+**Short Chest Cutscenes**: This option is only an issue for the initial position Boatskip setup. However, targetting before opening the chests lets you do the setup as normal.
 
 **Twinrova Defeat Scene**: After defeating Twinrova, the cutscene is sped up which causes some differences with the camera. The position and angle is the same as normal, but any setups that use the camera for an angle will not work. May potentially be fixed in later versions.
 

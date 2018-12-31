@@ -9,6 +9,7 @@ This is an extension of an idea initially created by Moltov. This project aims t
 
 This project is based off of the 3.0 version of the Ocarina of Time Randomizer. Many new features were added, and many details were tweaked to preserve details of speedrun routes.
 
+
 ## Download and Install
 
 Download the appropriate version for your system from the [releases page](https://github.com/fig02/Better-OoT/releases)
@@ -19,6 +20,7 @@ Windows 8/7/Vista/XP: Download "BOoT-WindowsOther.zip" and extract the contents 
 (If youre on windows 10 you can run this version too. It just has more files, so it is a bit more cluttered than the win10 release)
 
 Mac/Linux: Bundled versions are not supported for these operating systems. You will need to download and install [python 3.7](https://www.python.org/downloads/) and run from source. Download BOoT-Source.zip and run the Gui.py python script.
+
 
 ## Usage
 
@@ -76,6 +78,22 @@ This tab is where you can customize visual settings for the game. These options 
 
 **Navi SFX**: Set the sounds that Navi will make when alerting you.
 
+
+## Usage Details
+
+There are some details with the hack that need to be emphasized.
+
+**Time of Day**: The starting time of day is calculated based on 3 settings: Skip Intro, Skip Hyrule Field, and Skip Hyrule Castle. With these options enabled, the starting time of day is set later to account for these missing cutscenes. While useful in some cases, it can cause issues in others. For speedrun categories that do ESS Owl Skip or Aqua escape, you need to keep in one or both cutscenes to be able to make it to market in time. 
+
+**No Continue After Death**: On Vanilla VC if you die in specific areas and no continue the game will crash. This happens on 1.0 VC, but in different areas. This is relevant for No IM/WW because if you "no continue" when dying in Sacred Forest Meadow as adult, the game will crash. Players on VC will need to savewarp normally. A fix may be found for this in the future, but it is a vanilla issue which is hard to debug as it is VC exclusive.
+
+**Fast Song Cutscenes**: With this option enabled, the staff for learning songs will appear right away. This can cause a harmless bug where you can walk with the ocarina making noises. This can also make tricks like Deathless Bolero behave strangely. In cases like this you may want to disable this option.
+
+**Cutscene Pointers**: For categories that wrong warp it is important to keep area intro cutscenes that set the cs pointer for wrong warps (for example: Deku intro for Ganondoor). Also, warp song cutscenes are skipped and thus do not set the pointer. This shouldn't be an issue in most categories and should be remedied by a save warp.
+
+**Twinrova Defeat Scene**: After defeating Twinrova the cutscene is sped up which causes some differences with the camera. The position and angle is the same as normal, but any setups that use the camera for an angle will not work. May potentially be fixed in later versions.
+
+
 ## Changelog
 
 For a list of changes made from the 3.0 version of Rando, check out [BOoT Changelog](https://github.com/fig02/Better-OoT/blob/master/Notes/BOoT_Changelog.txt) in the notes folder.
@@ -98,16 +116,6 @@ Below is summary of the changes made from the Vanilla version of the game:
 - Kakariko carpenter moved so he is not in the way of the cucco route
 - Starting time of day is dynamic depending on intro cutscene settings
 
-## Usage Details
-There are some details with the hack that need to be emphasized.
-
-**Time of Day**: The starting time of day is calculated based on 3 settings: Skip Intro, Skip Hyrule Field, and Skip Hyrule Castle. With these options enabled, the starting time of day is set later to account for these missing cutscenes. While useful in some cases, it can cause issues in others. For speedrun categories that do ESS Owl Skip or Aqua escape, you need to keep in one or both cutscenes to be able to make it to market in time. 
-
-**No Continue After Death**: On Vanilla VC if you die in specific areas and no continue the game will crash. This happens on 1.0 VC, but in different areas. This is relevant for No IM/WW because if you "no continue" when dying in Sacred Forest Meadow as adult, the game will crash. Players on VC will need to savewarp normally. A fix may be found for this in the future, but it is a vanilla issue, and is hard to debug as it is VC exclusive.
-
-**Fast Song Cutscenes**: With this option enabled, the staff for learning songs will appear right away. This can cause a harmless bug where you can walk with the ocarina making noises. This can also make tricks like Deathless Bolero behave strangely. In cases like this you may want to disable this option.
-
-**Cutscene Pointers**: For categories that wrong warp it is important to keep area intro cutscenes that set the cs pointer for wrong warps (for example: Deku intro for Ganondoor). Also, warp song cutscenes are skipped and thus do not set the pointer. This shouldn't be an issue in most categories and should be remedied by a save warp.
 
 ## Thanks
 

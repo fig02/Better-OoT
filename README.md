@@ -91,14 +91,19 @@ Below is summary of the changes made from the Vanilla version of the game:
 - Dampe is first try
 - Truth spinner is first try (torch closest to hover boots)
 - Bombchu bowling reward order is static
-- Elevator in Jabu starts at the bottom
 - Empty bomb glitch is patched
 - Collection delay at Big Goron is patched
 - Graves are patched to behave like 1.2
 - Block pushing is sped up
 - Kakariko carpenter moved so he is not in the way of the cucco route
 - Starting time of day is dynamic depending on intro cutscene settings
-(NOTE: If ESS owl skip or aqua escape is performed in the run, do not remove the castle intro cutscene. It will be impossible to make it to market in time.)
+
+## Usage Details
+There are some details about patching and un-fixable bugs that need to be emphasized.
+
+**Time of Day**: The starting time of day is calculated based on 3 settings: Skip Intro, Skip Hyrule Field, and Skip Hyrule Castle. With these option enabled, the starting time of day is set later to account for these missing cutscenes. While useful in some cases, it can cause issues in others. For speedrun categories that do ESS Owl Skip or Aqua escape, you need to keep in one or both cutscenes to be able to make it to market in time. 
+
+**No Continue After Death**: On Vanilla VC if you die in specific areas and no continue the game will crash. This happens on 1.0 VC, but in different areas. This is relevant for No IM/WW because if you "no continue" when dying in Sacred Forest Meadow as adult, the game will crash. Players on VC will need to savewarp normally. A fix may be found for this in the future, but it is a vanilla issue, and is hard to debug as it is VC exclusive.
 
 ## Thanks
 

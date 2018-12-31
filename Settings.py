@@ -892,7 +892,9 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Remove area intro cutscene for this location
+                      Remove area intro cutscene for this location. 
+                      Note that enabling this option will add to initial time of day, making it start later in the day.
+                      This can cause problems making it to market for ESS Owl Skip or Aqua Escape.
                       '''
         }),
 
@@ -909,7 +911,9 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Remove area intro cutscene for this location
+                      Remove area intro cutscene for this location. 
+                      Note that enabling this option will add to initial time of day, making it start later in the day.
+                      This can cause problems making it to market for ESS Owl Skip or Aqua Escape.
                       '''
         }),
 

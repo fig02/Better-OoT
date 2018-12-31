@@ -53,7 +53,6 @@ DebugOutput:
 .include "initial_save.asm"
 .include "bgs_fix.asm"
 .include "truth_spinner_fix.asm"
-.include "jabu_jabu.asm"
 .endarea
 
 .headersize (0x80405000 - 0x034B3000)

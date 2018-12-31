@@ -961,10 +961,7 @@
 80403660 @@return
 80403668 bgs_fix
 80403678 truth_spinner_fix
-8040368C jabu_jabu
-804036C8 @@bottom
-804036CC @@return
-804036E0 .byt:0970
+8040368C .byt:09C4
 80405000 disp_buf_init,00000018
 80405018 sprite_bytes_per_tile,00000028
 80405040 sprite_bytes,00000030

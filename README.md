@@ -99,11 +99,15 @@ Below is summary of the changes made from the Vanilla version of the game:
 - Starting time of day is dynamic depending on intro cutscene settings
 
 ## Usage Details
-There are some details about patching and un-fixable bugs that need to be emphasized.
+There are some details with the hack that need to be emphasized.
 
-**Time of Day**: The starting time of day is calculated based on 3 settings: Skip Intro, Skip Hyrule Field, and Skip Hyrule Castle. With these option enabled, the starting time of day is set later to account for these missing cutscenes. While useful in some cases, it can cause issues in others. For speedrun categories that do ESS Owl Skip or Aqua escape, you need to keep in one or both cutscenes to be able to make it to market in time. 
+**Time of Day**: The starting time of day is calculated based on 3 settings: Skip Intro, Skip Hyrule Field, and Skip Hyrule Castle. With these options enabled, the starting time of day is set later to account for these missing cutscenes. While useful in some cases, it can cause issues in others. For speedrun categories that do ESS Owl Skip or Aqua escape, you need to keep in one or both cutscenes to be able to make it to market in time. 
 
 **No Continue After Death**: On Vanilla VC if you die in specific areas and no continue the game will crash. This happens on 1.0 VC, but in different areas. This is relevant for No IM/WW because if you "no continue" when dying in Sacred Forest Meadow as adult, the game will crash. Players on VC will need to savewarp normally. A fix may be found for this in the future, but it is a vanilla issue, and is hard to debug as it is VC exclusive.
+
+**Fast Song Cutscenes**: With this option enabled, the staff for learning songs will appear right away. This can cause a harmless bug where you can walk with the ocarina making noises. This can also make tricks like Deathless Bolero behave strangely. In cases like this you may want to disable this option.
+
+**Cutscene Pointers**: For categories that wrong warp it is important to keep area intro cutscenes that set the cs pointer for wrong warps (for example: Deku intro for Ganondoor). Also, warp song cutscenes are skipped and thus do not set the pointer. This shouldn't be an issue in most categories and should be remedied by a save warp.
 
 ## Thanks
 

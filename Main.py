@@ -83,7 +83,7 @@ def main(settings, window=dummy_window()):
 
     if settings.create_wad == 'True':
         run_process(window, logger,["bin\\gzinject.exe", "-a","genkey"], b'45e') #generate common key
-        run_process(window, logger,["bin\\gzinject.exe", "-a","inject", "--rom", os.path.join(output_dir, '%s-comp.z64' % outfilebase), "--wad", settings.wad, "-o",os.path.join(output_dir, '%s.wad' % outfilebase), "-i", "NBOE", "--disable-cstick-d-remapping", "--disable-dpad-u-remapping", "--cleanup"], None)
+        run_process(window, logger,["bin\\gzinject.exe", "-a","inject", "--rom", os.path.join(output_dir, '%s-comp.z64' % outfilebase), "--wad", settings.wad, "-o",os.path.join(output_dir, '%s.wad' % outfilebase), "-i", "NBOE", "-t", "Better OOT", "--disable-cstick-d-remapping", "--disable-dpad-u-remapping", "--cleanup"], None)
         os.remove(os.path.join(output_dir, '%s-comp.z64' % outfilebase))
 
     window.update_progress(95)

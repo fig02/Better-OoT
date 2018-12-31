@@ -620,7 +620,7 @@ def patch_rom(world, rom):
 
     # Initial Save Data
 
-    #set initial time of day dynamically according to intro cs and owl settings
+    #set initial time of day dynamically according to intro cs
     tod = 0x6AAB
 
     if world.skip_intro:
@@ -629,8 +629,6 @@ def patch_rom(world, rom):
         tod += 0xC94
     if world.skip_castle:
         tod += 0x492
-    if world.no_owls:
-        tod += 0x866
 
     byte1 = (tod & 0xFF00) >> 8
     byte2 = (tod & 0xFF)
@@ -643,7 +641,6 @@ def patch_rom(world, rom):
 
     if world.no_owls:
         write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (Owl)
-        write_bits_to_save(0x00D4 + 0x55 * 0x1C + 0x04 + 0x0, 0x80) # Kokiri Forest switch flag (Owl)
         write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40) # Sacred Forest Meadow switch flag (Owl)
         write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x2, 0x01) # Lost Woods switch flag (Owl)
         write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x3, 0x80) # Lost Woods switch flag (Owl)

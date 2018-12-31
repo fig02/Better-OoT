@@ -41,10 +41,16 @@ class LocalRom(object):
         # Validate ROM file
         file_name = os.path.splitext(file)
         romCRC = list(self.buffer[0x10:0x18])
-        romLang = self.buffer[0x3E]
+        romEndian = self.buffer[0x00]
+        
+        if romEndian == 0x80:
+            romLang = self.buffer[0x3E]
+
+        if romEndian == 0x37:
+            romLang = self.buffer[0x3F]
         
         if romLang != 0x45:
-            raise RuntimeError('ROM file %s is not a US ROM.' % file)
+            raise RuntimeError('File is not an English ROM.' % file)
         
         if romCRC not in validCRC:
             # Bad CRC validation

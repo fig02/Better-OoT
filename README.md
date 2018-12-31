@@ -87,11 +87,15 @@ There are some details with the hack that need to be emphasized.
 
 **No Continue After Death**: On Vanilla VC if you die in specific areas and no continue the game will crash. This happens on 1.0 VC, but in different areas. This is relevant for No IM/WW because if you "no continue" when dying in Sacred Forest Meadow as adult, the game will crash. Players on VC will need to savewarp normally. A fix may be found for this in the future, but it is a vanilla issue which is hard to debug as it is VC exclusive.
 
+**Cutscene Pointers**: For categories that Wrong Warp it is important to keep area intro cutscenes that set the CS pointer for Wrong Warps (for example: Deku Intro for Ganondoor). Also, warp song cutscenes are skipped and thus do not set the pointer. This shouldn't be an issue in most categories and should be remedied by a save warp.
+
 **Fast Song Cutscenes**: With this option enabled, the staff for learning songs will appear right away. This can cause a harmless bug where you can walk with the ocarina making noises. This can also make tricks like Deathless Bolero behave strangely. In cases like this you may want to disable this option.
 
-**Cutscene Pointers**: For categories that wrong warp it is important to keep area intro cutscenes that set the cs pointer for wrong warps (for example: Deku intro for Ganondoor). Also, warp song cutscenes are skipped and thus do not set the pointer. This shouldn't be an issue in most categories and should be remedied by a save warp.
+**Short Chest Cutscenes**: This option is only an issue for the initial position Boatskip setup. However targetting before opening the chests lets you do the setup as normal.
 
-**Twinrova Defeat Scene**: After defeating Twinrova the cutscene is sped up which causes some differences with the camera. The position and angle is the same as normal, but any setups that use the camera for an angle will not work. May potentially be fixed in later versions.
+**Twinrova Defeat Scene**: After defeating Twinrova, the cutscene is sped up which causes some differences with the camera. The position and angle is the same as normal, but any setups that use the camera for an angle will not work. May potentially be fixed in later versions.
+
+**Kakariko Gate**: Since the flag that opens the gate in Kakariko is shared with the flag that skips the Master Sword cutscene, the gate is forced closed. This is very minor and just adds a short cutscene for 100%.
 
 
 ## Changelog

@@ -68,9 +68,9 @@ This tab is where you can customize visual settings for the game. These options 
 
 **Background Music**: Set the background music to normal, random, or none.
 
-**Tunic Color**: Set the color of the 3 tunics in the game. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completely random will generate a random color.
+**Tunic Colors**: Set the color of the 3 tunics in the game. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completely random will generate a random color.
 
-**Tunic Color**: Set the color of Navi's many states. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completely random will generate a random color.
+**Navi Colors**: Set the color of Navi's many states. There are many pre-determined colors to choose from. Random choice will randomly choose one of these colors. Completely random will generate a random color.
 
 **Low HP SFX**: Set the sound that will be played when Link is in critical health.
 

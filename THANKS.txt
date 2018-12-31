@@ -1,0 +1,19 @@
+Thanks
+
+Many people were directly or indirectly involved with this project.
+
+Thank you to:
+
+Krimtonz: For helping me implement many of the features, guiding me whenever I was stuck, and for allowing me to vent to him whenever I had an issue with something not working. This project would not have happened without him.
+
+Moltov: For creating the original Better OoT and inspiring this project. This idea was his and I expanded on it to allow more flexibility.
+
+Glank/N3rdswithgame: For teaching me MIPS Assembly and answering any questions I had about it.
+
+TestRunner/AmazingAmpharos/mzx/Grant/many others: For the work done on the OoT Randomizer. The 3.0 version of Rando was used as a base for Better OoT. Much of the work done on that project persists through this one.
+
+zfg/Scurty/Dannyb/RTA: For testing the project through its many stages of development and providing feedback.
+
+The OoT Speedrunning Community: For expressing interest in this project and giving me a reason to work on it :)
+
+Thank you all! Enjoy.

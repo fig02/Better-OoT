@@ -25,16 +25,8 @@ class LocalRom(object):
         with open(local_path('data/symbols.json'), 'r') as stream:
             symbols = json.load(stream)
             self.symbols = { name: int(addr, 16) for name, addr in symbols.items() }
-
-        try:
-            # Read decompressed file if it exists
-            self.read_rom(decomp_file)
-            # This is mainly for validation testing, but just in case...
-            self.decompress_rom_file(decomp_file, decomp_file)
-        except Exception as ex:
-            # No decompressed file, instead read Input ROM
-            self.read_rom(file)
-            self.decompress_rom_file(file, decomp_file)
+        self.read_rom(file)
+        self.decompress_rom_file(file, decomp_file)
 
         # Add file to maximum size
         self.buffer.extend(bytearray([0x00] * (0x4000000 - len(self.buffer))))
@@ -49,6 +41,11 @@ class LocalRom(object):
         # Validate ROM file
         file_name = os.path.splitext(file)
         romCRC = list(self.buffer[0x10:0x18])
+        romLang = self.buffer[0x3E]
+        
+        if romLang != 0x45:
+            raise RuntimeError('ROM file %s is not a US ROM.' % file)
+        
         if romCRC not in validCRC:
             # Bad CRC validation
             raise RuntimeError('ROM file %s is not a valid OoT 1.0 US ROM.' % file)

@@ -887,10 +887,10 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Hyrule Field',
+            'text': 'Hyrule Field (affects time of day)',
             'group': 'convenience',
             'widget': 'Checkbutton',
-            'default': 'checked',
+            'default': 'unchecked',
             'tooltip':'''\
                       Remove area intro cutscene for this location
                       '''
@@ -904,10 +904,10 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Hyrule Castle',
+            'text': 'Hyrule Castle (affects time of day)',
             'group': 'convenience',
             'widget': 'Checkbutton',
-            'default': 'checked',
+            'default': 'unchecked',
             'tooltip':'''\
                       Remove area intro cutscene for this location
                       '''

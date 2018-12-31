@@ -27,9 +27,9 @@ After opening Better OoT you will be greeted by a ROM patcher. This patcher has 
 ### ROM Tab
 This tab is where you specify file information for the patcher.
 
-**Base ROM**: Path to a Vanilla 1.0 OoT ROM. This is the ROM the patcher will use a base. You must supply your own ROM, one is not included with this program.
+**Base ROM**: Path to an English Vanilla 1.0 OoT ROM. This is the ROM the patcher will use a base. You must supply your own ROM, one is not included with this program.
 
-**Base WAD**: Path to a Vanilla 1.2 OoT WAD. This is only necessary if you are patching a WAD for use on VC. If you are making a WAD remember to still supply a ROM too. You must supply your own WAD, one is not included with this program.
+**Base WAD**: Path to a English Vanilla 1.2 OoT WAD. This is only necessary if you are patching a WAD for use on VC. If you are making a WAD remember to still supply a ROM too. You must supply your own WAD, one is not included with this program.
 
 **Output Directory**: Path for the output of the program. By default, this is set to an "Output" folder in the Better OoT folder. If this folder does not exist, the patcher will create it.
 

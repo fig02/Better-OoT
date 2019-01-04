@@ -181,9 +181,9 @@
 ;
 ; Replaces: 
 
-.org 0xCC0020
+.org 0xCC0038
     jal    talon_break_free
-    lui    a1, 0x801F
+    lw     a0, 0x0018(sp)
 
 ;==================================================================================================
 ; First try Truth Spinner

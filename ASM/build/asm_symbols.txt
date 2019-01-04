@@ -962,7 +962,7 @@
 80403694 @@return
 8040369C bgs_fix
 804036AC truth_spinner_fix
-804036C0 .byt:0990
+804036B8 .byt:0998
 80405000 disp_buf_init,00000018
 80405018 sprite_bytes_per_tile,00000028
 80405040 sprite_bytes,00000030

@@ -1,0 +1,43 @@
+zelda
+enzl4
+
+01D3	En_Zl4	00EFC410	00F00E40	80B80CF0	80B85720
+
+function runs for a few frames when loading
+
+801F04FC - 801F0170
+
+overlay + 38C
+
+target: overlay+3A8
+
+diisplaced
+lui a3, 0x3F80
+
+li      t0, 0x8000     ;set init time of day to 0x8000
+    sh      t0, 0x0C(a1)
+    sh      t0, 0x141A(a1)
+
+    relative from 8011A5D0
+
+
+.org 0xEFC7B8
+    jal zl_time
+    lui a3, 0x3F80
+
+zl_time:
+	ori     t7, t6, 0x0001 ;displaced
+
+    addiu   sp, sp, -0x20
+    sw      t0, 0x04(sp)
+    sw      t1, 0x08(sp)
+
+    la      t0, 0x8011A5D0 ;save context
+    li      t1, 0x8000     ;value
+    sh      t0, 0x0C(a1)   ;time1
+    sh      t0, 0x141A(a1) ;time2
+
+    lw      t1, 0x08(sp)
+    lw      t0, 0x04(sp)
+    jr      ra
+    addiu   sp, sp, 0x20

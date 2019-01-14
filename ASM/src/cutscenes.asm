@@ -210,7 +210,7 @@ twinrova_cs_fix:
 talon_break_free:
 
     ;displaced code
-    lui    a2, 0x801F
+    addiu    t1, r0, 0x0041
 
     ;preserve registers (t0, t1, t2, t4)
     addiu    sp, sp, -0x20
@@ -281,3 +281,21 @@ warp_speedup:
 @@return: 
     jr     ra
     nop
+
+
+zelda_tod:
+    ori     t7, t6, 0x0001
+
+    addiu   sp, sp, -0x20
+    sw      t0, 0x04(sp)
+    sw      t1, 0x08(sp)
+
+    la      t0, 0x8011A5D0 ;save context
+    li      t1, 0x8000     ;value
+    sh      t1, 0x0C(t0)   ;time1
+    sh      t1, 0x141A(t0) ;time2
+
+    lw      t1, 0x08(sp)
+    lw      t0, 0x04(sp)
+    jr      ra
+    addiu   sp, sp, 0x20

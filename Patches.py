@@ -506,6 +506,10 @@ def patch_rom(world, rom):
     # King Zora moves quickly
     rom.write_bytes(0xE56924, [0x00, 0x00, 0x00, 0x00])
 
+    # Fix Ice Cavern Alcove Camera
+    rom.write_byte(0x2BECA25,0x01);
+    rom.write_byte(0x2BECA2D,0x01);
+
     # Speed Jabu Jabu swallowing Link
     rom.write_bytes(0xCA0784, [0x00, 0x18, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
 

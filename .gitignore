@@ -45,6 +45,9 @@ ARCHIVE.bin
 #settings
 settings.sav
 
+# Pycharm
+.idea
+
 # =========================
 # Operating System Files
 # =========================

@@ -87,8 +87,8 @@ def main(settings, window=dummy_window()):
         gzinject_path = ""
         if platform.system() == 'Windows':
             gzinject_path = "bin\\gzinject.exe"
-        #elif platform.system() == 'Linux':
-            #gzinject_path = "bin/Compress/Compress"
+        elif platform.system() == 'Linux':
+            gzinject_path = "bin/gzinject-linux"
         elif platform.system() == 'Darwin':
             gzinject_path = "bin/gzinject-mac"
         else:

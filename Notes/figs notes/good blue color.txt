@@ -6,3 +6,8 @@ good blue color
 r 31
 g 73
 b 146
+
+pink 
+r 235
+g 145
+b 206

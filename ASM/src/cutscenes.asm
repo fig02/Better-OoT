@@ -256,7 +256,7 @@ warp_speedup:
     lw     t2, 0(t2)
     beqz   t2, @@return
     nop
-    la     t0, GLOBAL_CONTEXT 
+    la     t0, GLOBAL_CONTEXT
     lui    t3, 0x0001
     ori    t3, t3, 0x04C4 ;offset of warp song played
     add    t0, t0, t3
@@ -279,6 +279,9 @@ warp_speedup:
     sh     t1, 0x13D4(t0) ; Timer 2 value
     
 @@return: 
+    la     t0, GLOBAL_CONTEXT
+    la     t1, CS_POINTER     ;address of fake cs
+    sw     t1, 0x1D68(t0)     ;set cs pointer to address of fake cs
     jr     ra
     nop
 

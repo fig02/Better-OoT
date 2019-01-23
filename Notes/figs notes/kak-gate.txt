@@ -1,0 +1,18 @@
+save context
+
+
+ram 8011A5D0
+
+save+0EFF = row 0x7 
+
+ram 8011B4CF
+
+
+
+---
+
+when going adult for the first time, open the gate
+
+lhu tx, 0x0F06(SAVE_CONTEXT)
+ORI tx, ty 0x40
+sh  tx, 0x0F06(SAVE_CONTEXT)

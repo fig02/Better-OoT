@@ -1,0 +1,15 @@
+01C9	En_Kakasi2	00EF4D90	00EF54B0	80B79670	80B79D90
+
+rando hack: 
+.org 0xEF4F98
+    jal adapt_scarecrow
+    nop
+
+actor 01C9
+table entry 800EBE50
+
+in lake 801ED500
+
+rando hack ovl+208
+
+0xEF4FA0 - should be bnel but is not for some reason

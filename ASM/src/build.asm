@@ -48,6 +48,7 @@ DebugOutput:
 .include "time_travel.asm"
 .include "song_fix.asm"
 .include "scarecrow.asm"
+.include "jabu_elevator.asm"
 .include "empty_bomb_fix.asm"
 .include "quickboots.asm"
 .include "initial_save.asm"

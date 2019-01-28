@@ -83,7 +83,7 @@ def guiMain(settings=None):
     frames = {}
 
     mainWindow = Tk()
-    mainWindow.wm_title("Better OoT v3.0")
+    mainWindow.wm_title("Better OoT v3.0.2")
     mainWindow.resizable(False, False)
 
     set_icon(mainWindow)
@@ -366,6 +366,8 @@ def guiMain(settings=None):
                 if info.name == 'quest':
                     widgets[info.name].pack(expand=False, anchor=W)
                 if info.name == 'quickboots':
+                    widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'fast_elevator':
                     widgets[info.name].pack(expand=False, anchor=W)
 
 

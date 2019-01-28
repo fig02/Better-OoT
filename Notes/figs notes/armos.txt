@@ -1,0 +1,27 @@
+800E8FB0
+0054	En_Am	00C96840	00C98C40	808F9080	808FB480
+
+overlay loaded at  801FA2B0
+instance loaded at 801FC6E0
+
+
+
+801FC928 - some timer not sure what its for
+every frame of a push or pull, the timer value is stored then subtracted by 0xF800
+
+801FC820 - armos state? C0 for push, 40 for pull
+
+
+function i was messing with - 801FB6A0 (ovl+13F0)
+ovl_En_Am_Func_19:	/* 0x808FA470 */
+
+vram address of instruction with 01 808FA594
+ram address of instructoin 801FB7C4
+
+---
+instruction @ 801FB6DC () - checks value of timer mentioned above, and only branches to push/pull code if timer is not 0
+instruction @ 801FB708 () - start of code that runs every frame of a push or pull
+
+--
+timer is used as an argument to function call at 801FB888
+nopping this function call results in a really fast pull, short pulls left and right

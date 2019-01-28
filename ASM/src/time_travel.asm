@@ -14,6 +14,10 @@ after_time_travel:
     lb      t0, 0xA7(a1)   ;give light medallion
     ori     t0, t0, 0x20
     sb      t0, 0xA7(a1)
+    la      t0, SAVE_CONTEXT
+    lhu     t1, 0x0F06(t0) ;gate flag
+    ori     t1, t1, 0x40   ;open gate
+    sh     t1, 0x0F06(t0)
 
 @@return:
 

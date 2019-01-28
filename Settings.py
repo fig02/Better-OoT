@@ -733,7 +733,7 @@ setting_infos = [
     Setting_Info('song_speedup', bool, 1, True, 
         {
             'help': '''\
-                    Shorten song cutscenes
+                    Shorten the cutscenes for songs that can be skipped with glitches
                     ''',
             'action': 'store_true'
         },
@@ -743,7 +743,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Shorten song cutscenes
+                      Shorten the cutscenes for songs that can be skipped with glitches
                       '''
         }),
 
@@ -761,6 +761,23 @@ setting_infos = [
             'default': 'checked',
             'tooltip':'''\
                       All chest animations are fast
+                      '''
+        }),
+
+    Setting_Info('fast_elevator', bool, 1, True, 
+        {
+            'help': '''\
+                    The elvator in Jabu will start at the bottom
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Fast Jabu Elevator',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      The elvator in Jabu will start at the bottom
                       '''
         }),
 

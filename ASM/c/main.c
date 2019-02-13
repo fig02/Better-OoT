@@ -3,7 +3,9 @@
 #include "text.h"
 #include "util.h"
 #include "quickboots.h"
+#include "rainbow.h"
 #include "z64.h"
+
 
 void c_init() {
     heap_init();
@@ -13,5 +15,6 @@ void c_init() {
 
 void before_game_state_update() {
     handle_quickboots();
+    do_rainbow();
 }
 

@@ -220,9 +220,9 @@ class LocalRom(object):
         dma_data.sort(key=lambda v: v[0])
 
         for i in range(0, len(dma_data) - 1):
+            
             this_start, this_end, this_size = dma_data[i]
             next_start, next_end, next_size = dma_data[i + 1]
-
             if this_end > next_start:
                 overlapping_records.append(
                         '0x%08X - 0x%08X (Size: 0x%04X)\n0x%08X - 0x%08X (Size: 0x%04X)' % \

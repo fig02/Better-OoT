@@ -8,6 +8,9 @@ import subprocess
 import random
 import copy
 
+from collections import namedtuple
+Color = namedtuple('Color', '  R     G     B')
+
 from Utils import local_path, default_output_path
 from Messages import *
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
@@ -70,6 +73,21 @@ NaviColors = {
     "Phantom Zelda": [0x97, 0x7A, 0x6C, 0xFF, 0x6F, 0x46, 0x67, 0x00],
 }
 
+sword_colors = {        # Initial Color            Fade Color
+    "Custom Color":      (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
+    "Rainbow":           (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
+    "White":             (Color(0xFF, 0xFF, 0xFF), Color(0xFF, 0xFF, 0xFF)),
+    "Red":               (Color(0xFF, 0x00, 0x00), Color(0xFF, 0x00, 0x00)),
+    "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
+    "Blue":              (Color(0x00, 0x00, 0xFF), Color(0x00, 0x00, 0xFF)),
+    "Cyan":              (Color(0x00, 0xFF, 0xFF), Color(0x00, 0xFF, 0xFF)),
+    "Magenta":           (Color(0xFF, 0x00, 0xFF), Color(0xFF, 0x00, 0xFF)),
+    "Orange":            (Color(0xFF, 0xA5, 0x00), Color(0xFF, 0xA5, 0x00)),
+    "Gold":              (Color(0xFF, 0xD7, 0x00), Color(0xFF, 0xD7, 0x00)),
+    "Purple":            (Color(0x80, 0x00, 0x80), Color(0x80, 0x00, 0x80)),
+    "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
+}
+
 def get_tunic_colors():
     return list(TunicColors.keys())
 
@@ -79,14 +97,69 @@ def get_tunic_color_options():
 def get_navi_colors():
     return list(NaviColors.keys())
 
+def get_sword_colors():
+    return list(sword_colors.keys())
+
+def get_sword_color_options():
+    return ["Random Choice", "Completely Random"] + get_sword_colors()
+
 def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
+
 
 def patch_rom(world, rom):
     with open(local_path('data/rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
             rom.write_byte(address, value)
+
+
+    #Sword Colors
+    sword_trails = [
+        ('Inner Initial Sword Trail', world.sword_trail_color_inner, 
+            [(0x00BEFF80, 0xB0, 0x40), (0x00BEFF88, 0x20, 0x00)], rom.sym('CFG_RAINBOW_SWORD_INNER_ENABLED')),
+        ('Outer Initial Sword Trail', world.sword_trail_color_outer, 
+            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], rom.sym('CFG_RAINBOW_SWORD_OUTER_ENABLED')),
+    ]
+
+    sword_color_list = get_sword_colors()
+
+    for index, item in enumerate(sword_trails):
+        sword_trail_name, sword_trail_option, sword_trail_addresses, sword_trail_rainbow_symbol = item
+
+        # handle random
+        if sword_trail_option == 'Random Choice':
+            sword_trail_option = random.choice(sword_color_list)
+
+        custom_color = False
+        for index, (address, transparency, white_transparency) in enumerate(sword_trail_addresses):
+            # set rainbow option
+            if sword_trail_option == 'Rainbow':
+                rom.write_byte(sword_trail_rainbow_symbol, 0x01)
+                color = [0x00, 0x00, 0x00]
+                continue
+            else:
+                rom.write_byte(sword_trail_rainbow_symbol, 0x00)
+
+            # handle completely random
+            if sword_trail_option == 'Completely Random':
+                color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+
+            elif sword_trail_option in sword_colors:
+                color = list(sword_colors[sword_trail_option][index])
+            # build color from hex code
+            else:
+                color = list(int(sword_trail_option[i:i+2], 16) for i in (0, 2 ,4))
+                custom_color = True
+
+            if sword_trail_option == 'White':
+                color = color + [white_transparency]
+            else:
+                color = color + [transparency]
+
+            rom.write_bytes(address, color)
+
+    rom.write_byte(0x00BEFF8C, world.sword_trail_duration)
 
     #Boots on D-Pad
     if world.quickboots:

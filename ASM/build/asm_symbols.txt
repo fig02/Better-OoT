@@ -5,6 +5,7 @@
 000005B4 Shop_Item_Save_Offset
 0000D260 .dbl:0010
 0000D270 .dbl:0010
+00CDE1FC .byt:0001
 00D7E178 @@not_in_ranch
 00D7E18C @@return
 00D7E18C return_from_the_other_function

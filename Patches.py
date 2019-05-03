@@ -1,22 +1,13 @@
-import io
-import json
-import logging
-import os
-import platform
-import struct
-import subprocess
-import random
-import copy
-
 from collections import namedtuple
+
+from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
+from Messages import *
+from Utils import local_path
+
 Color = namedtuple('Color', '  R     G     B')
 
-from Utils import local_path, default_output_path
-from Messages import *
-from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
-
 TunicColors = {
-    "Custom Color": [0, 0, 0], 
+    "Custom Color": [0, 0, 0],
     "Kokiri Green": [0x1E, 0x69, 0x1B],
     "Goron Red": [0x64, 0x14, 0x00],
     "Zora Blue": [0x00, 0x3C, 0x64],
@@ -25,7 +16,7 @@ TunicColors = {
     "Azure Blue": [0x13, 0x9E, 0xD8],
     "Vivid Cyan": [0x13, 0xE9, 0xD8],
     "Light Red": [0xF8, 0x7C, 0x6D],
-    "Fuchsia":[0xFF, 0x00, 0xFF],
+    "Fuchsia": [0xFF, 0x00, 0xFF],
     "Purple": [0x95, 0x30, 0x80],
     "MM Purple": [0x50, 0x52, 0x9A],
     "Twitch Purple": [0x64, 0x41, 0xA5],
@@ -51,7 +42,7 @@ TunicColors = {
 }
 
 NaviColors = {
-    "Custom Color": [0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00], 
+    "Custom Color": [0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00],
     "Gold": [0xFE, 0xCC, 0x3C, 0xFF, 0xFE, 0xC0, 0x07, 0x00],
     "White": [0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0x00],
     "Green": [0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0x00],
@@ -73,35 +64,41 @@ NaviColors = {
     "Phantom Zelda": [0x97, 0x7A, 0x6C, 0xFF, 0x6F, 0x46, 0x67, 0x00],
 }
 
-sword_colors = {        # Initial Color            Fade Color
-    "Custom Color":      (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
-    "Rainbow":           (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
-    "White":             (Color(0xFF, 0xFF, 0xFF), Color(0xFF, 0xFF, 0xFF)),
-    "Red":               (Color(0xFF, 0x00, 0x00), Color(0xFF, 0x00, 0x00)),
-    "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
-    "Blue":              (Color(0x00, 0x00, 0xFF), Color(0x00, 0x00, 0xFF)),
-    "Cyan":              (Color(0x00, 0xFF, 0xFF), Color(0x00, 0xFF, 0xFF)),
-    "Magenta":           (Color(0xFF, 0x00, 0xFF), Color(0xFF, 0x00, 0xFF)),
-    "Orange":            (Color(0xFF, 0xA5, 0x00), Color(0xFF, 0xA5, 0x00)),
-    "Gold":              (Color(0xFF, 0xD7, 0x00), Color(0xFF, 0xD7, 0x00)),
-    "Purple":            (Color(0x80, 0x00, 0x80), Color(0x80, 0x00, 0x80)),
-    "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
+sword_colors = {  # Initial Color            Fade Color
+    "Custom Color": (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
+    "Rainbow": (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
+    "White": (Color(0xFF, 0xFF, 0xFF), Color(0xFF, 0xFF, 0xFF)),
+    "Red": (Color(0xFF, 0x00, 0x00), Color(0xFF, 0x00, 0x00)),
+    "Green": (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
+    "Blue": (Color(0x00, 0x00, 0xFF), Color(0x00, 0x00, 0xFF)),
+    "Cyan": (Color(0x00, 0xFF, 0xFF), Color(0x00, 0xFF, 0xFF)),
+    "Magenta": (Color(0xFF, 0x00, 0xFF), Color(0xFF, 0x00, 0xFF)),
+    "Orange": (Color(0xFF, 0xA5, 0x00), Color(0xFF, 0xA5, 0x00)),
+    "Gold": (Color(0xFF, 0xD7, 0x00), Color(0xFF, 0xD7, 0x00)),
+    "Purple": (Color(0x80, 0x00, 0x80), Color(0x80, 0x00, 0x80)),
+    "Pink": (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
 }
+
 
 def get_tunic_colors():
     return list(TunicColors.keys())
 
+
 def get_tunic_color_options():
     return ["Random Choice", "Completely Random"] + get_tunic_colors()
+
 
 def get_navi_colors():
     return list(NaviColors.keys())
 
+
 def get_sword_colors():
     return list(sword_colors.keys())
 
+
 def get_sword_color_options():
     return ["Random Choice", "Completely Random"] + get_sword_colors()
+
 
 def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
@@ -113,18 +110,17 @@ def patch_rom(world, rom):
             address, value = [int(x, 16) for x in line.split(',')]
             rom.write_byte(address, value)
 
-
-    #Sword Colors
+    # Sword Colors
     sword_trails = [
-        ('Inner Initial Sword Trail', world.sword_trail_color_inner, 
-            [(0x00BEFF80, 0xB0, 0x40), (0x00BEFF88, 0x20, 0x00)], rom.sym('CFG_RAINBOW_SWORD_INNER_ENABLED')),
-        ('Outer Initial Sword Trail', world.sword_trail_color_outer, 
-            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], rom.sym('CFG_RAINBOW_SWORD_OUTER_ENABLED')),
+        ('Inner Initial Sword Trail', world.sword_trail_color_inner,
+         [(0x00BEFF80, 0xB0, 0x40), (0x00BEFF88, 0x20, 0x00)], rom.sym('CFG_RAINBOW_SWORD_INNER_ENABLED')),
+        ('Outer Initial Sword Trail', world.sword_trail_color_outer,
+         [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], rom.sym('CFG_RAINBOW_SWORD_OUTER_ENABLED')),
     ]
 
     sword_color_list = get_sword_colors()
 
-    for index, item in enumerate(sword_trails):
+    for item in sword_trails:
         sword_trail_name, sword_trail_option, sword_trail_addresses, sword_trail_rainbow_symbol = item
 
         # handle random
@@ -149,7 +145,7 @@ def patch_rom(world, rom):
                 color = list(sword_colors[sword_trail_option][index])
             # build color from hex code
             else:
-                color = list(int(sword_trail_option[i:i+2], 16) for i in (0, 2 ,4))
+                color = list(int(sword_trail_option[i:i + 2], 16) for i in (0, 2, 4))
                 custom_color = True
 
             if sword_trail_option == 'White':
@@ -161,12 +157,12 @@ def patch_rom(world, rom):
 
     rom.write_byte(0x00BEFF8C, world.sword_trail_duration)
 
-    #Boots on D-Pad
+    # Boots on D-Pad
     if world.quickboots:
         symbol = rom.sym('QUICKBOOTS_ENABLE')
         rom.write_byte(symbol, 0x01)
 
-    #Jabu elevator
+    # Jabu elevator
     if world.fast_elevator:
         symbol = rom.sym('JABU_ENABLE')
         rom.write_byte(symbol, 0x01)
@@ -176,7 +172,7 @@ def patch_rom(world, rom):
 
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
-    rom.write_byte(0x253C0E2, 0x03) # Moves sheik from pedestal
+    rom.write_byte(0x253C0E2, 0x03)  # Moves sheik from pedestal
 
     if world.skip_intro:
         # Remove intro cutscene
@@ -207,130 +203,131 @@ def patch_rom(world, rom):
     rom.write_bytes(0x1FC0CF8, Block_code)
 
     # Speed learning Saria's Song
-    rom.write_int32(0x020B1734, 0x0000003C)                                  # Header: frame_count
-    rom.write_int32s(0x20B1DA8, [0x00000013, 0x0000000C])                    # Textbox, Count
-    rom.write_int16s(None, [0x0015, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    rom.write_int16s(None, [0x00D1, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    rom.write_int32s(0x020B19C0, [0x0000000A, 0x00000006])                   # Link, Count
-    rom.write_int16s(0x020B19C8, [0x0011, 0x0000, 0x0010, 0x0000])           # Action, start, end, ????
-    rom.write_int16s(0x020B19F8, [0x003E, 0x0011, 0x0020, 0x0000])           # Action, start, end, ????
-    rom.write_int32s(None,         [0x80000000,                              # ???
-                                     0x00000000, 0x000001D4, 0xFFFFF731,     # start_XYZ
-                                     0x00000000, 0x000001D4, 0xFFFFF712])    # end_XYZ
+    rom.write_int32(0x020B1734, 0x0000003C)  # Header: frame_count
+    rom.write_int32s(0x20B1DA8, [0x00000013, 0x0000000C])  # Textbox, Count
+    rom.write_int16s(None, [0x0015, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x00D1, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int32s(0x020B19C0, [0x0000000A, 0x00000006])  # Link, Count
+    rom.write_int16s(0x020B19C8, [0x0011, 0x0000, 0x0010, 0x0000])  # Action, start, end, ????
+    rom.write_int16s(0x020B19F8, [0x003E, 0x0011, 0x0020, 0x0000])  # Action, start, end, ????
+    rom.write_int32s(None, [0x80000000,  # ???
+                            0x00000000, 0x000001D4, 0xFFFFF731,  # start_XYZ
+                            0x00000000, 0x000001D4, 0xFFFFF712])  # end_XYZ
 
     # Speed learning Epona's Song
-    rom.write_int32s(0x029BEF60, [0x000003E8, 0x00000001])                   # Terminator Execution
-    rom.write_int16s(None, [0x005E, 0x000A, 0x000B, 0x000B])                 # ID, start, end, end         
-    rom.write_int32s(0x029BECB0, [0x00000013, 0x00000002])                   # Textbox, Count
-    rom.write_int16s(None, [0x00D2, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    rom.write_int16s(None, [0xFFFF, 0x000A, 0x003C, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int32s(0x029BEF60, [0x000003E8, 0x00000001])  # Terminator Execution
+    rom.write_int16s(None, [0x005E, 0x000A, 0x000B, 0x000B])  # ID, start, end, end
+    rom.write_int32s(0x029BECB0, [0x00000013, 0x00000002])  # Textbox, Count
+    rom.write_int16s(None, [0x00D2, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0xFFFF, 0x000A, 0x003C, 0xFFFF, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
 
     # Speed learning Song of Time
-    rom.write_int32s(0x0252FB98, [0x000003E8, 0x00000001])                   # Terminator Execution
-    rom.write_int16s(None, [0x0035, 0x003B, 0x003C, 0x003C])                 # ID, start, end, end          
-    rom.write_int32s(0x0252FC80, [0x00000013, 0x0000000C])                   # Textbox, Count
-    rom.write_int16s(None, [0x0019, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2        
-    rom.write_int16s(None, [0x00D5, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    rom.write_int32(0x01FC3B84, 0xFFFFFFFF) # Other Header?: frame_count
+    rom.write_int32s(0x0252FB98, [0x000003E8, 0x00000001])  # Terminator Execution
+    rom.write_int16s(None, [0x0035, 0x003B, 0x003C, 0x003C])  # ID, start, end, end
+    rom.write_int32s(0x0252FC80, [0x00000013, 0x0000000C])  # Textbox, Count
+    rom.write_int16s(None, [0x0019, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x00D5, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int32(0x01FC3B84, 0xFFFFFFFF)  # Other Header?: frame_count
 
     # Speed learning Song of Storms
-    rom.write_int32(0x03041084, 0x0000000A)                                  # Header: frame_count
-    rom.write_int32s(0x03041088, [0x00000013, 0x00000002])                   # Textbox, Count
-    rom.write_int16s(None, [0x00D6, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    rom.write_int16s(None, [0xFFFF, 0x00BE, 0x00C8, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int32(0x03041084, 0x0000000A)  # Header: frame_count
+    rom.write_int32s(0x03041088, [0x00000013, 0x00000002])  # Textbox, Count
+    rom.write_int16s(None, [0x00D6, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0xFFFF, 0x00BE, 0x00C8, 0xFFFF, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
 
     # Speed learning Nocturne of Shadow
-    rom.write_int32s(0x01FFE458, [0x000003E8, 0x00000001])                   # Other Scene? Terminator Execution
-    rom.write_int16s(None, [0x002F, 0x0001, 0x0002, 0x0002])                 # ID, start, end, end  
-    rom.write_int32(0x01FFFDF4, 0x0000003C)                                  # Header: frame_count
-    rom.write_int32s(0x02000FD8, [0x00000013, 0x0000000E])                   # Textbox, Count
-    rom.write_int16s(None, [0x0013, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    rom.write_int16s(None, [0x0077, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    rom.write_int32s(0x02000128, [0x000003E8, 0x00000001])                   # Terminator Execution
-    rom.write_int16s(None, [0x0032, 0x003A, 0x003B, 0x003B])                 # ID, start, end, end  
+    rom.write_int32s(0x01FFE458, [0x000003E8, 0x00000001])  # Other Scene? Terminator Execution
+    rom.write_int16s(None, [0x002F, 0x0001, 0x0002, 0x0002])  # ID, start, end, end
+    rom.write_int32(0x01FFFDF4, 0x0000003C)  # Header: frame_count
+    rom.write_int32s(0x02000FD8, [0x00000013, 0x0000000E])  # Textbox, Count
+    rom.write_int16s(None, [0x0013, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x0077, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int32s(0x02000128, [0x000003E8, 0x00000001])  # Terminator Execution
+    rom.write_int16s(None, [0x0032, 0x003A, 0x003B, 0x003B])  # ID, start, end, end
 
     # Speed learning Requiem of Spirit
-    rom.write_bytes(0x021A072C, [0x0F, 0x22])                                # Change time of day to A60C instead of 8000
-    rom.write_int32(0x0218AF14, 0x0000003C)                                  # Header: frame_count
-    rom.write_int32s(0x0218C574, [0x00000013, 0x00000008])                   # Textbox, Count
-    rom.write_int16s(None, [0x0012, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2       
-    rom.write_int16s(None, [0x0076, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    rom.write_int32s(0x0218B478, [0x000003E8, 0x00000001])                   # Terminator Execution
-    rom.write_int16s(None, [0x0030, 0x003A, 0x003B, 0x003B])                 # ID, start, end, end  
-    rom.write_int32s(0x0218AF18, [0x0000000A, 0x0000000B])                   # Link, Count
-    rom.write_int16s(0x0218AF20, [0x0011, 0x0000, 0x0010, 0x0000])           # Action, start, end, ????
-    rom.write_int32s(None,         [0x40000000,                              # ???
-                                     0xFFFFFAF9, 0x00000008, 0x00000001,     # start_XYZ
-                                     0xFFFFFAF9, 0x00000008, 0x00000001,     # end_XYZ
-                                     0x0F671408, 0x00000000, 0x00000001])    # normal_XYZ
-    rom.write_int16s(0x0218AF50, [0x003E, 0x0011, 0x0020, 0x0000])           # Action, start, end, ????
+    rom.write_bytes(0x021A072C, [0x0F, 0x22])  # Change time of day to A60C instead of 8000
+    rom.write_int32(0x0218AF14, 0x0000003C)  # Header: frame_count
+    rom.write_int32s(0x0218C574, [0x00000013, 0x00000008])  # Textbox, Count
+    rom.write_int16s(None, [0x0012, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x0076, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+    rom.write_int32s(0x0218B478, [0x000003E8, 0x00000001])  # Terminator Execution
+    rom.write_int16s(None, [0x0030, 0x003A, 0x003B, 0x003B])  # ID, start, end, end
+    rom.write_int32s(0x0218AF18, [0x0000000A, 0x0000000B])  # Link, Count
+    rom.write_int16s(0x0218AF20, [0x0011, 0x0000, 0x0010, 0x0000])  # Action, start, end, ????
+    rom.write_int32s(None, [0x40000000,  # ???
+                            0xFFFFFAF9, 0x00000008, 0x00000001,  # start_XYZ
+                            0xFFFFFAF9, 0x00000008, 0x00000001,  # end_XYZ
+                            0x0F671408, 0x00000000, 0x00000001])  # normal_XYZ
+    rom.write_int16s(0x0218AF50, [0x003E, 0x0011, 0x0020, 0x0000])  # Action, start, end, ????
 
     if world.song_speedup:
         # Speed learning Zelda's Lullaby
-        rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001])                   # Terminator Execution
-        rom.write_int16s(None, [0x0073, 0x003B, 0x003C, 0x003C])                 # ID, start, end, end  
-        rom.write_int32s(0x02E8E91C, [0x00000013, 0x0000000C])                   # Textbox, Count
-        rom.write_int16s(None, [0x0017, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2        
-        rom.write_int16s(None, [0x00D4, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-    
+        rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001])  # Terminator Execution
+        rom.write_int16s(None, [0x0073, 0x003B, 0x003C, 0x003C])  # ID, start, end, end
+        rom.write_int32s(0x02E8E91C, [0x00000013, 0x0000000C])  # Textbox, Count
+        rom.write_int16s(None,
+                         [0x0017, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int16s(None, [0x00D4, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+
         # Speed learning Minuet of Forest
-        rom.write_int32(0x020AFF84, 0x0000003C)                                  # Header: frame_count
-        rom.write_int32s(0x020B0800, [0x00000013, 0x0000000A])                   # Textbox, Count
-        rom.write_int16s(None, [0x000F, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
-        rom.write_int16s(None, [0x0073, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-        rom.write_int32s(0x020AFF88, [0x0000000A, 0x00000005])                   # Link, Count
-        rom.write_int16s(0x020AFF90, [0x0011, 0x0000, 0x0010, 0x0000])           # Action, start, end, ????
-        rom.write_int16s(0x020AFFC1, [0x003E, 0x0011, 0x0020, 0x0000])           # Action, start, end, ????
-        rom.write_int32s(0x020B0488, [0x00000056, 0x00000001])                   # Music Change, Count
-        rom.write_int16s(None, [0x003F, 0x0021, 0x0022, 0x0000])                 # Action, start, end, ????
-        rom.write_int32s(0x020B04C0, [0x0000007C, 0x00000001])                   # Music Fade Out, Count
-        rom.write_int16s(None, [0x0004, 0x0000, 0x0000, 0x0000])                 # Action, start, end, ????
-    
+        rom.write_int32(0x020AFF84, 0x0000003C)  # Header: frame_count
+        rom.write_int32s(0x020B0800, [0x00000013, 0x0000000A])  # Textbox, Count
+        rom.write_int16s(None, [0x000F, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int16s(None, [0x0073, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int32s(0x020AFF88, [0x0000000A, 0x00000005])  # Link, Count
+        rom.write_int16s(0x020AFF90, [0x0011, 0x0000, 0x0010, 0x0000])  # Action, start, end, ????
+        rom.write_int16s(0x020AFFC1, [0x003E, 0x0011, 0x0020, 0x0000])  # Action, start, end, ????
+        rom.write_int32s(0x020B0488, [0x00000056, 0x00000001])  # Music Change, Count
+        rom.write_int16s(None, [0x003F, 0x0021, 0x0022, 0x0000])  # Action, start, end, ????
+        rom.write_int32s(0x020B04C0, [0x0000007C, 0x00000001])  # Music Fade Out, Count
+        rom.write_int16s(None, [0x0004, 0x0000, 0x0000, 0x0000])  # Action, start, end, ????
+
         # Speed learning Bolero of Fire
-        rom.write_int32(0x0224B5D4, 0x0000003C)                                  # Header: frame_count
-        rom.write_int32s(0x0224D7E8, [0x00000013, 0x0000000A])                   # Textbox, Count
-        rom.write_int16s(None, [0x0010, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
-        rom.write_int16s(None, [0x0074, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-        rom.write_int32s(0x0224B5D8, [0x0000000A, 0x0000000B])                   # Link, Count
-        rom.write_int16s(0x0224B5E0, [0x0011, 0x0000, 0x0010, 0x0000])           # Action, start, end, ????
-        rom.write_int16s(0x0224B610, [0x003E, 0x0011, 0x0020, 0x0000])           # Action, start, end, ????
-        rom.write_int32s(0x0224B7F0, [0x0000002F, 0x0000000E])                   # Sheik, Count
-        rom.write_int16s(0x0224B7F8, [0x0000])                                   # Action
-        rom.write_int16s(0x0224B828, [0x0000])                                   # Action
-        rom.write_int16s(0x0224B858, [0x0000])                                   # Action
-        rom.write_int16s(0x0224B888, [0x0000])                                   # Action
-    
+        rom.write_int32(0x0224B5D4, 0x0000003C)  # Header: frame_count
+        rom.write_int32s(0x0224D7E8, [0x00000013, 0x0000000A])  # Textbox, Count
+        rom.write_int16s(None, [0x0010, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int16s(None, [0x0074, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int32s(0x0224B5D8, [0x0000000A, 0x0000000B])  # Link, Count
+        rom.write_int16s(0x0224B5E0, [0x0011, 0x0000, 0x0010, 0x0000])  # Action, start, end, ????
+        rom.write_int16s(0x0224B610, [0x003E, 0x0011, 0x0020, 0x0000])  # Action, start, end, ????
+        rom.write_int32s(0x0224B7F0, [0x0000002F, 0x0000000E])  # Sheik, Count
+        rom.write_int16s(0x0224B7F8, [0x0000])  # Action
+        rom.write_int16s(0x0224B828, [0x0000])  # Action
+        rom.write_int16s(0x0224B858, [0x0000])  # Action
+        rom.write_int16s(0x0224B888, [0x0000])  # Action
+
         # Speed learning Serenade of Water
-        rom.write_int32(0x02BEB254, 0x0000003C)                                  # Header: frame_count
-        rom.write_int32s(0x02BEC880, [0x00000013, 0x00000010])                   # Textbox, Count
-        rom.write_int16s(None, [0x0011, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
-        rom.write_int16s(None, [0x0075, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-        rom.write_int32s(0x02BEB258, [0x0000000A, 0x0000000F])                   # Link, Count
-        rom.write_int16s(0x02BEB260, [0x0011, 0x0000, 0x0010, 0x0000])           # Action, start, end, ????
-        rom.write_int16s(0x02BEB290, [0x003E, 0x0011, 0x0020, 0x0000])           # Action, start, end, ????
-        rom.write_int32s(0x02BEB530, [0x0000002F, 0x00000006])                   # Sheik, Count
-        rom.write_int16s(0x02BEB538, [0x0000, 0x0000, 0x018A, 0x0000])           # Action, start, end, ????
-        rom.write_int32s(None,         [0x1BBB0000,                              # ???
-                                         0xFFFFFB10, 0x8000011A, 0x00000330,     # start_XYZ
-                                         0xFFFFFB10, 0x8000011A, 0x00000330])    # end_XYZ
-        rom.write_int32s(0x02BEC848, [0x00000056, 0x00000001])                   # Music Change, Count
-        rom.write_int16s(None, [0x0059, 0x0021, 0x0022, 0x0000])                 # Action, start, end, ????
-    
+        rom.write_int32(0x02BEB254, 0x0000003C)  # Header: frame_count
+        rom.write_int32s(0x02BEC880, [0x00000013, 0x00000010])  # Textbox, Count
+        rom.write_int16s(None, [0x0011, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int16s(None, [0x0075, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int32s(0x02BEB258, [0x0000000A, 0x0000000F])  # Link, Count
+        rom.write_int16s(0x02BEB260, [0x0011, 0x0000, 0x0010, 0x0000])  # Action, start, end, ????
+        rom.write_int16s(0x02BEB290, [0x003E, 0x0011, 0x0020, 0x0000])  # Action, start, end, ????
+        rom.write_int32s(0x02BEB530, [0x0000002F, 0x00000006])  # Sheik, Count
+        rom.write_int16s(0x02BEB538, [0x0000, 0x0000, 0x018A, 0x0000])  # Action, start, end, ????
+        rom.write_int32s(None, [0x1BBB0000,  # ???
+                                0xFFFFFB10, 0x8000011A, 0x00000330,  # start_XYZ
+                                0xFFFFFB10, 0x8000011A, 0x00000330])  # end_XYZ
+        rom.write_int32s(0x02BEC848, [0x00000056, 0x00000001])  # Music Change, Count
+        rom.write_int16s(None, [0x0059, 0x0021, 0x0022, 0x0000])  # Action, start, end, ????
+
         # Speed learning Prelude of Light
-        rom.write_int32(0x0252FD24, 0x0000003C)                                  # Header: frame_count
-        rom.write_int32s(0x02531320, [0x00000013, 0x0000000E])                   # Textbox, Count
-        rom.write_int16s(None, [0x0014, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
-        rom.write_int16s(None, [0x0078, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
-        rom.write_int32s(0x0252FF10, [0x0000002F, 0x00000009])                   # Sheik, Count
-        rom.write_int16s(0x0252FF18, [0x0006, 0x0000, 0x0000, 0x0000])           # Action, start, end, ????
-        rom.write_int32s(0x025313D0, [0x00000056, 0x00000001])                   # Music Change, Count
-        rom.write_int16s(None, [0x003B, 0x0021, 0x0022, 0x0000])                 # Action, start, end, ????
-    
-    #Fix backwalk issue for Fairy Fountains
-    rom.write_bytes(0xC8A5C4, [0x10, 0x00, 0x00, 0x2F]) # Branch to end of funtion
-    rom.write_bytes(0xC8A5C8, [0xAE, 0x00, 0x00, 0x28]) # Keep fairy still
-    rom.write_bytes(0xC8A684, [0xA2, 0x0C, 0x00, 0xB4]) # Rotate fairy under the floor
-    rom.write_bytes(0xC8BE84, [0x00, 0x00, 0x00, 0x00]) # 0 out relocation table for jump
+        rom.write_int32(0x0252FD24, 0x0000003C)  # Header: frame_count
+        rom.write_int32s(0x02531320, [0x00000013, 0x0000000E])  # Textbox, Count
+        rom.write_int16s(None, [0x0014, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int16s(None, [0x0078, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF])  # ID, start, end, type, alt1, alt2
+        rom.write_int32s(0x0252FF10, [0x0000002F, 0x00000009])  # Sheik, Count
+        rom.write_int16s(0x0252FF18, [0x0006, 0x0000, 0x0000, 0x0000])  # Action, start, end, ????
+        rom.write_int32s(0x025313D0, [0x00000056, 0x00000001])  # Music Change, Count
+        rom.write_int16s(None, [0x003B, 0x0021, 0x0022, 0x0000])  # Action, start, end, ????
+
+    # Fix backwalk issue for Fairy Fountains
+    rom.write_bytes(0xC8A5C4, [0x10, 0x00, 0x00, 0x2F])  # Branch to end of funtion
+    rom.write_bytes(0xC8A5C8, [0xAE, 0x00, 0x00, 0x28])  # Keep fairy still
+    rom.write_bytes(0xC8A684, [0xA2, 0x0C, 0x00, 0xB4])  # Rotate fairy under the floor
+    rom.write_bytes(0xC8BE84, [0x00, 0x00, 0x00, 0x00])  # 0 out relocation table for jump
 
     # Speed Magic Meter Great Fairy
     rom.write_bytes(0x2CF7136, [0x00, 0x70])
@@ -346,7 +343,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0x2CF8344, [0x00, 0x56])
     rom.write_bytes(0x2CF834C, [0x00, 0xDD, 0x00, 0x57, 0x00, 0x59])
     rom.write_bytes(0x2CF83AA, [0x00, 0x56, 0x00, 0x57])
-    
+
     # Speed Double Magic Meter Great Fairy
     rom.write_bytes(0x2CF83E6, [0x00, 0x70])
     rom.write_bytes(0x2CF83F4, [0x00, 0x56])
@@ -424,38 +421,38 @@ def patch_rom(world, rom):
         # Speed scene after Deku Tree
         rom.write_bytes(0x2077E20, [0x00, 0x07, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
         rom.write_bytes(0x2078A10, [0x00, 0x0E, 0x00, 0x1F, 0x00, 0x20, 0x00, 0x20])
-        Block_code = [0x00, 0x80, 0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 
+        Block_code = [0x00, 0x80, 0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
                       0xFF, 0xFF, 0x00, 0x1E, 0x00, 0x28, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
         rom.write_bytes(0x2079570, Block_code)
-    
+
         # Speed scene after Dodongo's Cavern
         rom.write_bytes(0x2221E88, [0x00, 0x0C, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
         rom.write_bytes(0x2223308, [0x00, 0x81, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
-    
+
         # Speed scene after Jabu Jabu's Belly
         rom.write_bytes(0x2113340, [0x00, 0x0D, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
         rom.write_bytes(0x2113C18, [0x00, 0x82, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
         rom.write_bytes(0x21131D0, [0x00, 0x01, 0x00, 0x00, 0x00, 0x3C, 0x00, 0x3C])
-    
+
         # Speed scene after Forest Temple
         rom.write_bytes(0xD4ED68, [0x00, 0x45, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
         rom.write_bytes(0xD4ED78, [0x00, 0x3E, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
         rom.write_bytes(0x207B9D4, [0xFF, 0xFF, 0xFF, 0xFF])
-    
+
         # Speed scene after Fire Temple
         rom.write_bytes(0x2001848, [0x00, 0x1E, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
         rom.write_bytes(0xD100B4, [0x00, 0x62, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
         rom.write_bytes(0xD10134, [0x00, 0x3C, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
-    
+
         # Speed scene after Water Temple
         rom.write_bytes(0xD5A458, [0x00, 0x15, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
         rom.write_bytes(0xD5A3A8, [0x00, 0x3D, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
         rom.write_bytes(0x20D0D20, [0x00, 0x29, 0x00, 0xC7, 0x00, 0xC8, 0x00, 0xC8])
-    
+
         # Speed scene after Shadow Temple
         rom.write_bytes(0xD13EC8, [0x00, 0x61, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
         rom.write_bytes(0xD13E18, [0x00, 0x41, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
-    
+
         # Speed scene after Spirit Temple
         rom.write_bytes(0xD3A0A8, [0x00, 0x60, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
         rom.write_bytes(0xD39FF0, [0x00, 0x3F, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
@@ -470,7 +467,7 @@ def patch_rom(world, rom):
         rom.write_byte(0x2F5B559, 0x04)
         rom.write_byte(0x2F5B621, 0x04)
         rom.write_byte(0x2F5B761, 0x07)
-        #fix position for cs skip
+        # fix position for cs skip
         rom.write_bytes(0x2F61072, [0xFB, 0x0D])
         rom.write_bytes(0x2F61076, [0x04, 0xF3])
 
@@ -490,7 +487,7 @@ def patch_rom(world, rom):
     # Speed Twinrova defeat scene
     rom.write_bytes(0xD678CC, [0x24, 0x01, 0x03, 0xA2, 0xA6, 0x01, 0x01, 0x42])
     rom.write_bytes(0xD67BA4, [0x10, 0x00])
-    
+
     # Ganondorf battle end
     rom.write_byte(0xD82047, 0x09)
 
@@ -510,17 +507,18 @@ def patch_rom(world, rom):
     rom.write_bytes(0xE83D28, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xE83B5C, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xE84C80, [0x10, 0x00])
-    
-    # Speed completion of the trials in Ganon's Castle
-    rom.write_bytes(0x31A8090, [0x00, 0x6B, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) #Forest
-    rom.write_bytes(0x31A9E00, [0x00, 0x6E, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) #Fire
-    rom.write_bytes(0x31A8B18, [0x00, 0x6C, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) #Water
-    rom.write_bytes(0x31A9430, [0x00, 0x6D, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) #Shadow
-    rom.write_bytes(0x31AB200, [0x00, 0x70, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) #Spirit
-    rom.write_bytes(0x31AA830, [0x00, 0x6F, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) #Light
 
-    #Speed Silver Gaunts cs to avoid crash
-    rom.write_bytes(0x0218D51A, [0x00, 0x00, 0x00, 0x00]) #Set start and end frame of terminate command to beginning of cs
+    # Speed completion of the trials in Ganon's Castle
+    rom.write_bytes(0x31A8090, [0x00, 0x6B, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])  # Forest
+    rom.write_bytes(0x31A9E00, [0x00, 0x6E, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])  # Fire
+    rom.write_bytes(0x31A8B18, [0x00, 0x6C, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])  # Water
+    rom.write_bytes(0x31A9430, [0x00, 0x6D, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])  # Shadow
+    rom.write_bytes(0x31AB200, [0x00, 0x70, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])  # Spirit
+    rom.write_bytes(0x31AA830, [0x00, 0x6F, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])  # Light
+
+    # Speed Silver Gaunts cs to avoid crash
+    rom.write_bytes(0x0218D51A,
+                    [0x00, 0x00, 0x00, 0x00])  # Set start and end frame of terminate command to beginning of cs
 
     # Speed obtaining Fairy Ocarina
     rom.write_bytes(0x2151230, [0x00, 0x72, 0x00, 0x3C, 0x00, 0x3D, 0x00, 0x3D])
@@ -530,10 +528,12 @@ def patch_rom(world, rom):
     rom.write_bytes(0x2150E20, [0xFF, 0xFF, 0xFA, 0x4C])
 
     # Speed Zelda Light Arrow cutscene
-    rom.write_bytes(0x2531B40, [0x00, 0x20, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) # Load into flashback ASAP
-    rom.write_bytes(0x01FC28C8, [0x00, 0x00, 0x03, 0xE8, 0x00, 0x00, 0x00, 0x01, 0x00, 0x28, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) # Load into tot ASAP
+    rom.write_bytes(0x2531B40, [0x00, 0x20, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])  # Load into flashback ASAP
+    rom.write_bytes(0x01FC28C8,
+                    [0x00, 0x00, 0x03, 0xE8, 0x00, 0x00, 0x00, 0x01, 0x00, 0x28, 0x00, 0x00, 0x00, 0x00, 0x00,
+                     0x00])  # Load into tot ASAP
     rom.write_bytes(0x2532FBC, [0x00, 0x75])
-    rom.write_bytes(0x2532FEA, [0x00, 0x75, 0x00, 0x80])  
+    rom.write_bytes(0x2532FEA, [0x00, 0x75, 0x00, 0x80])
     rom.write_byte(0x2533115, 0x05)
     rom.write_bytes(0x2533141, [0x06, 0x00, 0x06, 0x00, 0x10])
     rom.write_bytes(0x2533171, [0x0F, 0x00, 0x11, 0x00, 0x40])
@@ -545,7 +545,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0x25338C2, [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
     rom.write_bytes(0x25339C2, [0x00, 0x75, 0x00, 0x76])
     rom.write_bytes(0x2533830, [0x00, 0x31, 0x00, 0x81, 0x00, 0x82, 0x00, 0x82])
-    
+
     # Speed Bridge of Light cutscene
     rom.write_bytes(0x292D644, [0x00, 0x00, 0x00, 0xA0])
     rom.write_bytes(0x292D680, [0x00, 0x02, 0x00, 0x0A, 0x00, 0x6C, 0x00, 0x00])
@@ -554,27 +554,27 @@ def patch_rom(world, rom):
     rom.write_bytes(0x292D810, [0x00, 0x02, 0x00, 0x3C])
     rom.write_bytes(0x292D924, [0xFF, 0xFF, 0x00, 0x14, 0x00, 0x96, 0xFF, 0xFF])
 
-    #Speed Pushing of All Pushable Objects
-    rom.write_bytes(0xDD2B86, [0x40, 0x80])             #block speed
-    rom.write_bytes(0xDD2D26, [0x00, 0x03])             #block delay
-    rom.write_bytes(0xDD9682, [0x40, 0x80])             #milk crate speed
-    rom.write_bytes(0xDD981E, [0x00, 0x03])             #milk crate delay
-    rom.write_bytes(0xCE1BD0, [0x40, 0x80, 0x00, 0x00]) #amy puzzle speed
-    rom.write_bytes(0xCE0F0E, [0x00, 0x03])             #amy puzzle delay
-    rom.write_bytes(0xC77CA8, [0x40, 0x80, 0x00, 0x00]) #fire block speed
-    rom.write_bytes(0xC770C2, [0x00, 0x01])             #fire block delay
-    rom.write_bytes(0xCC5DBC, [0x29, 0xE1, 0x00, 0x01]) #forest basement puzzle delay
-    rom.write_bytes(0xDBB5E8, [0x2B, 0x01, 0x00, 0x00]) #spirit cobra mirror startup #might remove
-    rom.write_bytes(0xDBCF70, [0x2B, 0x01, 0x00, 0x01]) #spirit cobra mirror delay
-    rom.write_bytes(0xDBA230, [0x28, 0x41, 0x00, 0x19]) #truth spinner speed
-    rom.write_bytes(0xDBA3A4, [0x24, 0x18, 0x00, 0x00]) #truth spinner delay
+    # Speed Pushing of All Pushable Objects
+    rom.write_bytes(0xDD2B86, [0x40, 0x80])  # block speed
+    rom.write_bytes(0xDD2D26, [0x00, 0x03])  # block delay
+    rom.write_bytes(0xDD9682, [0x40, 0x80])  # milk crate speed
+    rom.write_bytes(0xDD981E, [0x00, 0x03])  # milk crate delay
+    rom.write_bytes(0xCE1BD0, [0x40, 0x80, 0x00, 0x00])  # amy puzzle speed
+    rom.write_bytes(0xCE0F0E, [0x00, 0x03])  # amy puzzle delay
+    rom.write_bytes(0xC77CA8, [0x40, 0x80, 0x00, 0x00])  # fire block speed
+    rom.write_bytes(0xC770C2, [0x00, 0x01])  # fire block delay
+    rom.write_bytes(0xCC5DBC, [0x29, 0xE1, 0x00, 0x01])  # forest basement puzzle delay
+    rom.write_bytes(0xDBB5E8, [0x2B, 0x01, 0x00, 0x00])  # spirit cobra mirror startup #might remove
+    rom.write_bytes(0xDBCF70, [0x2B, 0x01, 0x00, 0x01])  # spirit cobra mirror delay
+    rom.write_bytes(0xDBA230, [0x28, 0x41, 0x00, 0x19])  # truth spinner speed
+    rom.write_bytes(0xDBA3A4, [0x24, 0x18, 0x00, 0x00])  # truth spinner delay
 
-    #Speed Deku Seed Upgrade Scrub Cutscene
-    rom.write_bytes(0xECA900, [0x24, 0x03, 0xC0, 0x00]) #scrub angle
-    rom.write_bytes(0xECAE90, [0x27, 0x18, 0xFD, 0x04]) #skip straight to giving item
-    rom.write_bytes(0xECB618, [0x25, 0x6B, 0x00, 0xD4]) #skip straight to digging back in
-    rom.write_bytes(0xECAE70, [0x00, 0x00, 0x00, 0x00]) #never initialize cs camera
-    rom.write_bytes(0xE5972C, [0x24, 0x08, 0x00, 0x01]) #timer set to 1 frame for giving item
+    # Speed Deku Seed Upgrade Scrub Cutscene
+    rom.write_bytes(0xECA900, [0x24, 0x03, 0xC0, 0x00])  # scrub angle
+    rom.write_bytes(0xECAE90, [0x27, 0x18, 0xFD, 0x04])  # skip straight to giving item
+    rom.write_bytes(0xECB618, [0x25, 0x6B, 0x00, 0xD4])  # skip straight to digging back in
+    rom.write_bytes(0xECAE70, [0x00, 0x00, 0x00, 0x00])  # never initialize cs camera
+    rom.write_bytes(0xE5972C, [0x24, 0x08, 0x00, 0x01])  # timer set to 1 frame for giving item
 
     if world.no_owls:
         # Remove remaining owls
@@ -591,8 +591,8 @@ def patch_rom(world, rom):
     rom.write_bytes(0xE56924, [0x00, 0x00, 0x00, 0x00])
 
     # Fix Ice Cavern Alcove Camera
-    rom.write_byte(0x2BECA25,0x01);
-    rom.write_byte(0x2BECA2D,0x01);
+    rom.write_byte(0x2BECA25, 0x01)
+    rom.write_byte(0x2BECA2D, 0x01)
 
     # Speed Jabu Jabu swallowing Link
     rom.write_bytes(0xCA0784, [0x00, 0x18, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
@@ -603,11 +603,11 @@ def patch_rom(world, rom):
     # Ruto never disappears from Jabu Jabu's Belly
     rom.write_byte(0xD01EA3, 0x00)
 
-    #Move fire/forest temple switches down 1 unit to make it easier to press
-    rom.write_bytes(0x24860A8, [0xFC, 0xF4]) #forest basement 1
-    rom.write_bytes(0x24860C8, [0xFC, 0xF4]) #forest basement 2
-    rom.write_bytes(0x24860E8, [0xFC, 0xF4]) #forest basement 3
-    rom.write_bytes(0x236C148, [0x11, 0x93]) #fire hammer room
+    # Move fire/forest temple switches down 1 unit to make it easier to press
+    rom.write_bytes(0x24860A8, [0xFC, 0xF4])  # forest basement 1
+    rom.write_bytes(0x24860C8, [0xFC, 0xF4])  # forest basement 2
+    rom.write_bytes(0x24860E8, [0xFC, 0xF4])  # forest basement 3
+    rom.write_bytes(0x236C148, [0x11, 0x93])  # fire hammer room
 
     # Speed up Epona race start
     rom.write_bytes(0x29BE984, [0x00, 0x00, 0x00, 0x02])
@@ -626,7 +626,7 @@ def patch_rom(world, rom):
     rom.write_byte(0x2025159, 0x02)
     rom.write_byte(0x2023E19, 0x02)
 
-    #Speed opening of Door of Time
+    # Speed opening of Door of Time
     rom.write_bytes(0xE0A176, [0x00, 0x02])
     rom.write_bytes(0xE0A35A, [0x00, 0x01, 0x00, 0x02])
 
@@ -642,35 +642,35 @@ def patch_rom(world, rom):
     rom.write_bytes(0xCA3EA2, [0x00, 0x00, 0x25, 0x4A, 0x00, 0x08])
 
     # Make the check for BGS 1 full day
-    rom.write_bytes(0xED446C, [0x28, 0x41, 0x00, 0x01]) #day check for claim check
-    rom.write_bytes(0xED4494, [0x28, 0x41, 0x00, 0x01]) #day check for dialogue
-    
-    # Fixed reward order for Bombchu Bowling
-    rom.write_bytes(0xE2E694, [0x80, 0xAA, 0xE2, 0x64]) #item 1 = hp
-    rom.write_bytes(0xE2E698, [0x80, 0xAA, 0xE2, 0x88]) #item 2 = bombs
-    rom.write_bytes(0xE2E69C, [0x80, 0xAA, 0xE2, 0x28]) #item 3 = bombbag
-    rom.write_bytes(0xE2E6A0, [0x80, 0xAA, 0xE2, 0x4C]) #item 4 = rupee
-    rom.write_bytes(0xE2E6A4, [0x80, 0xAA, 0xE2, 0x58]) #item 5 = chus
-    rom.write_bytes(0xE2D440, [0x24, 0x19, 0x00, 0x00]) #start at item 1
-   
-    # Speed Dampe digging
-    rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59]) #text
-    rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00]) #first try
+    rom.write_bytes(0xED446C, [0x28, 0x41, 0x00, 0x01])  # day check for claim check
+    rom.write_bytes(0xED4494, [0x28, 0x41, 0x00, 0x01])  # day check for dialogue
 
-    #Give hp after first ocarina minigame round
-    rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02]) 
+    # Fixed reward order for Bombchu Bowling
+    rom.write_bytes(0xE2E694, [0x80, 0xAA, 0xE2, 0x64])  # item 1 = hp
+    rom.write_bytes(0xE2E698, [0x80, 0xAA, 0xE2, 0x88])  # item 2 = bombs
+    rom.write_bytes(0xE2E69C, [0x80, 0xAA, 0xE2, 0x28])  # item 3 = bombbag
+    rom.write_bytes(0xE2E6A0, [0x80, 0xAA, 0xE2, 0x4C])  # item 4 = rupee
+    rom.write_bytes(0xE2E6A4, [0x80, 0xAA, 0xE2, 0x58])  # item 5 = chus
+    rom.write_bytes(0xE2D440, [0x24, 0x19, 0x00, 0x00])  # start at item 1
+
+    # Speed Dampe digging
+    rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])  # text
+    rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00])  # first try
+
+    # Give hp after first ocarina minigame round
+    rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02])
     rom.write_byte(0xDF2647, 0x3E)
 
-    #Move keese in fire block room
+    # Move keese in fire block room
     rom.write_bytes(0x23A4058, [0x9E, 0x3A])
     rom.write_bytes(0x23A4068, [0x9E, 0x3A])
     rom.write_bytes(0x23A4088, [0x9E, 0x3A])
     rom.write_bytes(0x23A4098, [0x9E, 0x3A])
-    
+
     # Make item descriptions into a single box
     Short_item_descriptions = [0x92EC84, 0x92F9E3, 0x92F2B4, 0x92F37A, 0x92F513, 0x92F5C6, 0x92E93B, 0x92EA12]
     for address in Short_item_descriptions:
-        rom.write_byte(address,0x02)
+        rom.write_byte(address, 0x02)
 
     # will be populated with data to be written to initial save
     # see initial_save.asm and config.asm for more details on specifics
@@ -685,7 +685,7 @@ def patch_rom(world, rom):
             return
 
         initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x00, value]
-        
+
     # will overwrite the byte at offset with the given value
     def write_byte_to_save(offset, value, filter=None):
         nonlocal initial_save_table
@@ -711,7 +711,7 @@ def patch_rom(world, rom):
 
     # Initial Save Data
 
-    #set initial time of day dynamically according to intro cs
+    # set initial time of day dynamically according to intro cs
     tod = 0x6AAB
 
     if world.skip_intro:
@@ -725,125 +725,127 @@ def patch_rom(world, rom):
     byte2 = (tod & 0xFF)
     timeofday = [byte1, byte2]
 
-    write_bytes_to_save(0x0C, timeofday) #write sum to time of day
+    write_bytes_to_save(0x0C, timeofday)  # write sum to time of day
 
     if world.forest_elevator:
-        write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
+        write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08)  # Forest Temple switch flag (Poe Sisters cutscene)
 
     if world.no_owls:
-        write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (Owl)
-        write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40) # Sacred Forest Meadow switch flag (Owl)
-        write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x2, 0x01) # Lost Woods switch flag (Owl)
-        write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x3, 0x80) # Lost Woods switch flag (Owl)
-        write_bits_to_save(0x00D4 + 0x5C * 0x1C + 0x04 + 0x0, 0x80) # Desert Colossus switch flag (Owl)
-        write_bits_to_save(0x00D4 + 0x5F * 0x1C + 0x04 + 0x3, 0x20) # Hyrule Castle switch flag (Owl)
-        write_bits_to_save(0x0EE0, 0x80) # "Spoke to Kaepora Gaebora by Lost Woods"
+        write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08)  # Hyrule Field switch flag (Owl)
+        write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40)  # Sacred Forest Meadow switch flag (Owl)
+        write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x2, 0x01)  # Lost Woods switch flag (Owl)
+        write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x3, 0x80)  # Lost Woods switch flag (Owl)
+        write_bits_to_save(0x00D4 + 0x5C * 0x1C + 0x04 + 0x0, 0x80)  # Desert Colossus switch flag (Owl)
+        write_bits_to_save(0x00D4 + 0x5F * 0x1C + 0x04 + 0x3, 0x20)  # Hyrule Castle switch flag (Owl)
+        write_bits_to_save(0x0EE0, 0x80)  # "Spoke to Kaepora Gaebora by Lost Woods"
 
-    write_bits_to_save(0x0ED4, 0x10) # "Met Deku Tree"
-    write_bits_to_save(0x0ED5, 0x20) # "Deku Tree Opened Mouth"
-    write_bits_to_save(0x0ED6, 0x08) # "Rented Horse From Ingo"
-    write_bits_to_save(0x0EDA, 0x08) # "Began Nabooru Battle"
-    write_bits_to_save(0x0EDC, 0x80) # "Entered the Master Sword Chamber"
-    write_bits_to_save(0x0EDD, 0x20) # "Pulled Master Sword from Pedestal"
-    write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (Ruto)
+    write_bits_to_save(0x0ED4, 0x10)  # "Met Deku Tree"
+    write_bits_to_save(0x0ED5, 0x20)  # "Deku Tree Opened Mouth"
+    write_bits_to_save(0x0ED6, 0x08)  # "Rented Horse From Ingo"
+    write_bits_to_save(0x0EDA, 0x08)  # "Began Nabooru Battle"
+    write_bits_to_save(0x0EDC, 0x80)  # "Entered the Master Sword Chamber"
+    write_bits_to_save(0x0EDD, 0x20)  # "Pulled Master Sword from Pedestal"
+    write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01)  # Water temple switch flag (Ruto)
 
-    write_bits_to_save(0x0EE7, 0x20) # "Nabooru Captured by Twinrova"
-    write_bits_to_save(0x0EE7, 0x10) # "Spoke to Nabooru in Spirit Temple"
-    write_bits_to_save(0x0EED, 0x20) # "Sheik, Spawned at Master Sword Pedestal as Adult"
-    write_bits_to_save(0x0EED, 0x80) # "Watched Ganon's Tower Collapse / Caught by Gerudo"
-    write_bits_to_save(0x0EED, 0x01) # "Nabooru Ordered to Fight by Twinrova"
-    write_bits_to_save(0x0EF9, 0x01) # "Greeted by Saria"
-    write_bits_to_save(0x0F0A, 0x04) # "Spoke to Ingo Once as Adult"
+    write_bits_to_save(0x0EE7, 0x20)  # "Nabooru Captured by Twinrova"
+    write_bits_to_save(0x0EE7, 0x10)  # "Spoke to Nabooru in Spirit Temple"
+    write_bits_to_save(0x0EED, 0x20)  # "Sheik, Spawned at Master Sword Pedestal as Adult"
+    write_bits_to_save(0x0EED, 0x80)  # "Watched Ganon's Tower Collapse / Caught by Gerudo"
+    write_bits_to_save(0x0EED, 0x01)  # "Nabooru Ordered to Fight by Twinrova"
+    write_bits_to_save(0x0EF9, 0x01)  # "Greeted by Saria"
+    write_bits_to_save(0x0F0A, 0x04)  # "Spoke to Ingo Once as Adult"
 
-    write_bits_to_save(0x0ED7, 0x01) # "Spoke to Child Malon at Castle or Market"
-    write_bits_to_save(0x0ED7, 0x20) # "Spoke to Child Malon at Ranch"
-    write_bits_to_save(0x0ED7, 0x40) # "Invited to Sing With Child Malon"
-    write_bits_to_save(0x0F09, 0x10) # "Met Child Malon at Castle or Market"
-    write_bits_to_save(0x0F09, 0x20) # "Child Malon Said Epona Was Scared of You"
+    write_bits_to_save(0x0ED7, 0x01)  # "Spoke to Child Malon at Castle or Market"
+    write_bits_to_save(0x0ED7, 0x20)  # "Spoke to Child Malon at Ranch"
+    write_bits_to_save(0x0ED7, 0x40)  # "Invited to Sing With Child Malon"
+    write_bits_to_save(0x0F09, 0x10)  # "Met Child Malon at Castle or Market"
+    write_bits_to_save(0x0F09, 0x20)  # "Child Malon Said Epona Was Scared of You"
 
-    write_bits_to_save(0x0F21, 0x04) # "Ruto in JJ (M3) Talk First Time"
-    write_bits_to_save(0x0F21, 0x02) # "Ruto in JJ (M2) Meet Ruto"
+    write_bits_to_save(0x0F21, 0x04)  # "Ruto in JJ (M3) Talk First Time"
+    write_bits_to_save(0x0F21, 0x02)  # "Ruto in JJ (M2) Meet Ruto"
 
-    write_bits_to_save(0x0EE2, 0x01) # "Began Ganondorf Battle"
-    #write_bits_to_save(0x0EE3, 0x80) # "Began Bongo Bongo Battle"
-    write_bits_to_save(0x0EE3, 0x40) # "Began Barinade Battle"
-    write_bits_to_save(0x0EE3, 0x20) # "Began Twinrova Battle"
-    write_bits_to_save(0x0EE3, 0x10) # "Began Morpha Battle"
-    write_bits_to_save(0x0EE3, 0x08) # "Began Volvagia Battle"
-    write_bits_to_save(0x0EE3, 0x04) # "Began Phantom Ganon Battle"
-    write_bits_to_save(0x0EE3, 0x02) # "Began King Dodongo Battle"
-    write_bits_to_save(0x0EE3, 0x01) # "Began Gohma Battle"
+    write_bits_to_save(0x0EE2, 0x01)  # "Began Ganondorf Battle"
+    # write_bits_to_save(0x0EE3, 0x80) # "Began Bongo Bongo Battle"
+    write_bits_to_save(0x0EE3, 0x40)  # "Began Barinade Battle"
+    write_bits_to_save(0x0EE3, 0x20)  # "Began Twinrova Battle"
+    write_bits_to_save(0x0EE3, 0x10)  # "Began Morpha Battle"
+    write_bits_to_save(0x0EE3, 0x08)  # "Began Volvagia Battle"
+    write_bits_to_save(0x0EE3, 0x04)  # "Began Phantom Ganon Battle"
+    write_bits_to_save(0x0EE3, 0x02)  # "Began King Dodongo Battle"
+    write_bits_to_save(0x0EE3, 0x01)  # "Began Gohma Battle"
 
-    #Static Intro CS
-    write_bits_to_save(0x0EE9, 0x80) # "Entered Temple of Time"
-    write_bits_to_save(0x0EEA, 0x04) # "Entered Ganon's Castle (Exterior)"
-    write_bits_to_save(0x0EEB, 0x10) # "Entered Lon Lon Ranch"
-    write_bits_to_save(0x0F08, 0x08) # "Entered Hyrule Castle"
+    # Static Intro CS
+    write_bits_to_save(0x0EE9, 0x80)  # "Entered Temple of Time"
+    write_bits_to_save(0x0EEA, 0x04)  # "Entered Ganon's Castle (Exterior)"
+    write_bits_to_save(0x0EEB, 0x10)  # "Entered Lon Lon Ranch"
+    write_bits_to_save(0x0F08, 0x08)  # "Entered Hyrule Castle"
 
     if world.skip_field:
-        write_bits_to_save(0x0EE9, 0x01) # "Entered Hyrule Field"
+        write_bits_to_save(0x0EE9, 0x01)  # "Entered Hyrule Field"
 
     if world.skip_castle:
-        write_bits_to_save(0x0EE9, 0x20) # "Entered Hyrule Castle"
+        write_bits_to_save(0x0EE9, 0x20)  # "Entered Hyrule Castle"
 
     if world.skip_kak:
-        write_bits_to_save(0x0EE9, 0x08) # "Entered Kakariko Village"
+        write_bits_to_save(0x0EE9, 0x08)  # "Entered Kakariko Village"
 
     if world.skip_gy:
-        write_bits_to_save(0x0EEB, 0x40) # "Entered Graveyard"
+        write_bits_to_save(0x0EEB, 0x40)  # "Entered Graveyard"
 
     if world.skip_dmt:
-        write_bits_to_save(0x0EE9, 0x02) # "Entered Death Mountain Trail"
+        write_bits_to_save(0x0EE9, 0x02)  # "Entered Death Mountain Trail"
 
     if world.skip_gc:
-        write_bits_to_save(0x0EE9, 0x40) # "Entered Goron City"
+        write_bits_to_save(0x0EE9, 0x40)  # "Entered Goron City"
 
     if world.skip_dmc:
-        write_bits_to_save(0x0EEA, 0x02) # "Entered Death Mountain Crater"
+        write_bits_to_save(0x0EEA, 0x02)  # "Entered Death Mountain Crater"
 
     if world.skip_domain:
-        write_bits_to_save(0x0EE9, 0x10) # "Entered Zora's Domain"
+        write_bits_to_save(0x0EE9, 0x10)  # "Entered Zora's Domain"
 
     if world.skip_fountain:
-        write_bits_to_save(0x0EEB, 0x80) # "Entered Zora's Fountain"
+        write_bits_to_save(0x0EEB, 0x80)  # "Entered Zora's Fountain"
 
     if world.skip_lh:
-        write_bits_to_save(0x0EEB, 0x02) # "Entered Lake Hylia"
+        write_bits_to_save(0x0EEB, 0x02)  # "Entered Lake Hylia"
 
     if world.skip_gv:
-        write_bits_to_save(0x0EEB, 0x04) # "Entered Gerudo Valley"
+        write_bits_to_save(0x0EEB, 0x04)  # "Entered Gerudo Valley"
 
     if world.skip_gf:
-        write_bits_to_save(0x0EEB, 0x08) # "Entered Gerudo's Fortress"
+        write_bits_to_save(0x0EEB, 0x08)  # "Entered Gerudo's Fortress"
 
     if world.skip_colossus:
-        write_bits_to_save(0x0EEA, 0x01) # "Entered Desert Colossus"
+        write_bits_to_save(0x0EEA, 0x01)  # "Entered Desert Colossus"
 
     if world.skip_deku:
-        write_bits_to_save(0x0EE8, 0x01) # "Entered Deku Tree"
+        write_bits_to_save(0x0EE8, 0x01)  # "Entered Deku Tree"
 
     if world.skip_dc:
-        write_bits_to_save(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
+        write_bits_to_save(0x0EEB, 0x01)  # "Entered Dodongo's Cavern"
 
     if world.skip_jabu:
-        write_bits_to_save(0x0EEB, 0x20) # "Entered Jabu-Jabu's Belly"
-
+        write_bits_to_save(0x0EEB, 0x20)  # "Entered Jabu-Jabu's Belly"
 
     # Make the Kakariko Gate not open with the MS - not sure if i wanna keep it like this
     rom.write_int32(0xDD3538, 0x34190000)
     if not world.open_kakariko:
-        rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
+        rom.write_int32(0xDD3538, 0x34190000)  # li t9, 0
 
     # Move carpenter starting position
     if world.skip_kak:
-        rom.write_bytes(0x1FF93A4, [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C, 0xFF, 0x92, 0x00, 0x00, 0x01, 0x78, 0xFF, 0x2E, 0x00, 0x00, 0x00, 0x03, 0xFD, 0x2B, 0x00, 0xC8, 0xFF, 0xF9, 0xFD, 0x03, 0x00, 0xC8, 0xFF, 0xA9, 0xFD, 0x5D, 0x00, 0xC8, 0xFE, 0x5F]) # re order the carpenter's path
-        rom.write_byte(0x1FF93D0, 0x06) # set the path points to 6
-        rom.write_bytes(0x20160B6, [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C]) # set the carpenter's start position
-    
+        rom.write_bytes(0x1FF93A4,
+                        [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C, 0xFF, 0x92, 0x00, 0x00, 0x01, 0x78, 0xFF, 0x2E, 0x00, 0x00,
+                         0x00, 0x03, 0xFD, 0x2B, 0x00, 0xC8, 0xFF, 0xF9, 0xFD, 0x03, 0x00, 0xC8, 0xFF, 0xA9, 0xFD, 0x5D,
+                         0x00, 0xC8, 0xFE, 0x5F])  # re order the carpenter's path
+        rom.write_byte(0x1FF93D0, 0x06)  # set the path points to 6
+        rom.write_bytes(0x20160B6, [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C])  # set the carpenter's start position
+
     # Make all chest opening animations fast
     if world.fast_chests:
-        rom.write_int32(0xBDA2E8, 0x240AFFFF) # addiu   t2, r0, -1
-                               # replaces # lb      t2, 0x0002 (t1)
+        rom.write_int32(0xBDA2E8, 0x240AFFFF)  # addiu   t2, r0, -1
+        # replaces # lb      t2, 0x0002 (t1)
 
     if world.quest == 'master':
         for i in world.dungeon_mq:
@@ -879,14 +881,14 @@ def patch_rom(world, rom):
 
     patch_files(rom, mq_scenes)
 
-    ### Load Shop File
+    # Load Shop File
     # Move shop actor file to free space
     shop_item_file = File({
-            'Name':'En_GirlA',
-            'Start':'00C004E0',
-            'End':'00C02E00',
-            'RemapStart':'03485000',
-        })
+        'Name': 'En_GirlA',
+        'Start': '00C004E0',
+        'End': '00C02E00',
+        'RemapStart': '03485000',
+    })
     shop_item_file.relocate(rom)
 
     # Increase the shop item table size
@@ -902,36 +904,36 @@ def patch_rom(world, rom):
     add_relocations(rom, shop_item_file, new_relocations)
 
     # update actor table
-    rom.write_int32s(0x00B5E490 + (0x20 * 4), 
-        [shop_item_file.start, 
-        shop_item_file.end, 
-        shop_item_vram_start, 
-        shop_item_vram_start + (shop_item_file.end - shop_item_file.start)])
+    rom.write_int32s(0x00B5E490 + (0x20 * 4),
+                     [shop_item_file.start,
+                      shop_item_file.end,
+                      shop_item_vram_start,
+                      shop_item_vram_start + (shop_item_file.end - shop_item_file.start)])
 
     # Update DMA Table
     update_dmadata(rom, shop_item_file)
 
     # Create 2nd Bazaar Room
     bazaar_room_file = File({
-            'Name':'shop1_room_1',
-            'Start':'028E4000',
-            'End':'0290D7B0',
-            'RemapStart':'03489000',
-        })
+        'Name': 'shop1_room_1',
+        'Start': '028E4000',
+        'End': '0290D7B0',
+        'RemapStart': '03489000',
+    })
     bazaar_room_file.dma_key = 0x03472000
     bazaar_room_file.relocate(rom)
     # Update DMA Table
     update_dmadata(rom, bazaar_room_file)
 
     # Add new Bazaar Room to Bazaar Scene
-    rom.write_int32s(0x28E3030, [0x00010000, 0x02000058]) #reduce position list size
-    rom.write_int32s(0x28E3008, [0x04020000, 0x02000070]) #expand room list size
+    rom.write_int32s(0x28E3030, [0x00010000, 0x02000058])  # reduce position list size
+    rom.write_int32s(0x28E3008, [0x04020000, 0x02000070])  # expand room list size
 
-    rom.write_int32s(0x28E3070, [0x028E4000, 0x0290D7B0, 
-                     bazaar_room_file.start, bazaar_room_file.end]) #room list
-    rom.write_int16s(0x28E3080, [0x0000, 0x0001]) # entrance list
-    rom.write_int16(0x28E4076, 0x0005) # Change shop to Kakariko Bazaar
-    #rom.write_int16(0x3489076, 0x0005) # Change shop to Kakariko Bazaar
+    rom.write_int32s(0x28E3070, [0x028E4000, 0x0290D7B0,
+                                 bazaar_room_file.start, bazaar_room_file.end])  # room list
+    rom.write_int16s(0x28E3080, [0x0000, 0x0001])  # entrance list
+    rom.write_int16(0x28E4076, 0x0005)  # Change shop to Kakariko Bazaar
+    # rom.write_int16(0x3489076, 0x0005) # Change shop to Kakariko Bazaar
 
     # Load Message and Shop Data
     messages = read_messages(rom)
@@ -965,8 +967,8 @@ def patch_rom(world, rom):
 
     # Set OHKO mode
     if world.difficulty == 'ohko':
-        rom.write_int32(0xAE80A8, 0xA4A00030) # sh  zero,48(a1)
-        rom.write_int32(0xAE80B4, 0x06000003) # bltz s0, +0003
+        rom.write_int32(0xAE80A8, 0xA4A00030)  # sh  zero,48(a1)
+        rom.write_int32(0xAE80B4, 0x06000003)  # bltz s0, +0003
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
@@ -974,7 +976,7 @@ def patch_rom(world, rom):
     # reduce item message lengths
     update_item_messages(messages, world)
 
-    #update misc messages
+    # update misc messages
     update_misc_messages(messages)
 
     repack_messages(rom, messages)
@@ -986,17 +988,17 @@ def patch_rom(world, rom):
     # patch music 
     if world.background_music == 'random':
         randomize_music(rom)
-    elif world.background_music == 'off':    
+    elif world.background_music == 'off':
         disable_music(rom)
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
-    
+
     # Custom color tunic 
     Tunics = []
-    Tunics.append(0x00B6DA38) # Kokiri Tunic
-    Tunics.append(0x00B6DA3B) # Goron Tunic
-    Tunics.append(0x00B6DA3E) # Zora Tunic
+    Tunics.append(0x00B6DA38)  # Kokiri Tunic
+    Tunics.append(0x00B6DA3B)  # Goron Tunic
+    Tunics.append(0x00B6DA3E)  # Zora Tunic
     colorList = get_tunic_colors()
     randomColors = random.choices(colorList, k=3)
 
@@ -1012,19 +1014,20 @@ def patch_rom(world, rom):
             if world.tunic_colors[i] == 'Random Choice':
                 color = TunicColors[randomColors[i]]
             # grab the color from the list
-            elif thisColor in TunicColors: 
-                color = TunicColors[thisColor] 
-            # build color from hex code  
-            else: 
-                color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4)) 
+            elif thisColor in TunicColors:
+                color = TunicColors[thisColor]
+                # build color from hex code
+            else:
+                color = list(int(thisColor[i:i + 2], 16) for i in (0, 2, 4))
         rom.write_bytes(Tunics[i], color)
 
     # patch navi colors
     Navi = []
-    Navi.append([0x00B5E184]) # Default
-    Navi.append([0x00B5E19C, 0x00B5E1BC]) # Enemy, Boss
-    Navi.append([0x00B5E194]) # NPC
-    Navi.append([0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]) # Everything else
+    Navi.append([0x00B5E184])  # Default
+    Navi.append([0x00B5E19C, 0x00B5E1BC])  # Enemy, Boss
+    Navi.append([0x00B5E194])  # NPC
+    Navi.append([0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC,
+                 0x00B5E1D4])  # Everything else
     naviList = get_navi_colors()
     randomColors = random.choices(naviList, k=4)
 
@@ -1043,21 +1046,22 @@ def patch_rom(world, rom):
                 if world.navi_colors[i] == 'Random Choice':
                     color = NaviColors[randomColors[i]]
                 # grab the color from the list
-                elif thisColor in NaviColors: 
-                    color = NaviColors[thisColor] 
-                # build color from hex code  
-                else: 
-                    color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4)) 
-                    color = color + [0xFF] + color + [0x00] 
+                elif thisColor in NaviColors:
+                    color = NaviColors[thisColor]
+                    # build color from hex code
+                else:
+                    color = list(int(thisColor[i:i + 2], 16) for i in (0, 2, 4))
+                    color = color + [0xFF] + color + [0x00]
             rom.write_bytes(Navi[i][j], color)
 
-    #Navi hints
+    # Navi hints
     NaviHint = []
-    NaviHint.append([0xAE7EF2, 0xC26C7E]) #Overworld Hint
-    NaviHint.append([0xAE7EC6]) #Enemy Target Hint
-    naviHintSFXList = ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
+    NaviHint.append([0xAE7EF2, 0xC26C7E])  # Overworld Hint
+    NaviHint.append([0xAE7EC6])  # Enemy Target Hint
+    naviHintSFXList = ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill',
+                       'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
     randomNaviHintSFX = random.choices(naviHintSFXList, k=2)
-    
+
     for i in range(len(NaviHint)):
         for j in range(len(NaviHint[i])):
             thisNaviHintSFX = world.navi_hint_sounds[i]
@@ -1090,11 +1094,12 @@ def patch_rom(world, rom):
             if thisNaviHintSFX != 'Default':
                 rom.write_bytes(NaviHint[i][j], naviHintSFX)
 
-    #Low health beep
-    healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
+    # Low health beep
+    healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill',
+                     'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
     randomSFX = random.choice(healthSFXList)
     address = 0xADBA1A
-    
+
     if world.healthSFX == 'Random Choice':
         thisHealthSFX = randomSFX
     else:
@@ -1125,8 +1130,9 @@ def patch_rom(world, rom):
         healthSFX = [0x00, 0x00, 0x00, 0x00]
         address = 0xADBA14
     rom.write_bytes(address, healthSFX)
-        
+
     return rom
+
 
 # Format: (Title, Sequence ID)
 bgm_sequence_ids = [
@@ -1179,6 +1185,7 @@ bgm_sequence_ids = [
     ('Mini-game', 0x6C)
 ]
 
+
 def randomize_music(rom):
     # Read in all the Music data
     bgm_data = []
@@ -1196,12 +1203,12 @@ def randomize_music(rom):
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
         rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
 
-   # Write Fairy Fountain instrument to File Select (uses same track but different instrument set pointer for some reason) 
-    rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), rom.read_int16(0xB89910 + 0xDD + (0x28 * 2))) 
-         
+    # Write Fairy Fountain instrument to File Select (uses same track but different instrument set pointer for some reason)
+    rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), rom.read_int16(0xB89910 + 0xDD + (0x28 * 2)))
+
+
 def disable_music(rom):
     # First track is no music
     blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
     for bgm in bgm_sequence_ids:
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
-

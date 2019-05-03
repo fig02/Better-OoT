@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 import argparse
-import os
 import logging
-import random
-import textwrap
+import os
 import sys
+import textwrap
 
 from Gui import guiMain
 from Main import main
-from Utils import is_bundled, close_console
-from Patches import get_tunic_color_options, get_navi_color_options
 from Settings import get_settings_from_command_line_args
+from Utils import is_bundled, close_console
 
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
@@ -20,7 +18,6 @@ class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
 
 def start():
-
     settings, gui, args_loglevel = get_settings_from_command_line_args()
 
     if is_bundled() and len(sys.argv) == 1:
@@ -34,11 +31,13 @@ def start():
 
     # ToDo: Validate files further than mere existance
     if not os.path.isfile(settings.rom):
-        input('Could not find valid base rom for patching at expected path %s. Please run with -h to see help for further information. \nPress Enter to exit.' % settings.rom)
+        input(
+            'Could not find valid base rom for patching at expected path %s. Please run with -h to see help for further information. \nPress Enter to exit.' % settings.rom)
         sys.exit(1)
 
     # set up logger
-    loglevel = {'error': logging.ERROR, 'info': logging.INFO, 'warning': logging.WARNING, 'debug': logging.DEBUG}[args_loglevel]
+    loglevel = {'error': logging.ERROR, 'info': logging.INFO, 'warning': logging.WARNING, 'debug': logging.DEBUG}[
+        args_loglevel]
     logging.basicConfig(format='%(message)s', level=loglevel)
 
     logger = logging.getLogger('')
@@ -52,6 +51,7 @@ def start():
             main(settings)
     else:
         main(settings)
+
 
 if __name__ == '__main__':
     start()

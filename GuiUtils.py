@@ -5,11 +5,12 @@ import traceback
 
 from Utils import local_path
 
+
 def set_icon(window):
     er16 = tk.PhotoImage(file=local_path('data/oot16.gif'))
     er32 = tk.PhotoImage(file=local_path('data/oot32.gif'))
     er48 = tk.PhotoImage(file=local_path('data/oot32.gif'))
-    window.tk.call('wm', 'iconphoto', window._w, er16, er32, er48) # pylint: disable=protected-access
+    window.tk.call('wm', 'iconphoto', window._w, er16, er32, er48)  # pylint: disable=protected-access
 
 
 # Although tkinter is intended to be thread safe, there are many reports of issues
@@ -39,7 +40,7 @@ class BackgroundTask(object):
     def stop(self):
         self.running = False
 
-    #safe to call from worker
+    # safe to call from worker
     def queue_event(self, event):
         self.queue.put(event)
 
@@ -51,7 +52,7 @@ class BackgroundTask(object):
                 event = self.queue.get_nowait()
                 event()
                 if self.running:
-                    #if self is no longer running self.window may no longer be valid
+                    # if self is no longer running self.window may no longer be valid
                     self.window.update_idletasks()
         except queue.Empty:
             pass
@@ -83,7 +84,8 @@ class BackgroundTaskProgress(BackgroundTask):
         self.label.pack()
 
         self.button_var = tk.StringVar(value="Please wait...")
-        self.button = tk.Button(self.window, textvariable=self.button_var, width=10, height=2, state='disabled', command=self.close)
+        self.button = tk.Button(self.window, textvariable=self.button_var, width=10, height=2, state='disabled',
+                                command=self.close)
         self.button.pack()
 
         self.window.resizable(width=False, height=False)
@@ -92,7 +94,7 @@ class BackgroundTaskProgress(BackgroundTask):
         self.window.transient(parent)
         self.window.protocol("WM_DELETE_WINDOW", self.close_pass)
         self.window.grab_set()
-        self.window.geometry("+%d+%d" % (parent.winfo_rootx()+50, parent.winfo_rooty()+150))
+        self.window.geometry("+%d+%d" % (parent.winfo_rootx() + 50, parent.winfo_rooty() + 150))
         self.window.focus_set()
 
         super().__init__(self.window, code_to_run, *tuple(list(code_arg) + [self]))
@@ -102,7 +104,7 @@ class BackgroundTaskProgress(BackgroundTask):
     def close_pass(self):
         pass
 
-    #safe to call from worker thread
+    # safe to call from worker thread
     def update_status(self, text):
         self.queue_event(lambda: self.label_var.set(text))
 
@@ -155,8 +157,8 @@ class Dialog(tk.Toplevel):
 
         self.grab_set()
         self.protocol("WM_DELETE_WINDOW", self.cancel)
-        self.geometry("+%d+%d" % (parent.winfo_rootx()+50,
-                                  parent.winfo_rooty()+150))
+        self.geometry("+%d+%d" % (parent.winfo_rootx() + 50,
+                                  parent.winfo_rooty() + 150))
 
         self.wait_window(self)
 

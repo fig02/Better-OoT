@@ -43,10 +43,11 @@
 # the floor map data is missing a vertex pointer that would point within kaleido_scope.
 # As such, if the file moves, the patch will break.
 
-from Utils import local_path
-from Rom import LocalRom
 import json
 from struct import pack, unpack
+
+from Rom import LocalRom
+from Utils import local_path
 
 SCENE_TABLE = 0xB71440
 
@@ -70,12 +71,12 @@ class File(object):
             remap = "{0:x}".format(self.remap)
         return "{0}: {1:x} {2:x}, remap {3}".format(self.name, self.start, self.end, remap)
 
-    def relocate(self, rom:LocalRom):
+    def relocate(self, rom: LocalRom):
         if self.remap is None:
             return
 
         new_start = self.remap
-       
+
         offset = new_start - self.start
         new_end = self.end + offset
 
@@ -85,14 +86,14 @@ class File(object):
 
 
 class CollisionMesh(object):
-    def __init__(self, rom:LocalRom, start, offset):
+    def __init__(self, rom: LocalRom, start, offset):
         self.offset = offset
         self.poly_addr = rom.read_int32(start + offset + 0x18)
         self.polytypes_addr = rom.read_int32(start + offset + 0x1C)
         self.camera_data_addr = rom.read_int32(start + offset + 0x20)
         self.polytypes = (self.poly_addr - self.polytypes_addr) // 8
 
-    def write_to_scene(self, rom:LocalRom, start):
+    def write_to_scene(self, rom: LocalRom, start):
         addr = start + self.offset + 0x18
         rom.write_int32s(addr, [self.poly_addr, self.polytypes_addr, self.camera_data_addr])
 
@@ -107,19 +108,19 @@ class ColDelta(object):
 
 class Icon(object):
     def __init__(self, data):
-        self.icon = data["Icon"];
-        self.count = data["Count"];
+        self.icon = data["Icon"]
+        self.count = data["Count"]
         self.points = [IconPoint(x) for x in data["IconPoints"]]
 
-    def write_to_minimap(self, rom:LocalRom, addr):
+    def write_to_minimap(self, rom: LocalRom, addr):
         rom.write_sbyte(addr, self.icon)
-        rom.write_byte(addr + 1,  self.count)
+        rom.write_byte(addr + 1, self.count)
         cur = 2
         for p in self.points:
             p.write_to_minimap(rom, addr + cur)
             cur += 0x03
 
-    def write_to_floormap(self, rom:LocalRom, addr):
+    def write_to_floormap(self, rom: LocalRom, addr):
         rom.write_int16(addr, self.icon)
         rom.write_int32(addr + 0x10, self.count)
 
@@ -135,12 +136,12 @@ class IconPoint(object):
         self.x = point["x"]
         self.y = point["y"]
 
-    def write_to_minimap(self, rom:LocalRom, addr):
+    def write_to_minimap(self, rom: LocalRom, addr):
         rom.write_sbyte(addr, self.flag)
-        rom.write_byte(addr+1, self.x)
-        rom.write_byte(addr+2, self.y)
+        rom.write_byte(addr + 1, self.x)
+        rom.write_byte(addr + 2, self.y)
 
-    def write_to_floormap(self, rom:LocalRom, addr):
+    def write_to_floormap(self, rom: LocalRom, addr):
         rom.write_int16(addr, self.flag)
         rom.write_f32(addr + 4, float(self.x))
         rom.write_f32(addr + 8, float(self.y))
@@ -160,9 +161,8 @@ class Scene(object):
         for item in temp_paths:
             self.paths.append(item['Points'])
 
+    def write_data(self, rom: LocalRom):
 
-    def write_data(self, rom:LocalRom):
-        
         # write floormap and minimap data
         self.write_map_data(rom)
 
@@ -176,22 +176,22 @@ class Scene(object):
 
         code = rom.read_byte(headcur)
         loop = 0x20
-        while loop > 0 and code != 0x14: #terminator
+        while loop > 0 and code != 0x14:  # terminator
             loop -= 1
 
-            if code == 0x03: #collision
+            if code == 0x03:  # collision
                 col_mesh_offset = rom.read_int24(headcur + 5)
                 col_mesh = CollisionMesh(rom, start, col_mesh_offset)
-                self.patch_mesh(rom, col_mesh);
+                self.patch_mesh(rom, col_mesh)
 
-            elif code == 0x04: #rooms
+            elif code == 0x04:  # rooms
                 room_list_offset = rom.read_int24(headcur + 5)
 
-            elif code == 0x0D: #paths
+            elif code == 0x0D:  # paths
                 path_offset = self.append_path_data(rom)
                 rom.write_int32(headcur + 4, path_offset)
 
-            elif code == 0x0E: #transition actors
+            elif code == 0x0E:  # transition actors
                 t_offset = rom.read_int24(headcur + 5)
                 addr = self.file.start + t_offset
                 write_actor_data(rom, addr, self.transition_actors)
@@ -203,7 +203,7 @@ class Scene(object):
         self.file.end = align16(self.file.end)
         update_dmadata(rom, self.file)
         update_scene_table(rom, self.id, self.file.start, self.file.end)
-        
+
         # write room file data
         for room in self.rooms:
             room.write_data(rom)
@@ -215,8 +215,7 @@ class Scene(object):
             rom.write_int32s(cur, [room.file.start, room.file.end])
             cur += 0x08
 
-
-    def write_map_data(self, rom:LocalRom):
+    def write_map_data(self, rom: LocalRom):
         if self.id >= 10:
             return
 
@@ -224,7 +223,7 @@ class Scene(object):
         floormap_indices = 0xB6C934
         floormap_vrom = 0xBC7E00
         floormap_index = rom.read_int16(floormap_indices + (self.id * 2))
-        floormap_index //= 2 # game uses texture index, where two textures are used per floor
+        floormap_index //= 2  # game uses texture index, where two textures are used per floor
 
         cur = floormap_vrom + (floormap_index * 0x1EC)
         for floormap in self.floormaps:
@@ -232,32 +231,30 @@ class Scene(object):
                 Icon.write_to_floormap(icon, rom, cur)
                 cur += 0xA4
 
-                
         # fixes jabu jabu floor B1 having no chest data
         if self.id == 2:
             cur = floormap_vrom + (0x08 * 0x1EC + 4)
-            kaleido_scope_chest_verts = 0x803A3DA0 # hax, should be vram 0x8082EA00
-            rom.write_int32s(cur, [0x17, kaleido_scope_chest_verts, 0x04]) 
+            kaleido_scope_chest_verts = 0x803A3DA0  # hax, should be vram 0x8082EA00
+            rom.write_int32s(cur, [0x17, kaleido_scope_chest_verts, 0x04])
 
-        # write minimaps
+            # write minimaps
         map_mark_vrom = 0xBF40D0
         map_mark_vram = 0x808567F0
-        map_mark_array_vram = 0x8085D2DC # ptr array in map_mark_data to minimap "marks"
+        map_mark_array_vram = 0x8085D2DC  # ptr array in map_mark_data to minimap "marks"
 
         array_vrom = map_mark_array_vram - map_mark_vram + map_mark_vrom
         map_mark_scene_vram = rom.read_int32(self.id * 4 + array_vrom)
         mark_vrom = map_mark_scene_vram - map_mark_vram + map_mark_vrom
-        
+
         cur = mark_vrom
         for minimap in self.minimaps:
             for icon in minimap:
                 Icon.write_to_minimap(icon, rom, cur)
                 cur += 0x26
 
-
-    def patch_mesh(self, rom:LocalRom, mesh:CollisionMesh):
+    def patch_mesh(self, rom: LocalRom, mesh: CollisionMesh):
         start = self.file.start
-        
+
         final_cams = []
 
         # build final camera data
@@ -281,7 +278,7 @@ class Scene(object):
             self.write_cam_data(rom, self.file.end, final_cams)
             mesh.camera_data_addr = get_segment_address(2, self.file.end - self.file.start)
             self.file.end += len(final_cams) * 8
-            
+
         else:
             types_move_addr = mesh.camera_data_addr + (len(final_cams) * 8)
 
@@ -290,7 +287,7 @@ class Scene(object):
             self.write_cam_data(rom, addr, final_cams)
 
         # if polytypes needs to be moved, do so
-        if (types_move_addr != mesh.polytypes_addr):
+        if types_move_addr != mesh.polytypes_addr:
             a_start = self.file.start + (mesh.polytypes_addr & 0xFFFFFF)
             b_start = self.file.start + (types_move_addr & 0xFFFFFF)
             size = mesh.polytypes * 8
@@ -313,25 +310,23 @@ class Scene(object):
             flags = item['Flags']
 
             addr = self.file.start + (mesh.poly_addr & 0xFFFFFF) + (id * 0x10)
-            vert_bit =  rom.read_byte(addr + 0x02) & 0x1F # VertexA id data
+            vert_bit = rom.read_byte(addr + 0x02) & 0x1F  # VertexA id data
             rom.write_int16(addr, t)
             rom.write_byte(addr + 0x02, (flags << 5) + vert_bit)
 
         # Write Mesh to Scene
         mesh.write_to_scene(rom, self.file.start)
 
-
-    def write_cam_data(self, rom:LocalRom, addr, cam_data):
+    def write_cam_data(self, rom: LocalRom, addr, cam_data):
 
         for item in cam_data:
             data, pos = item
             rom.write_int32s(addr, [data, pos])
             addr += 8
 
-
     # appends path data to the end of the rom
     # returns segment address to path data
-    def append_path_data(self, rom:LocalRom):
+    def append_path_data(self, rom: LocalRom):
         start = self.file.start
         cur = self.file.end
         records = []
@@ -341,13 +336,13 @@ class Scene(object):
             offset = get_segment_address(2, cur - start)
             records.append((nodes, offset))
 
-            #flatten
+            # flatten
             points = [x for points in path for x in points]
             rom.write_int16s(cur, points)
             path_size = align4(len(path) * 6)
             cur += path_size
 
-        records_offset = get_segment_address(2, cur - start) 
+        records_offset = get_segment_address(2, cur - start)
         for node, offset in records:
             rom.write_byte(cur, node)
             rom.write_int32(cur + 4, offset)
@@ -364,7 +359,7 @@ class Room(object):
         self.objects = [int(x, 16) for x in room['Objects']]
         self.actors = [convert_actor_data(x) for x in room['Actors']]
 
-    def write_data(self, rom:LocalRom):
+    def write_data(self, rom: LocalRom):
 
         # move file to remap address
         self.file.relocate(rom)
@@ -373,10 +368,10 @@ class Room(object):
 
         code = rom.read_byte(headcur)
         loop = 0x20
-        while loop != 0 and code != 0x14: #terminator
+        while loop != 0 and code != 0x14:  # terminator
             loop -= 1
 
-            if code == 0x01: # actors
+            if code == 0x01:  # actors
                 offset = self.file.end - self.file.start
                 write_actor_data(rom, self.file.end, self.actors)
                 self.file.end += len(self.actors) * 0x10
@@ -384,7 +379,7 @@ class Room(object):
                 rom.write_byte(headcur + 1, len(self.actors))
                 rom.write_int32(headcur + 4, get_segment_address(3, offset))
 
-            elif code == 0x0B: # objects
+            elif code == 0x0B:  # objects
                 offset = self.append_object_data(rom, self.objects)
 
                 rom.write_byte(headcur + 1, len(self.objects))
@@ -396,9 +391,8 @@ class Room(object):
         # update file reference
         self.file.end = align16(self.file.end)
         update_dmadata(rom, self.file)
-        
 
-    def append_object_data(self, rom:LocalRom, objects):
+    def append_object_data(self, rom: LocalRom, objects):
         offset = self.file.end - self.file.start
         cur = self.file.end
         rom.write_int16s(cur, objects)
@@ -408,8 +402,7 @@ class Room(object):
         return offset
 
 
-def patch_files(rom:LocalRom, mq_scenes:list):
-    
+def patch_files(rom: LocalRom, mq_scenes: list):
     data = get_json()
     scenes = [Scene(x) for x in data]
     for scene in scenes:
@@ -417,7 +410,6 @@ def patch_files(rom:LocalRom, mq_scenes:list):
             if scene.id == 9:
                 patch_ice_cavern_scene_header(rom)
             scene.write_data(rom)
-
 
 
 def get_json():
@@ -428,7 +420,7 @@ def get_json():
 
 def convert_actor_data(str):
     spawn_args = str.split(" ")
-    return [ int(x,16) for x in spawn_args ]
+    return [int(x, 16) for x in spawn_args]
 
 
 def get_segment_address(base, offset):
@@ -442,7 +434,7 @@ def patch_ice_cavern_scene_header(rom):
     rom.write_int32s(0x2BEB038, [0x0D000000, 0x02000000])
 
 
-def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
+def patch_spirit_temple_mq_room_6(rom: LocalRom, room_addr):
     cur = room_addr
 
     actor_list_addr = 0
@@ -450,8 +442,8 @@ def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
 
     # scan for actor list and header end
     code = rom.read_byte(cur)
-    while code != 0x14: #terminator  
-        if code == 0x01: # actors
+    while code != 0x14:  # terminator
+        if code == 0x01:  # actors
             actor_list_addr = rom.read_int32(cur + 4)
             cmd_actors_offset = cur - room_addr
 
@@ -467,13 +459,13 @@ def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
     alt_data_off = header_size + 8
 
     # set new alternate header offset
-    alt_header_off = align16(alt_data_off + (4 * 3)) # alt header record size * num records
+    alt_header_off = align16(alt_data_off + (4 * 3))  # alt header record size * num records
 
     # write alternate header data
     # the first 3 words are mandatory. the last 3 are just to make the binary
     # cleaner to read
     rom.write_int32s(room_addr + alt_data_off,
-                    [0, get_segment_address(3, alt_header_off), 0, 0, 0, 0])
+                     [0, get_segment_address(3, alt_header_off), 0, 0, 0, 0])
 
     # clone header
     a_start = room_addr
@@ -482,13 +474,13 @@ def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
     b_end = b_start + header_size
 
     rom.buffer[b_start:b_end] = rom.buffer[a_start:a_end]
-    
+
     # make the child header skip the first actor,
     # which avoids the spawning of the block while in the hole
     cmd_addr = room_addr + cmd_actors_offset
     actor_list_addr += 0x10
     actors = rom.read_byte(cmd_addr + 1)
-    rom.write_byte(cmd_addr+1, actors - 1)
+    rom.write_byte(cmd_addr + 1, actors - 1)
     rom.write_int32(cmd_addr + 4, actor_list_addr)
 
     # move header
@@ -500,11 +492,12 @@ def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
 
 
 def verify_remap(scenes):
-    def test_remap(file:File):
+    def test_remap(file: File):
         if file.remap is not None:
             if file.start < file.remap:
                 return False
         return True
+
     print("test code: verify remap won't corrupt data")
 
     for scene in scenes:
@@ -518,25 +511,29 @@ def verify_remap(scenes):
             print("{0} - {1}".format(result, file))
 
 
-def update_dmadata(rom:LocalRom, file:File):
+def update_dmadata(rom: LocalRom, file: File):
     key, start, end = file.dma_key, file.start, file.end
     rom.update_dmadata_record(key, start, end)
 
-def update_scene_table(rom:LocalRom, sceneId, start, end):
+
+def update_scene_table(rom: LocalRom, sceneId, start, end):
     cur = sceneId * 0x14 + SCENE_TABLE
     rom.write_int32s(cur, [start, end])
 
 
-def write_actor_data(rom:LocalRom, cur, actors):
+def write_actor_data(rom: LocalRom, cur, actors):
     for actor in actors:
         rom.write_int16s(cur, actor)
         cur += 0x10
 
+
 def align4(value):
     return ((value + 3) // 4) * 4
 
+
 def align16(value):
     return ((value + 0xF) // 0x10) * 0x10
+
 
 # This function inserts space in a ovl section at the section's offset
 # The section size is expanded
@@ -583,10 +580,10 @@ def insert_space(rom, file, vram_start, insert_section, insert_offset, insert_si
         # move relocation if section is increased and it's after the insert
         if insert_section == section and offset >= insert_offset:
             # rebuild new relocation entry
-            rom.write_int32(cur, 
-                ((section + 1) << 30) | 
-                (type << 24) | 
-                (offset + insert_size))
+            rom.write_int32(cur,
+                            ((section + 1) << 30) |
+                            (type << 24) |
+                            (offset + insert_size))
 
         # value contains the vram address
         value = rom.read_int32(address)
@@ -616,7 +613,7 @@ def insert_space(rom, file, vram_start, insert_section, insert_offset, insert_si
             value = None
 
         # update the vram values if it's been moved
-        if value != None and value >= insert_vram:
+        if value is not None and value >= insert_vram:
             # value = new vram address
             new_value = value + insert_size
 
@@ -682,12 +679,12 @@ def add_relocations(rom, file, addresses):
             # Otherwise, try to infer type from value
             value = rom.read_int32(address)
             op = value >> 26
-            type = 2 # default: data
-            if op == 0x02 or op == 0x03: # j or jal
+            type = 2  # default: data
+            if op == 0x02 or op == 0x03:  # j or jal
                 type = 4
-            elif op == 0x0F: # lui
+            elif op == 0x0F:  # lui
                 type = 5
-            elif op == 0x08: # addi
+            elif op == 0x08:  # addi
                 type = 6
 
         # Calculate section and offset
@@ -701,13 +698,13 @@ def add_relocations(rom, file, addresses):
         offset = address - sections[section - 1]
 
         # generate relocation entry
-        relocations.append((section << 30) 
-                        | (type << 24) 
-                        | (offset & 0x00FFFFFF))
+        relocations.append((section << 30)
+                           | (type << 24)
+                           | (offset & 0x00FFFFFF))
 
     # Rebuild Relocation Table
     cur = header + 0x10
-    relocations.sort(key = lambda val: val & 0xC0FFFFFF)
+    relocations.sort(key=lambda val: val & 0xC0FFFFFF)
     rom.write_int32(cur, len(relocations))
     cur += 4
     for relocation in relocations:

@@ -1,4 +1,3 @@
-import json
 import sys
 
 if len(sys.argv) < 4:
@@ -7,6 +6,7 @@ if len(sys.argv) < 4:
 base_path = sys.argv[1]
 compare_path = sys.argv[2]
 output_path = sys.argv[3]
+
 
 def unequal_chunks(file1, file2):
     chunk_size = 2048
@@ -19,6 +19,7 @@ def unequal_chunks(file1, file2):
         if chunk1 != chunk2:
             yield (i * chunk_size, chunk1, chunk2)
         i += 1
+
 
 diffs = []
 with open(base_path, 'rb') as base_f, open(compare_path, 'rb') as comp_f:

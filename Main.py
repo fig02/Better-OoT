@@ -1,29 +1,28 @@
-from collections import OrderedDict
-from itertools import zip_longest
-import json
 import logging
+import os
 import platform
-import random
+import struct
 import subprocess
 import time
-import os
-import struct
 
-from BaseClasses import World, CollectionState, Item
-from Rom import LocalRom
+from BaseClasses import World
 from Patches import patch_rom
+from Rom import LocalRom
 from Utils import default_output_path
 
-class dummy_window():
+
+class DummyWindow:
     def __init__(self):
         pass
+
     def update_status(self, text):
         pass
+
     def update_progress(self, val):
         pass
 
-def main(settings, window=dummy_window()):
 
+def main(settings, window=DummyWindow()):
     start = time.clock()
     logger = logging.getLogger('')
 
@@ -41,7 +40,7 @@ def main(settings, window=dummy_window()):
 
     logger.info('Patching ROM.')
 
-    outfilebase = 'BOoT_%s' % (worlds[0].settings_string)
+    outfilebase = 'BOoT_%s' % worlds[0].settings_string
     output_dir = default_output_path(settings.output_dir)
 
     window.update_status('Patching ROM')
@@ -71,19 +70,23 @@ def main(settings, window=dummy_window()):
     else:
         logger.info('OS not supported for compression')
 
-    #uncomment below for decompressed output (for debugging)
-    #rom.write_to_file(default_output_path('%s.z64' % outfilebase))
-    run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)], None)
+    # uncomment below for decompressed output (for debugging)
+    # rom.write_to_file(default_output_path('%s.z64' % outfilebase))
+    run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)],
+                None)
     os.remove(rom_path)
     window.update_progress(85)
 
-    #wad generation
+    # wad generation
     window.update_status('Generating WAD')
     logger.info('Generating WAD.')
 
     if settings.create_wad == 'True':
-        run_process(window, logger,["bin\\gzinject.exe", "-a","genkey"], b'45e') #generate common key
-        run_process(window, logger,["bin\\gzinject.exe", "-a","inject", "--rom", os.path.join(output_dir, '%s-comp.z64' % outfilebase), "--wad", settings.wad, "-o",os.path.join(output_dir, '%s.wad' % outfilebase), "-i", "NBOE", "-t", "Better OOT", "--disable-cstick-d-remapping", "--disable-dpad-u-remapping", "--cleanup"], None)
+        run_process(window, logger, ["bin\\gzinject.exe", "-a", "genkey"], b'45e')  # generate common key
+        run_process(window, logger, ["bin\\gzinject.exe", "-a", "inject", "--rom",
+                                     os.path.join(output_dir, '%s-comp.z64' % outfilebase), "--wad", settings.wad, "-o",
+                                     os.path.join(output_dir, '%s.wad' % outfilebase), "-i", "NBOE", "-t", "Better OOT",
+                                     "--disable-cstick-d-remapping", "--disable-dpad-u-remapping", "--cleanup"], None)
         os.remove(os.path.join(output_dir, '%s-comp.z64' % outfilebase))
 
     window.update_progress(95)
@@ -98,6 +101,7 @@ def main(settings, window=dummy_window()):
 
     return worlds[settings.player_num - 1]
 
+
 def run_process(window, logger, args, stdin):
     process = subprocess.Popen(args, bufsize=1, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     filecount = None
@@ -110,11 +114,9 @@ def run_process(window, logger, args, stdin):
                 find_index = line.find(b'files remaining')
                 if find_index > -1:
                     files = int(line[:find_index].strip())
-                    if filecount == None:
+                    if filecount is None:
                         filecount = files
                     window.update_progress(50 + ((1 - (files / filecount)) * 30))
                 logger.info(line.decode('utf-8').strip('\n'))
             else:
                 break
-
-

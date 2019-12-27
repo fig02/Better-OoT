@@ -83,7 +83,7 @@ def guiMain(settings=None):
     frames = {}
 
     mainWindow = Tk()
-    mainWindow.wm_title("Better OoT v3.0")
+    mainWindow.wm_title("Better OoT v3.0.2")
     mainWindow.resizable(False, False)
 
     set_icon(mainWindow)
@@ -130,6 +130,7 @@ def guiMain(settings=None):
     #Aesthetics tab
     frames['cosmetics'] = LabelFrame(frames['aesthetic_tab'], text='General', labelanchor=NW)
     frames['tuniccolor'] = LabelFrame(frames['aesthetic_tab_left'], text='Tunic Color', labelanchor=NW)
+    frames['swordcolor'] = LabelFrame(frames['aesthetic_tab_left'], text='Sword Color', labelanchor=NW)
     frames['navicolor']  = LabelFrame(frames['aesthetic_tab_right'], text='Navi Color',  labelanchor=NW)
     frames['lowhp']      = LabelFrame(frames['aesthetic_tab_left'], text='Low HP SFX',  labelanchor=NW)
     frames['navihint']   = LabelFrame(frames['aesthetic_tab_right'], text='Navi SFX', labelanchor=NW)
@@ -367,6 +368,8 @@ def guiMain(settings=None):
                     widgets[info.name].pack(expand=False, anchor=W)
                 if info.name == 'quickboots':
                     widgets[info.name].pack(expand=False, anchor=W)
+                if info.name == 'fast_elevator':
+                    widgets[info.name].pack(expand=False, anchor=W)
 
 
             if info.gui_params['widget'] == 'SpecialCheckbutton':
@@ -482,6 +485,7 @@ def guiMain(settings=None):
 
     #Aesthetics tab - Left Side
     frames['tuniccolor'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
+    frames['swordcolor'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
     frames['lowhp'].pack(     fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
 
     #Aesthetics tab - Right Side

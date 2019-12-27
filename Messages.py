@@ -253,6 +253,10 @@ SONG_MESSAGES = {
     0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",    
 }
 
+MISC_MESSAGES = {
+    0x71B0: "\x06\x2DOh no! Time is up!\x01\x06\x45Try again!\x0B"
+}
+
 
 # convert byte array to an integer
 def bytes_to_int(bytes, signed=False):
@@ -741,6 +745,10 @@ def update_item_messages(messages, world):
 
         else:
             update_message_by_id(messages, id, text)
+
+def update_misc_messages(messages):
+    for id, text in MISC_MESSAGES.items():
+        update_message_by_id(messages, id, text, 0x02)
 
 # run all keysanity related patching to add messages for dungeon specific items
 def message_patch_for_dungeon_items(messages, shop_items, world):

@@ -1,0 +1,22 @@
+To-do:
+
+Print version number and settings string on file select
+Take blue boxes out of credits text
+Maybe fast armos pushing
+Fix slow text when buying items in shops
+Move nabooru knuckle forward
+Remove keese in fire
+Experiment with stalling rova
+
+
+Done:
+
+Shorten english trade timer text to same number of charaters as JP
+Clear cs pointer when playing warp songs
+Make unskippable song cutscenes fast even with toggle checked
+Fast Jabu elevator toggle
+1.2 ice cavern camera
+Fix MQ truth spinner
+Open gate in kak after going adult for the first time
+Put version number in GUI title bar
+Force JP ROMs to English

@@ -1,0 +1,14 @@
+1107	0453	023A4000	023AC4C0	0084C0	HIDAN_room_21
+
+segment offset 54
+
+
+rom address of all 4 keese
+
+9E3A - bottom plane
+
+keese rom address
+23A4058
+23A4068
+23A4088
+23A4098

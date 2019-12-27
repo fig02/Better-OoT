@@ -1,0 +1,47 @@
+nabooru knuckle
+
+id 113
+
+init x: C49A6000
+init z: 449E8000
+
+nabooru room 
+1390	056E	02F61000	02F68E40	007E40	jyasinboss_room_1
+
+70 - offset for actor list from start of room
+
+2F61070 - actor list for room 1
+
+frame 1 of camera snap
+c4a06bd6 
+44a06e82
+
+no cs:
+from init to gain control: 20 frames
+
+872 932
+from init to gain control: 60 frames
+
+i want position at 40 frames:
+
+---
+
+float:
+x C49E64F0
+z 449E66D0
+
+decimal
+x -1267
+z 1267
+
+short
+x FB0D
+z 04F3
+
+---
+
+rom addresses
+x 2F61072
+z 2F61076
+
+

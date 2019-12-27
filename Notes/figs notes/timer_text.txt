@@ -1,0 +1,37 @@
+jp timer text - 28 characters
+
+"[spaces 002D][color 04]あ〜あ、[color 01]時間切れ[color 04]…
+[color 00][spaces 0021][color 04]お届け物が　だいなし…
+[color 00][spaces 0033][color 04]やりなお〜しっ！[color 00][event start]"
+
+あ〜あ、時間切れ…
+お届け物が　だいなし…
+やりなお〜しっ！
+
+28 character message:
+
+\x06\x2DOh no! Time is up!\x01\x06\x21Try again!\x0B
+
+---
+
+message table 
+8010A94C
+
+iiii xy00 ssoo oooo
+
+i = Message Id. This is the two byte number addressed by actors. 0xFFFC contains a character set used for the Title Screen's "PRESS START" and "NO CONTROLLER" logos, as well as the File Select screen. 0xFFFD marks the end offset of the last valid text box. 0xFFFF marks the end of the table for that language
+x = Text box type
+y = Text box y position
+s = Segment Id. 07 for English/German/French text banks, 08 for Japanese
+o = Message offset, relative to the start of the text bank file (*_message_data_static)
+
+---
+
+id 71b0
+each entry is 8 bytes
+table+38D80 = 801436CC
+
+---
+z64_file_t+0x13D4
+8011A5D0
+timer value = 8011B9A4

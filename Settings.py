@@ -4,8 +4,9 @@ import string
 import re
 import random
 import hashlib
+import math
 
-from Patches import get_tunic_color_options, get_navi_color_options
+from Patches import get_tunic_color_options, get_navi_color_options, get_sword_color_options
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
@@ -49,6 +50,61 @@ class Setting_Info():
         self.shared = shared # whether or not the setting is one that should be shared, used in converting settings to a string
         self.args_params = args_params # parameters that should be pased to the command line argument parser's add_argument() function
         self.gui_params = gui_params # parameters that the gui uses to build the widget components
+
+class Setting_Widget(Setting_Info):
+
+    def __init__(self, name, type, choices, default, args_params={},
+            gui_params=None, shared=False):
+
+        assert 'default' not in args_params and 'default' not in gui_params, \
+                'Setting {}: default shouldn\'t be defined in '\
+                'args_params or in gui_params'.format(name)
+        assert 'choices' not in args_params, \
+                'Setting {}: choices shouldn\'t be defined in '\
+                'args_params'.format(name)
+        assert 'options' not in gui_params, \
+                'Setting {}: options shouldn\'t be defined in '\
+                'gui_params'.format(name)
+
+        if 'type' not in args_params: args_params['type'] = type
+        if 'type' not in gui_params:  gui_params['type']  = type
+
+        self.choices = choices
+        self.default = default
+        args_params['choices'] = list(choices.keys())
+        args_params['default'] = default
+        gui_params['options']  = {v: k for k, v in choices.items()}
+        gui_params['default']  = choices[default]
+
+        super().__init__(name, type, self.calc_bitwidth(choices), shared, args_params, gui_params)
+
+
+    def calc_bitwidth(self, choices):
+        count = len(choices)
+        if count > 0:
+            return math.ceil(math.log(count, 2))
+        return 0
+
+class Combobox(Setting_Widget):
+
+    def __init__(self, name, choices, default, args_help, gui_text=None,
+            gui_group=None, gui_tooltip=None, gui_dependency=None,
+            shared=False):
+
+        type = str
+        gui_params = {
+                'widget': 'Combobox',
+                }
+        if gui_text       is not None: gui_params['text']       = gui_text
+        if gui_group      is not None: gui_params['group']      = gui_group
+        if gui_tooltip    is not None: gui_params['tooltip']    = gui_tooltip
+        if gui_dependency is not None: gui_params['dependency'] = gui_dependency
+        args_params = {
+                'help':    args_help,
+                }
+
+        super().__init__(name, type, choices, default, args_params, gui_params,
+                shared)
 
 # holds the particular choices for a run's settings
 class Settings():
@@ -154,21 +210,20 @@ class Settings():
         self.numeric_seed = self.get_numeric_seed()
 
 def parse_custom_tunic_color(s):
-    if s == 'Custom Color':
-        raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
-    elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
-        return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
-    elif s in get_tunic_color_options():
-        return s
-    else:
-        raise argparse.ArgumentTypeError('Invalid color specified')
+    return parse_color(s, get_tunic_color_options())
+
+def parse_custom_sword_color(s):
+    return parse_color(s, get_sword_color_options())
 
 def parse_custom_navi_color(s):
+    return parse_color(s, get_navi_color_options())
+
+def parse_color(s, color_choices):
     if s == 'Custom Color':
         raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
     elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
         return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
-    elif s in get_navi_color_options():
+    elif s in color_choices:
         return s
     else:
         raise argparse.ArgumentTypeError('Invalid color specified')
@@ -439,6 +494,77 @@ setting_infos = [
                       color from this list of colors.
                       'Completely Random': Choose a random 
                       color from any color the N64 can draw.
+                      '''
+        }),
+    Combobox(
+            name           = 'sword_trail_duration',
+            default        = 4,
+            choices        = {
+                    4: 'Default',
+                    10: 'Long',
+                    15: 'Very Long',
+                    20: 'Lightsaber',
+                 },
+            args_help      = '''\
+                             Select the duration of the sword trail
+                             ''',
+            gui_text       = 'Sword Trail Duration',
+            gui_group      = 'swordcolor',
+            gui_tooltip    = '''\
+                             Select the duration for sword trails.
+                             ''',
+            ),
+    Setting_Info('sword_trail_color_inner', str, 0, False,
+        {
+            'default': 'White',
+            'type': parse_custom_sword_color,
+            'help': '''\
+                    Choose the color for your sword trail when you swing. This controls the inner color. (default: %(default)s)
+                    Color:             Make your sword trail this color.
+                    Random Choice:     Choose a random color from this list of colors.
+                    Completely Random: Choose a random color from any color the N64 can draw.
+                    Rainbow:           Rainbow sword trails.
+
+                    '''
+        },
+        {
+            'text': 'Inner Color',
+            'group': 'swordcolor',
+            'widget': 'Combobox',
+            'default': 'White',
+            'options': get_sword_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random
+                      color from this list of colors.
+                      'Completely Random': Choose a random
+                      color from any color the N64 can draw.
+                      'Rainbow': Rainbow sword trails.
+                      '''
+        }),
+    Setting_Info('sword_trail_color_outer', str, 0, False,
+        {
+            'default': 'White',
+            'type': parse_custom_sword_color,
+            'help': '''\
+                    Choose the color for your sword trail when you swing. This controls the outer color. (default: %(default)s)
+                    Color:             Make your sword trail this color.
+                    Random Choice:     Choose a random color from this list of colors.
+                    Completely Random: Choose a random color from any color the N64 can draw.
+                    Rainbow:           Rainbow sword trails.
+                    '''
+        },
+        {
+            'text': 'Outer Color',
+            'group': 'swordcolor',
+            'widget': 'Combobox',
+            'default': 'White',
+            'options': get_sword_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random
+                      color from this list of colors.
+                      'Completely Random': Choose a random
+                      color from any color the N64 can draw.
+                      'Rainbow': Rainbow sword trails.
                       '''
         }),
     Setting_Info('navicolordefault', str, 0, False, 
@@ -733,7 +859,7 @@ setting_infos = [
     Setting_Info('song_speedup', bool, 1, True, 
         {
             'help': '''\
-                    Shorten song cutscenes
+                    Shorten the cutscenes for songs that can be skipped with glitches
                     ''',
             'action': 'store_true'
         },
@@ -743,7 +869,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Shorten song cutscenes
+                      Shorten the cutscenes for songs that can be skipped with glitches
                       '''
         }),
 
@@ -761,6 +887,23 @@ setting_infos = [
             'default': 'checked',
             'tooltip':'''\
                       All chest animations are fast
+                      '''
+        }),
+
+    Setting_Info('fast_elevator', bool, 1, True, 
+        {
+            'help': '''\
+                    The elvator in Jabu will start at the bottom
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Fast Jabu Elevator',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      The elvator in Jabu will start at the bottom
                       '''
         }),
 

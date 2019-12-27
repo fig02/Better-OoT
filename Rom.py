@@ -41,16 +41,6 @@ class LocalRom(object):
         # Validate ROM file
         file_name = os.path.splitext(file)
         romCRC = list(self.buffer[0x10:0x18])
-        romEndian = self.buffer[0x00]
-        
-        if romEndian == 0x80:
-            romLang = self.buffer[0x3E]
-
-        if romEndian == 0x37:
-            romLang = self.buffer[0x3F]
-        
-        if romLang != 0x45:
-            raise RuntimeError('File is not an English ROM.' % file)
         
         if romCRC not in validCRC:
             # Bad CRC validation
@@ -230,9 +220,9 @@ class LocalRom(object):
         dma_data.sort(key=lambda v: v[0])
 
         for i in range(0, len(dma_data) - 1):
+            
             this_start, this_end, this_size = dma_data[i]
             next_start, next_end, next_size = dma_data[i + 1]
-
             if this_end > next_start:
                 overlapping_records.append(
                         '0x%08X - 0x%08X (Size: 0x%04X)\n0x%08X - 0x%08X (Size: 0x%04X)' % \

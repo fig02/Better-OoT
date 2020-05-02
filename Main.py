@@ -1,15 +1,10 @@
-from collections import OrderedDict
-from itertools import zip_longest
-import json
 import logging
 import platform
-import random
 import subprocess
-import time
 import os
 import struct
 
-from BaseClasses import World, CollectionState, Item
+from BaseClasses import World
 from Rom import LocalRom
 from Patches import patch_rom
 from Utils import default_output_path
@@ -26,7 +21,6 @@ class dummy_window():
 
 def main(settings, window=dummy_window()):
 
-    start = time.clock()
     logger = logging.getLogger('')
 
     # initialize the world
@@ -106,7 +100,6 @@ def main(settings, window=dummy_window()):
     else:
         window.update_status('ROM patched successfully')
     logger.info('ROM patched successfully')
-    logger.debug('Total Time: %s', time.clock() - start)
 
     return worlds[settings.player_num - 1]
 

@@ -973,8 +973,7 @@
 80403720 @@overwrite_type
 80403728 @@return
 80403730 bgs_fix
-80403740 truth_spinner_fix
-8040374C .byt:0904
+80403740 .byt:0910
 80405000 disp_buf_init,00000018
 80405018 sprite_bytes_per_tile,00000028
 80405040 sprite_bytes,00000030

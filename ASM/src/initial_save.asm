@@ -26,7 +26,7 @@ write_initial_save:
     or      t9, t9, t2      ; t9 = given value | current saved value
 
 @@overwrite_type:
-    j       @@save_data_loop
+    b       @@save_data_loop
     sb      t9, 0x00 (t7)   ; write the value into the save data
 
 @@return:

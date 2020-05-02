@@ -192,9 +192,8 @@
 ;Replaces: lw   a0, 0x003C(sp)
 ;          addu t5, t4, at
 
-.org 0xDB9E78 
-    jal    truth_spinner_fix
-    lw     a0, 0x003C(sp)
+.org 0xDB9E7C 
+    addiu t5, r0, 0x5555
 
 ;==================================================================================================
 ; Big Goron Fix

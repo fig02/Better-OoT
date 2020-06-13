@@ -1,18 +1,14 @@
-from collections import OrderedDict
-from itertools import zip_longest
-import json
 import logging
 import platform
-import random
 import subprocess
-import time
 import os
 import struct
 
-from BaseClasses import World, CollectionState, Item
+from BaseClasses import World
 from Rom import LocalRom
 from Patches import patch_rom
 from Utils import default_output_path
+
 
 class dummy_window():
     def __init__(self):
@@ -22,9 +18,9 @@ class dummy_window():
     def update_progress(self, val):
         pass
 
+
 def main(settings, window=dummy_window()):
 
-    start = time.clock()
     logger = logging.getLogger('')
 
     # initialize the world
@@ -67,23 +63,33 @@ def main(settings, window=dummy_window()):
     elif platform.system() == 'Linux':
         compressor_path = "bin/Compress/Compress"
     elif platform.system() == 'Darwin':
-        compressor_path = "bin/Compress/Compress.out"
+        compressor_path = r"bin/Compress/Compress.out"
     else:
         logger.info('OS not supported for compression')
 
-    #uncomment below for decompressed output (for debugging)
-    #rom.write_to_file(default_output_path('%s.z64' % outfilebase))
+    # uncomment below for decompressed output (for debugging)
+    # rom.write_to_file(default_output_path('%s.z64' % outfilebase))
     run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)], None)
     os.remove(rom_path)
     window.update_progress(85)
 
-    #wad generation
+    # wad generation
     window.update_status('Generating WAD')
     logger.info('Generating WAD.')
 
     if settings.create_wad == 'True':
-        run_process(window, logger,["bin\\gzinject.exe", "-a","genkey"], b'45e') #generate common key
-        run_process(window, logger,["bin\\gzinject.exe", "-a","inject", "--rom", os.path.join(output_dir, '%s-comp.z64' % outfilebase), "--wad", settings.wad, "-o",os.path.join(output_dir, '%s.wad' % outfilebase), "-i", "NBOE", "-t", "Better OOT", "--disable-cstick-d-remapping", "--disable-dpad-u-remapping", "--cleanup"], None)
+        gzinject_path = ""
+        if platform.system() == 'Windows':
+            gzinject_path = "bin\\gzinject.exe"
+        elif platform.system() == 'Linux':
+            gzinject_path = "bin/gzinject-linux"
+        elif platform.system() == 'Darwin':
+            gzinject_path = "bin/gzinject-mac"
+        else:
+            logger.info('OS not supported for WAD injection')
+
+        run_process(window, logger,[gzinject_path, "-a", "genkey"], b'45e') #generate common key
+        run_process(window, logger,[gzinject_path, "-a", "inject", "--rom", os.path.join(output_dir,'%s-comp.z64' % outfilebase), "--wad", settings.wad, "-o", os.path.join(output_dir, '%s.wad' % outfilebase), "-i", "NBOE", "-t", "Better OOT", "--disable-cstick-d-remapping", "--disable-dpad-u-remapping", "--cleanup"], None)
         os.remove(os.path.join(output_dir, '%s-comp.z64' % outfilebase))
 
     window.update_progress(95)
@@ -94,9 +100,9 @@ def main(settings, window=dummy_window()):
     else:
         window.update_status('ROM patched successfully')
     logger.info('ROM patched successfully')
-    logger.debug('Total Time: %s', time.clock() - start)
 
     return worlds[settings.player_num - 1]
+
 
 def run_process(window, logger, args, stdin):
     process = subprocess.Popen(args, bufsize=1, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
@@ -110,7 +116,7 @@ def run_process(window, logger, args, stdin):
                 find_index = line.find(b'files remaining')
                 if find_index > -1:
                     files = int(line[:find_index].strip())
-                    if filecount == None:
+                    if filecount is None:
                         filecount = files
                     window.update_progress(50 + ((1 - (files / filecount)) * 30))
                 logger.info(line.decode('utf-8').strip('\n'))

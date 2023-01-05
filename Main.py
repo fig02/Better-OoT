@@ -24,7 +24,7 @@ class dummy_window():
 
 def main(settings, window=dummy_window()):
 
-    start = time.clock()
+    start = time.perf_counter()
     logger = logging.getLogger('')
 
     # initialize the world
@@ -94,7 +94,7 @@ def main(settings, window=dummy_window()):
     else:
         window.update_status('ROM patched successfully')
     logger.info('ROM patched successfully')
-    logger.debug('Total Time: %s', time.clock() - start)
+    logger.debug('Total Time: %s', time.perf_counter() - start)
 
     return worlds[settings.player_num - 1]
 
